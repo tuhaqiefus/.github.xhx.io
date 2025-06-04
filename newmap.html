@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xinova_BusinessPartners_map</title>
+    <style>
+        body {
+            font-family: "Microsoft YaHei", sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        #china-container {
+            position: relative;
+            width: 1200px;
+            height: 1000px;
+            margin: 0 auto;
+            background-color: #f0f9ff;
+            border: 50px solid #ccc;
+            overflow: hidden;
+        }
+
+        .province {
+            position: absolute;
+            cursor: pointer;
+            transition: transform 0.2s, z-index 0.2s;
+            z-index: 1;
+        }
+
+        .province:hover {
+            transform: scale(1.2);
+            z-index: 10;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .province img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+
+        .info-window {
+            position: absolute;
+            background: white;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            width: 300px;
+            display: none;
+            z-index: 100;
+            pointer-events: none;
+        }
+
+        .info-window h3 {
+            margin-top: 0;
+            color: #1890ff;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        .info-window p {
+            margin: 8px 0;
+            color: #666;
+            font-size: 14px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h1>xinova_BusinessPartners_map</h1>
+    <div id="china-container">
+        <div class="province" data-name="北京" style="left: 750px; top: 350px; width: 50px; height: 50px">
+            <img src="./map/images/beijing.png" alt="北京">
+        </div>
+        <div class="province" data-name="天津" style="left: 730px; top: 380px; width: 50px; height: 50px">
+            <img src="./map/images/tianjin.png" alt="天津">
+        </div>
+        <div class="province" data-name="河北" style="left: 798.485107421875px; top: 368.485107421875px; width: 80px; height: 80px">
+            <img src="./map/images/hebei.png" alt="河北">
+        </div>
+        <div class="province" data-name="山西" style="left: 650px; top: 400px; width: 70px; height: 80px">
+            <img src="./map/images/shanxi.png" alt="山西">
+        </div>
+        <div class="province" data-name="内蒙古" style="left: 600px; top: 300px; width: 150px; height: 120px">
+            <img src="./map/images/neimenggu.png" alt="内蒙古">
+        </div>
+        <div class="province" data-name="辽宁" style="left: 861.485107421875px; top: 350.500732421875px; width: 80px; height: 80px">
+            <img src="./map/images/dalian.png" alt="辽宁">
+        </div>
+        <div class="province" data-name="吉林" style="left: 900.9702758789062px; top: 333.984375px; width: 70px; height: 90px">
+            <img src="./map/images/jilin.png" alt="吉林">
+        </div>
+        <div class="province" data-name="黑龙江" style="left: 880.1119995117188px; top: 270.5664978027344px; width: 100px; height: 120px">
+            <img src="./map/images/heilongjiang.png" alt="黑龙江">
+        </div>
+        <div class="province" data-name="全图" style="left: 0px; top: 699px; width: 400px; height: 400px">
+            <img src="./map/images/quantu.jpg" alt="全图">
+        </div>
+        <div class="province" data-name="江苏" style="left: 850.9859008789062px; top: 464px; width: 70px; height: 60px">
+            <img src="./map/images/jiangsu.png" alt="江苏">
+        </div>
+        <div class="province" data-name="浙江" style="left: 1114.5015258789062px; top: 710.4937744140625px; width: 70px; height: 70px">
+            <img src="./map/images/zhejiang.png" alt="浙江">
+        </div>
+        <div class="province" data-name="安徽" style="left: 819.9624633789062px; top: 468.946044921875px; width: 70px; height: 80px">
+            <img src="./map/images/anhui.png" alt="安徽">
+        </div>
+        <div class="province" data-name="福建" style="left: 780px; top: 600px; width: 70px; height: 80px">
+            <img src="./map/images/fujian.png" alt="福建">
+        </div>
+        <div class="province" data-name="江西" style="left: 720px; top: 580px; width: 70px; height: 80px">
+            <img src="./map/images/jiangxi.png" alt="江西">
+        </div>
+        <div class="province" data-name="山东" style="left: 826.977294921875px; top: 435.961669921875px; width: 80px; height: 80px">
+            <img src="./map/images/shandong.png" alt="山东">
+        </div>
+        <div class="province" data-name="河南" style="left: 560.492919921875px; top: 632.500732421875px; width: 80px; height: 80px">
+            <img src="./map/images/henan.png" alt="河南">
+        </div>
+        <div class="province" data-name="湖北" style="left: 879.492919921875px; top: 827.485107421875px; width: 80px; height: 80px">
+            <img src="./map/images/hubei.png" alt="湖北">
+        </div>
+        <div class="province" data-name="湖南" style="left: 660px; top: 600px; width: 80px; height: 90px">
+            <img src="./map/images/hunan.png" alt="湖南">
+        </div>
+        <div class="province" data-name="广东" style="left: 700px; top: 680px; width: 80px; height: 90px">
+            <img src="./map/images/guangdong.png" alt="广东">
+        </div>
+        <div class="province" data-name="广西" style="left: 630px; top: 680px; width: 80px; height: 100px">
+            <img src="./map/images/guangxi.png" alt="广西">
+        </div>
+        <div class="province" data-name="海南" style="left: 650px; top: 780px; width: 60px; height: 60px">
+            <img src="./map/images/hainan.png" alt="海南">
+        </div>
+        <div class="province" data-name="大韩民国" style="left: 900px; top: 550px; width: 90px; height: 90px">
+            <img src="./map/images/kr-04.png" alt="大韩民国">
+        </div>
+        <div class="province" data-name="四川" style="left: 580px; top: 550px; width: 100px; height: 120px">
+            <img src="./map/images/sichuan.png" alt="四川">
+        </div>
+        <div class="province" data-name="贵州" style="left: 600px; top: 620px; width: 80px; height: 90px">
+            <img src="./map/images/guizhou.png" alt="贵州">
+        </div>
+        <div class="province" data-name="云南" style="left: 550px; top: 650px; width: 90px; height: 120px">
+            <img src="./map/images/yunnan.png" alt="云南">
+        </div>
+        <div class="province" data-name="西藏" style="left: 450px; top: 550px; width: 120px; height: 150px">
+            <img src="./map/images/xizang.png" alt="西藏">
+        </div>
+        <div class="province" data-name="陕西" style="left: 600px; top: 450px; width: 80px; height: 90px">
+            <img src="./map/images/shaanxi.png" alt="陕西">
+        </div>
+        <div class="province" data-name="甘肃" style="left: 550px; top: 400px; width: 100px; height: 150px">
+            <img src="./map/images/gansu.png" alt="甘肃">
+        </div>
+        <div class="province" data-name="青海" style="left: 500px; top: 450px; width: 120px; height: 120px">
+            <img src="./map/images/qinghai.png" alt="青海">
+        </div>
+        <div class="province" data-name="" style="left: 580px; top: 380px; width: 60px; height: 60px">
+            <img src="./map/images/ningxia.png" alt="">
+        </div>
+        <div class="province" data-name="新疆" style="left: 350px; top: 350px; width: 150px; height: 180px">
+            <img src="./map/images/xinjiang.png" alt="新疆">
+        </div>
+        <div class="province" data-name="台湾" style="left: 850px; top: 620px; width: 40px; height: 40px">
+            <img src="./map/images/taiwan.png" alt="台湾">
+        </div>
+        <div class="province" data-name="俄罗斯联邦" style="left: 20px; top: 00px; width: 500px; height: 300px">
+            <img src="./map/images/russia_new.png" alt="俄罗斯联邦">
+        </div>
+        <div class="province" data-name="印度" style="left: 10px; top: 710px; width: 250px; height: 250px">
+            <img src="./map/images/india.png" alt="印度">
+        </div>
+        <div id="info-window" class="info-window"></div>
+    </div>
+
+    <script>
+        const provinceData = {
+    "北京": {
+        "position": {
+            "left": "750px",
+            "top": "350px",
+            "width": "50px",
+            "height": "50px"
+        },
+        "image": "./map/images/beijing.png",
+        "description": "分省客户和市场介绍1"
+    },
+    "天津": {
+        "position": {
+            "left": "730px",
+            "top": "380px",
+            "width": "50px",
+            "height": "50px"
+        },
+        "image": "./map/images/tianjin.png",
+        "description": "2"
+    },
+    "河北": {
+        "position": {
+            "left": "798.485107421875px",
+            "top": "368.485107421875px",
+            "width": "80px",
+            "height": "80px"
+        },
+        "image": "./map/images/hebei.png",
+        "description": "3"
+    },
+    "山西": {
+        "position": {
+            "left": "650px",
+            "top": "400px",
+            "width": "70px",
+            "height": "80px"
+        },
+        "image": "./map/images/shanxi.png",
+        "description": "4"
+    },
+    "内蒙古": {
+        "position": {
+            "left": "600px",
+            "top": "300px",
+            "width": "150px",
+            "height": "120px"
+        },
+        "image": "./map/images/neimenggu.png",
+        "description": "5"
+    },
+    "辽宁": {
+        "position": {
+            "left": "861.485107421875px",
+            "top": "350.500732421875px",
+            "width": "80px",
+            "height": "80px"
+        },
+        "image": "./map/images/dalian.png",
+        "description": "6"
+    },
+    "吉林": {
+        "position": {
+            "left": "900.9702758789062px",
+            "top": "333.984375px",
+            "width": "70px",
+            "height": "90px"
+        },
+        "image": "./map/images/jilin.png",
+        "description": "7"
+    },
+    "黑龙江": {
+        "position": {
+            "left": "880.1119995117188px",
+            "top": "270.5664978027344px",
+            "width": "100px",
+            "height": "120px"
+        },
+        "image": "./map/images/heilongjiang.png",
+        "description": "8"
+    },
+    "全图": {
+        "position": {
+            "left": "0px",
+            "top": "699px",
+            "width": "400px",
+            "height": "400px"
+        },
+        "image": "./map/images/quantu.jpg",
+        "description": "9"
+    },
+    "江苏": {
+        "position": {
+            "left": "850.9859008789062px",
+            "top": "464px",
+            "width": "70px",
+            "height": "60px"
+        },
+        "image": "./map/images/jiangsu.png",
+        "description": "10"
+    },
+    "浙江": {
+        "position": {
+            "left": "1114.5015258789062px",
+            "top": "710.4937744140625px",
+            "width": "70px",
+            "height": "70px"
+        },
+        "image": "./map/images/zhejiang.png",
+        "description": "11"
+    },
+    "安徽": {
+        "position": {
+            "left": "819.9624633789062px",
+            "top": "468.946044921875px",
+            "width": "70px",
+            "height": "80px"
+        },
+        "image": "./map/images/anhui.png",
+        "description": "12"
+    },
+    "福建": {
+        "position": {
+            "left": "780px",
+            "top": "600px",
+            "width": "70px",
+            "height": "80px"
+        },
+        "image": "./map/images/fujian.png",
+        "description": "13"
+    },
+    "江西": {
+        "position": {
+            "left": "720px",
+            "top": "580px",
+            "width": "70px",
+            "height": "80px"
+        },
+        "image": "./map/images/jiangxi.png",
+        "description": "14"
+    },
+    "山东": {
+        "position": {
+            "left": "826.977294921875px",
+            "top": "435.961669921875px",
+            "width": "80px",
+            "height": "80px"
+        },
+        "image": "./map/images/shandong.png",
+        "description": "15"
+    },
+    "河南": {
+        "position": {
+            "left": "560.492919921875px",
+            "top": "632.500732421875px",
+            "width": "80px",
+            "height": "80px"
+        },
+        "image": "./map/images/henan.png",
+        "description": "16"
+    },
+    "湖北": {
+        "position": {
+            "left": "879.492919921875px",
+            "top": "827.485107421875px",
+            "width": "80px",
+            "height": "80px"
+        },
+        "image": "./map/images/hubei.png",
+        "description": "17"
+    },
+    "湖南": {
+        "position": {
+            "left": "660px",
+            "top": "600px",
+            "width": "80px",
+            "height": "90px"
+        },
+        "image": "./map/images/hunan.png",
+        "description": "18"
+    },
+    "广东": {
+        "position": {
+            "left": "700px",
+            "top": "680px",
+            "width": "80px",
+            "height": "90px"
+        },
+        "image": "./map/images/guangdong.png",
+        "description": "19"
+    },
+    "广西": {
+        "position": {
+            "left": "630px",
+            "top": "680px",
+            "width": "80px",
+            "height": "100px"
+        },
+        "image": "./map/images/guangxi.png",
+        "description": "20"
+    },
+    "海南": {
+        "position": {
+            "left": "650px",
+            "top": "780px",
+            "width": "60px",
+            "height": "60px"
+        },
+        "image": "./map/images/hainan.png",
+        "description": "21"
+    },
+    "大韩民国": {
+        "position": {
+            "left": "900px",
+            "top": "550px",
+            "width": "90px",
+            "height": "90px"
+        },
+        "image": "./map/images/kr-04.png",
+        "description": "22 "
+    },
+    "四川": {
+        "position": {
+            "left": "580px",
+            "top": "550px",
+            "width": "100px",
+            "height": "120px"
+        },
+        "image": "./map/images/sichuan.png",
+        "description": "23"
+    },
+    "贵州": {
+        "position": {
+            "left": "600px",
+            "top": "620px",
+            "width": "80px",
+            "height": "90px"
+        },
+        "image": "./map/images/guizhou.png",
+        "description": "24"
+    },
+    "云南": {
+        "position": {
+            "left": "550px",
+            "top": "650px",
+            "width": "90px",
+            "height": "120px"
+        },
+        "image": "./map/images/yunnan.png",
+        "description": "25"
+    },
+    "西藏": {
+        "position": {
+            "left": "450px",
+            "top": "550px",
+            "width": "120px",
+            "height": "150px"
+        },
+        "image": "./map/images/xizang.png",
+        "description": "26"
+    },
+    "陕西": {
+        "position": {
+            "left": "600px",
+            "top": "450px",
+            "width": "80px",
+            "height": "90px"
+        },
+        "image": "./map/images/shaanxi.png",
+        "description": "27"
+    },
+    "甘肃": {
+        "position": {
+            "left": "550px",
+            "top": "400px",
+            "width": "100px",
+            "height": "150px"
+        },
+        "image": "./map/images/gansu.png",
+        "description": "28"
+    },
+    "青海": {
+        "position": {
+            "left": "500px",
+            "top": "450px",
+            "width": "120px",
+            "height": "120px"
+        },
+        "image": "./map/images/qinghai.png",
+        "description": "29"
+    },
+    "": {
+        "position": {
+            "left": "580px",
+            "top": "380px",
+            "width": "60px",
+            "height": "60px"
+        },
+        "image": "./map/images/ningxia.png",
+        "description": "30"
+    },
+    "新疆": {
+        "position": {
+            "left": "350px",
+            "top": "350px",
+            "width": "150px",
+            "height": "180px"
+        },
+        "image": "./map/images/xinjiang.png",
+        "description": "31"
+    },
+    "台湾": {
+        "position": {
+            "left": "850px",
+            "top": "620px",
+            "width": "40px",
+            "height": "40px"
+        },
+        "image": "./map/images/taiwan.png",
+        "description": "32"
+    },
+    "俄罗斯联邦": {
+        "position": {
+            "left": "20px",
+            "top": "00px",
+            "width": "500px",
+            "height": "300px"
+        },
+        "image": "./map/images/russia_new.png",
+        "description": "33"
+    },
+    "印度": {
+        "position": {
+            "left": "10px",
+            "top": "710px",
+            "width": "250px",
+            "height": "250px"
+        },
+        "image": "./map/images/india.png",
+        "description": "34"
+    }
+};
+
+        const container = document.getElementById('china-container');
+        const infoWindow = document.getElementById('info-window');
+
+        document.querySelectorAll('.province').forEach(province => {
+            const name = province.dataset.name;
+            const data = provinceData[name];
+
+            province.addEventListener('mouseenter', (e) => {
+                let html = `<h3>${name}</h3>`;
+                html += `<p>${data.description}</p>`;
+
+                infoWindow.innerHTML = html;
+                infoWindow.style.display = 'block';
+
+                const offset = 15;
+                const windowWidth = infoWindow.offsetWidth;
+                const windowHeight = infoWindow.offsetHeight;
+                const containerRect = container.getBoundingClientRect();
+
+                let left = e.clientX - containerRect.left + offset;
+                let top = e.clientY - containerRect.top + offset;
+
+                if (left + windowWidth > container.offsetWidth) {
+                    left = e.clientX - containerRect.left - windowWidth - offset;
+                }
+
+                if (top + windowHeight > container.offsetHeight) {
+                    top = e.clientY - containerRect.top - windowHeight - offset;
+                }
+
+                infoWindow.style.left = left + 'px';
+                infoWindow.style.top = top + 'px';
+            });
+
+            province.addEventListener('mousemove', (e) => {
+                const offset = 15;
+                const windowWidth = infoWindow.offsetWidth;
+                const windowHeight = infoWindow.offsetHeight;
+                const containerRect = container.getBoundingClientRect();
+
+                let left = e.clientX - containerRect.left + offset;
+                let top = e.clientY - containerRect.top + offset;
+
+                if (left + windowWidth > container.offsetWidth) {
+                    left = e.clientX - containerRect.left - windowWidth - offset;
+                }
+
+                if (top + windowHeight > container.offsetHeight) {
+                    top = e.clientY - containerRect.top - windowHeight - offset;
+                }
+
+                infoWindow.style.left = left + 'px';
+                infoWindow.style.top = top + 'px';
+            });
+
+            province.addEventListener('mouseleave', () => {
+                infoWindow.style.display = 'none';
+            });
+        });
+    </script> </body>
+</html>

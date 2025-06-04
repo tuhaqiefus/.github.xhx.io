@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <video id="video-bg" autoplay muted loop playsinline>
+        <source src="assets/videos/background.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay"></div>
+
+    <div class="container">
+        <header id="mainHeader">
+            <div class="logo">
+                <img src="assets/images/LOGO.png" alt="鑫华夏 xinova">
+            </div>
+            <nav>
+                <a href="#" class="nav-item" data-page="about-us">
+                    우리에 관해서
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/about-btn1.jpg')" data-subpage="about-us-main" onclick="window.location.href='https://xhxcg.com/about.php';">
+                                <span class="btn-text">about us</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/about-btn2.jpg')" data-subpage="expansion">
+                                <span class="btn-text">Expansion</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/about-btn3.jpg')" data-subpage="business-partners" onclick="window.location.href='./map_test7_5copy.html'"> <span class="btn-text">Business Partners</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/about-btn4.jpg')" data-subpage="dynamism">
+                                <span class="btn-text">Dynamism</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/about-btn5.jpg')" data-subpage="organization-chart">
+                                <span class="btn-text">Organization Chart</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="nav-item" data-page="business">
+                    사업
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn1.jpg')" data-subpage="business-detail1" onclick="document.getElementById('imageDialog').showModal()">
+                                <span class="btn-text"> </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn2.jpg')" data-subpage="business-detail2">
+                                <span class="btn-text"> </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn3.jpg')" data-subpage="business-detail3">
+                                <span class="btn-text"> </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn4.jpg')" data-subpage="business-detail4">
+                                <span class="btn-text"> </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn5.jpg')" data-subpage="business-detail5">
+                                <span class="btn-text">  </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn6.jpg')" data-subpage="business-detail6">
+                                <span class="btn-text"> </span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="nav-item" data-page="esg">
+                    ESG
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn1.jpg')" data-subpage="environmental-policy">
+                                <span class="btn-text">Environmental Policy</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn2.jpg')" data-subpage="social-responsibility">
+                                <span class="btn-text">Social Responsibility</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn3.jpg')" data-subpage="corporate-governance">
+                                <span class="btn-text">Corporate Governance </span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                <a href="pages/performance.html" class="nav-item" data-page="ir"> IR
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/ir-btn1.jpg')" data-subpage="financial" onclick="window.location.href='pages/performance.html#financial'">
+                                <span class="btn-text">Financial</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/ir-btn2.jpg')" data-subpage="shareholder" onclick="window.location.href='pages/performance.html#shareholder'">
+                                <span class="btn-text">Shareholder </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/ir-btn3.jpg')" data-subpage="investor" onclick="window.location.href='pages/performance.html#investor'">
+                                <span class="btn-text">Investor</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="nav-item" data-page="careers">
+                    CAREERS
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/career-btn1.jpg')" data-subpage="job-vacancies">
+                                <span class="btn-text">Job vacancies</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/career-btn2.jpg')" data-subpage="employee-development">
+                                <span class="btn-text">Employee Development</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/career-btn3.jpg')" data-subpage="welfare-treatment">
+                                <span class="btn-text">Welfare Treatment</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="nav-item" data-page="language">
+                    EN/KR
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/lang-en.jpg')" data-subpage="english">
+                                <span class="btn-text">English</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/lang-kr.jpg')" data-subpage="korean">
+                                <span class="btn-text">Korean</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+            </nav>
+        </header>
+
+        <main class="hero">
+            <a href="https://xhxcg.com" class="info-block block-1">
+                <h2></h2>
+                <p></p>
+            </a>
+            <a href="https://semi.xhxcg.com/index.php" class="info-block block-2">
+                <h2>SEMI</h2>
+                <p>.</p>
+            </a>
+            <a href="http://www.juya-tech.com" class="info-block block-3">
+                <h2>Global Office</h2>
+                <p>.</p>
+            </a>
+        </main>
+    </div>
+
+    <dialog id="imageDialog">
+        <img src="assets/images/22.jpg" alt="Popup Image" style="max-width: 80vw; max-height: 80vh;">
+        <button onclick="document.getElementById('imageDialog').close()" style="position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; padding: 5px 10px; border-radius: 50%; width: 30px; height: 30px; font-size: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: background 0.3s ease;">
+            X
+        </button>
+    </dialog>
+
+    <script src="script.js"></script>
+</body>
+</html>
