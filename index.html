@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            color: #ffffff;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        #video-bg {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1200px;
+            margin: 0 auto;
+            height: 100vh;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        header.nav-active {
+            background: rgba(192,192,192, 0.7);
+            backdrop-filter: blur(1px);
+            box-shadow: 0 1px 2px rgba(192,192,192,0.3);
+            border-bottom: 1px solid rgba(192,192,192,0.8);
+        }
+
+        .logo {
+            height: 50px;
+            transition: all 0.3s ease;
+            z-index: 101;
+        }
+
+        .logo img {
+            height: 100%;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+
+        header.nav-active .logo img {
+            filter: brightness(1.2);
+        }
+
+        nav {
+            display: flex;
+            position: relative;
+            z-index: 101;
+            margin-left: 100px;
+        }
+
+        nav > a {
+            color: white;
+            text-decoration: none;
+            margin-left: 120px;
+            font-size: 16px;
+            position: relative;
+            padding: 10px 0;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        header.nav-active nav > a {
+            color: #fff;
+            text-shadow: 0 0 5px rgba(192,192,192,0.5);
+        }
+
+        .dropdown-container {
+            position: fixed;
+            top: 80px;
+            left: 0;
+            right: 0;
+            width: 100vw;
+            padding: 2px 0;
+            background: rgba(192,192,192, 0.7);
+            backdrop-filter: blur(1px);
+            display: none;
+            z-index: 100;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.3);
+            border-top: 1px solid rgba(192,192,192,0.1);
+            border-bottom: 1px solid rgba(192,192,192,0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .dropdown-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            flex-wrap: wrap;
+            padding: 15px 20px;
+        }
+
+        .dropdown-btn {
+            position: relative;
+            width: 180px;
+            height: 120px;
+            margin: 0 15px 15px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 15px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .dropdown-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(192,192,192,0.4);
+            z-index: 0;
+            transition: all 0.3s;
+        }
+
+        .dropdown-btn:hover::before {
+            background: rgba(0,0,0,0.2);
+        }
+
+        .dropdown-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .btn-text {
+            position: relative;
+            z-index: 1;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .hero {
+            position: absolute;
+            bottom: 10%;
+            right: 5px;
+            width: calc(100% - 10px);
+            height: auto;
+            padding-bottom: 5px;
+        }
+
+        .info-block {
+            position: absolute;
+            width: 160px;
+            height: 160px;
+            border-radius: 8px;
+            background-size: cover;
+            background-position: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 15px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .info-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.3);
+            z-index: 0;
+        }
+
+        .info-block:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.3);
+        }
+
+        .info-block h2, .info-block p {
+            position: relative;
+            z-index: 1;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+        }
+
+        .info-block h2 {
+            font-size: 20px;
+            margin-bottom: 8px;
+            color: #fff;
+        }
+
+        .info-block p {
+            font-size: 14px;
+            margin-bottom: 0;
+        }
+
+        .block-3 {
+            bottom: 0;
+            right: 0;
+            background-image: url('assets/images/block3-bg.jpg');
+        }
+
+        .block-2 {
+            bottom: 0;
+            right: 160px;
+            background-image: url('assets/images/block2-bg.jpg');
+        }
+
+        .block-1 {
+            bottom: 160px;
+            right: 0;
+            background-image: url('assets/images/block1-bg.jpg');
+        }
+
+        dialog {
+            border: none;
+            padding: 0;
+            background: none;
+            max-width: 90vw;
+            max-height: 90vh;
+            overflow: hidden;
+            position: relative;
+        }
+
+        dialog::backdrop {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        dialog img {
+            display: block;
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        dialog button {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 0, 0, 0.8);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        dialog button:hover {
+            background: red;
+        }
+    </style>
+</head>
+<body>
+    <video id="video-bg" autoplay muted loop playsinline>
+        <source src="assets/videos/background.mp4" type="video/mp4">
+        您的浏览器不支持视频标签。
+    </video>
+
+    <div class="overlay"></div>
+
+    <div class="container">
+        <header id="mainHeader">
+            <div class="logo">
+                <img src="assets/images/LOGO.png" alt="鑫华夏 xinova">
+            </div>
+            <nav>
+                <a href="#" class="nav-item" data-page="about-us">
+                    우리에 관해서
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/about-btn1.jpg')" data-subpage="about-us-main" onclick="window.location.href='html2.html?target=https://xhxcg.com/about.php';">
+                                <span class="btn-text">about us</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/about-btn2.jpg')" data-subpage="expansion" onclick="window.location.href='html2.html?target=dynamism.html';">
+                                <span class="btn-text">Expansion</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/about-btn3.jpg')" data-subpage="business-partners" onclick="window.location.href='./map_test7_5copy.html'">
+                                <span class="btn-text">Business Partners</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/about-btn4.jpg')" data-subpage="dynamism" onclick="window.location.href='dynamism.html';">
+                                <span class="btn-text">Dynamism</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/about-btn5.jpg')" data-subpage="organization-chart" onclick="window.location.href='newmap.html';">
+                                <span class="btn-text">Organization Chart</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="nav-item" data-page="business">
+                    사업
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn1.jpg')" data-subpage="business-detail1" onclick="window.location.href='wordpress-export/home/index.html';">
+                                <span class="btn-text"> </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn2.jpg')" data-subpage="business-detail2" onclick="window.location.href='wordpress-export/about-2/index.html';">
+                                <span class="btn-text"> </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn3.jpg')" data-subpage="business-detail3" onclick="window.location.href='wordpress-export/offering/index.html';">
+                                <span class="btn-text"> </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn4.jpg')" data-subpage="business-detail4" onclick="window.location.href='wordpress-export/offering-2/index.html';">
+                                <span class="btn-text"> </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn5.jpg')" data-subpage="business-detail5" onclick="window.location.href='wordpress-export/about/index.html';">
+                                <span class="btn-text">  </span>
+                            </button>
+
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn6.jpg')" data-subpage="business-detail6" onclick="window.location.href='wordpress-export/about/index.html';">
+                                <span class="btn-text"> </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('')" data-subpage="business-detail7" onclick="window.location.href='wordpress-export/contact/index.html';">
+                                <span class="btn-text"> Cooperation Intentions</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="nav-item" data-page="esg">
+                    ESG
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn1.jpg')" data-subpage="environmental-policy">
+                                <span class="btn-text">Environmental Policy</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn2.jpg')" data-subpage="social-responsibility">
+                                <span class="btn-text">Social Responsibility</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn3.jpg')" data-subpage="corporate-governance">
+                                <span class="btn-text">Corporate Governance </span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                <a href="pages/performance.html" class="nav-item" data-page="ir"> IR
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/ir-btn1.jpg')" data-subpage="financial" onclick="window.location.href='pages/performance.html#financial'">
+                                <span class="btn-text">Financial</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/ir-btn2.jpg')" data-subpage="shareholder" onclick="window.location.href='pages/performance.html#shareholder'">
+                                <span class="btn-text">Shareholder </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/ir-btn3.jpg')" data-subpage="investor" onclick="window.location.href='pages/performance.html#investor'">
+                                <span class="btn-text">Investor</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="nav-item" data-page="careers">
+                    CAREERS
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/career-btn1.jpg')" data-subpage="job-vacancies">
+                                <span class="btn-text">Job vacancies</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/career-btn2.png')" data-subpage="employee-development">
+                                <span class="btn-text">Employee Development</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/career-btn3.jpg')" data-subpage="welfare-treatment">
+                                <span class="btn-text">Welfare Treatment</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+                <a href="#" class="nav-item" data-page="language">
+                    EN/KR
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/lang-en.jpg')" data-subpage="english">
+                                <span class="btn-text">English</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('assets/images/lang-kr.jpg')" data-subpage="korean">
+                                <span class="btn-text">Korean</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+            </nav>
+        </header>
+
+        <main class="hero">
+            <a href="https://xhxcg.com" class="info-block block-1">
+                <h2></h2>
+                <p></p>
+            </a>
+            <a href="https://semi.xhxcg.com/index.php" class="info-block block-2">
+                <h2>SEMI</h2>
+                <p>.</p>
+            </a>
+            <a href="http://www.juya-tech.com" class="info-block block-3">
+                <h2>Global Office</h2>
+                <p>.</p>
+            </a>
+        </main>
+    </div>
+
+    <dialog id="videoDialog" style="background: none; border: none; padding: 0; max-width: 100vw; max-height: 100vh; overflow: hidden;">
+        <video id="popupVideo" style="max-width: 100%; max-height: 100%; display: block; margin: auto;" controls autoplay playsinline>
+            <source src="assets/videos/photo_flow.mp4" type="video/mp4">
+            您的浏览器不支持视频标签。
+        </video>
+        <button onclick="document.getElementById('videoDialog').close();" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 0, 0, 0.8); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: background 0.3s ease;">
+            X
+        </button>
+    </dialog>
+
+    <dialog id="imageDialog">
+        <img src="assets/images/22.jpg" alt="Popup Image" style="max-width: 80vw; max-height: 80vh;">
+        <button onclick="document.getElementById('imageDialog').close()" style="position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; padding: 5px 10px; border-radius: 50%; width: 30px; height: 30px; font-size: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: background 0.3s ease;">
+            X
+        </button>
+    </dialog>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var video = document.getElementById('video-bg');
+
+            video.play().catch(function(error) {
+                console.log('error:', error);
+                video.controls = false;
+            });
+
+            if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+                video.setAttribute('playsinline', '');
+                video.setAttribute('muted', '');
+            }
+
+            document.querySelectorAll('.info-block').forEach(block => {
+                block.addEventListener('click', function(e) {
+                    const originalHref = this.getAttribute('href');
+                    if (originalHref) {
+                        window.location.href = originalHref;
+                    }
+                });
+            });
+
+            const mainHeader = document.getElementById('mainHeader');
+            const navItems = document.querySelectorAll('.nav-item');
+            const dropdownContainers = document.querySelectorAll('.dropdown-container');
+
+            let headerHideTimeout;
+            let currentActiveDropdown = null;
+            let dropdownShowTime = 0;
+            const minDisplayDuration = 500;
+
+            function showDropdown(dropdownElement) {
+                if (currentActiveDropdown && currentActiveDropdown !== dropdownElement) {
+                    currentActiveDropdown.style.opacity = '0';
+                    currentActiveDropdown.style.visibility = 'hidden';
+                    currentActiveDropdown.style.display = 'none';
+                }
+
+                const headerHeight = mainHeader.offsetHeight;
+                dropdownElement.style.top = `${headerHeight}px`;
+
+                dropdownElement.style.display = 'block';
+                setTimeout(() => {
+                    dropdownElement.style.opacity = '1';
+                    dropdownElement.style.visibility = 'visible';
+                }, 10);
+                currentActiveDropdown = dropdownElement;
+                dropdownShowTime = Date.now();
+            }
+
+            function hideAllDropdowns() {
+                mainHeader.classList.remove('nav-active');
+                if (currentActiveDropdown) {
+                    const timeSinceShow = Date.now() - dropdownShowTime;
+                    const remainingTime = minDisplayDuration - timeSinceShow;
+
+                    if (remainingTime > 0) {
+                        clearTimeout(headerHideTimeout);
+                        headerHideTimeout = setTimeout(() => {
+                            if (!isMouseOverHeaderAndDropdowns()) {
+                                hideAllDropdownsInternal();
+                            }
+                        }, remainingTime);
+                    } else {
+                        hideAllDropdownsInternal();
+                    }
+                }
+            }
+
+            function hideAllDropdownsInternal() {
+                if (currentActiveDropdown) {
+                    currentActiveDropdown.style.opacity = '0';
+                    currentActiveDropdown.style.visibility = 'hidden';
+                    setTimeout(() => {
+                        if (currentActiveDropdown) {
+                            currentActiveDropdown.style.display = 'none';
+                            currentActiveDropdown = null;
+                        }
+                    }, 300);
+                }
+            }
+
+            function isMouseOverHeaderAndDropdowns() {
+                if (mainHeader.matches(':hover')) {
+                    return true;
+                }
+                for (let i = 0; i < dropdownContainers.length; i++) {
+                    const d = dropdownContainers[i];
+                    if (d.matches(':hover') && d.style.display === 'block') {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            navItems.forEach(item => {
+                const dropdown = item.querySelector('.dropdown-container');
+
+                item.addEventListener('mouseenter', function() {
+                    clearTimeout(headerHideTimeout);
+                    mainHeader.classList.add('nav-active');
+                    showDropdown(dropdown);
+                });
+            });
+
+            dropdownContainers.forEach(dropdown => {
+                dropdown.addEventListener('mouseenter', function() {
+                    clearTimeout(headerHideTimeout);
+                    mainHeader.classList.add('nav-active');
+                });
+            });
+
+            mainHeader.addEventListener('mouseleave', function() {
+                headerHideTimeout = setTimeout(() => {
+                    if (!isMouseOverHeaderAndDropdowns()) {
+                        hideAllDropdowns();
+                    }
+                }, 100);
+            });
+
+            dropdownContainers.forEach(dropdown => {
+                dropdown.addEventListener('mouseleave', function() {
+                    headerHideTimeout = setTimeout(() => {
+                        if (!isMouseOverHeaderAndDropdowns()) {
+                            hideAllDropdowns();
+                        }
+                    }, 100);
+                });
+            });
+
+            mainHeader.addEventListener('mouseenter', function() {
+                clearTimeout(headerHideTimeout);
+            });
+
+            const employeeDevelopmentBtn = document.querySelector('.dropdown-btn[data-subpage="employee-development"]');
+
+            if (employeeDevelopmentBtn) {
+                employeeDevelopmentBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const videoDialog = document.getElementById('videoDialog');
+                    const popupVideo = document.getElementById('popupVideo');
+
+                    popupVideo.src = 'assets/videos/photo_flow.mp4';
+                    videoDialog.showModal();
+
+                    popupVideo.load();
+                    popupVideo.play().catch(error => {
+                        console.error("视频播放错误:", error);
+                        window.location.href = 'html5.html';
+                    });
+
+                    popupVideo.onended = function() {
+                        videoDialog.close();
+                        window.location.href = 'html5.html';
+                    };
+                });
+            }
+        });
+    </script>
+</body>
+</html>
