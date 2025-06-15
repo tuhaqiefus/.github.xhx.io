@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA_semi_equipment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #f4f4f4;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        header#mainHeader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            justify-content: space-between;
+            background: none;
+            box-shadow: none;
+            color: #fffdfd;
+        }
+
+        header#mainHeader.nav-active {
+            background: rgba(192, 192, 192, 0.7);
+            backdrop-filter: blur(1px);
+            box-shadow: 0 1px 2px rgba(192, 192, 192, 0.3);
+            border-bottom: 1px solid rgba(192, 192, 192, 0.8);
+            color: #ffffff;
+        }
+
+        header#mainHeader .logo {
+            height: 50px;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            margin-left: 20px;
+        }
+
+        header#mainHeader .logo img {
+            height: 100%;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+
+        header#mainHeader.nav-active .logo img {
+            filter: brightness(1.2);
+        }
+
+        header#mainHeader nav {
+            display: flex;
+            position: relative;
+            z-index: 1001;
+            margin-right: 10px;
+        }
+
+        header#mainHeader nav > a {
+            color: rgb(5, 3, 3);
+            text-decoration: none;
+            margin-left: 50px;
+            font-size: 16px;
+            position: relative;
+            padding: 10px 0;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        header#mainHeader.nav-active nav > a {
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(192, 192, 192, 0.5);
+        }
+
+        .dropdown-container {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            width: 100vw;
+            padding: 2px 0;
+            background: rgba(192, 192, 192, 0.7);
+            backdrop-filter: blur(1px);
+            display: none;
+            z-index: 999;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(192, 192, 192, 0.1);
+            border-bottom: 1px solid rgba(192, 192, 192, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .nav-item:hover .dropdown-container {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dropdown-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            padding: 15px 20px;
+            gap: 15px;
+        }
+
+        .dropdown-btn {
+            position: relative;
+            width: 150px;
+            height: 100px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 15px;
+            background-size: cover;
+            background-position: center;
+            flex-shrink: 0;
+            flex-grow: 0;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.8);
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .dropdown-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 0;
+            transition: all 0.3s;
+        }
+
+        .dropdown-btn:hover::before {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-text {
+            position: relative;
+            z-index: 1;
+        }
+
+        .nav-item[data-page="language"] .dropdown-container {
+            left: auto;
+            right: 0;
+            min-width: 180px;
+        }
+        .nav-item[data-page="language"] .dropdown-content {
+            justify-content: center;
+        }
+        .nav-item[data-page="language"] .dropdown-btn {
+            width: calc(50% - 5px);
+            height: 90px;
+        }
+
+        @media (max-width: 768px) {
+            header#mainHeader {
+                flex-direction: column;
+                padding: 10px;
+                align-items: flex-start;
+                position: static;
+            }
+
+            header#mainHeader .logo {
+                margin-bottom: 10px;
+                margin-left: 0;
+            }
+
+            header#mainHeader nav {
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            header#mainHeader nav > a {
+                margin: 5px 10px;
+                height: auto;
+                text-align: center;
+                flex-grow: 1;
+                font-size: 14px;
+                padding: 10px 5px;
+            }
+
+            .dropdown-container {
+                position: static;
+                width: 100%;
+                box-shadow: none;
+                border-radius: 0;
+                padding: 10px 0;
+                display: none;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                background: rgba(192, 192, 192, 0.95);
+            }
+
+            .nav-item.active .dropdown-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .dropdown-content {
+                flex-direction: column;
+                justify-content: center;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .dropdown-btn {
+                width: calc(80% - 20px);
+                max-width: 300px;
+                height: 70px;
+                font-size: 14px;
+            }
+
+            .nav-item[data-page="language"] .dropdown-btn {
+                width: calc(50% - 10px);
+                height: 60px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header id="mainHeader">
+        <div class="logo">
+            <a href="https://tuhaqiefus.github.io/.github.xhx.io/">
+                <img src="assets/images/LOGO.png" alt="鑫华夏 xinova">
+            </a>
+        </div>
+        <nav>
+            <a href="#" class="nav-item" data-page="about-us">
+                우리에 관해서
+                <div class="dropdown-container">
+                    <div class="dropdown-content">
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn1.jpg')" data-subpage="about-us-main" onclick="window.location.href='html6.html';">
+                            <span class="btn-text">about us</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn2.jpg')" data-subpage="expansion" onclick="window.location.href='html2.html?target=dynamism.html';">
+                            <span class="btn-text">Expansion</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn3.jpg')" data-subpage="business-partners" onclick="window.location.href='./map_test7_5copy.html'">
+                            <span class="btn-text">Business Partners</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn4.jpg')" data-subpage="dynamism" onclick="window.location.href='semi_photo.html';">
+                            <span class="btn-text">Dynamism</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn5.jpg')" data-subpage="organization-chart" onclick="window.location.href='newmap.html';">
+                            <span class="btn-text">Organization Chart</span>
+                        </button>
+                    </div>
+                </div>
+            </a>
+            <a href="#" class="nav-item" data-page="business">
+                사업
+                <div class="dropdown-container">
+                    <div class="dropdown-content">
+                        <button class="dropdown-btn" style="background-image: url('assets/images/business-btn1.jpg')" data-subpage="business-detail1" onclick="window.location.href='wordpress-export/home/index.html';">
+                            <span class="btn-text"> </span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/business-btn2.jpg')" data-subpage="business-detail2" onclick="window.location.href='wordpress-export/about-2/index.html';">
+                            <span class="btn-text"> </span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/business-btn3.jpg')" data-subpage="business-detail3" onclick="window.location.href='wordpress-export/offering/index.html';">
+                            <span class="btn-text"> </span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/business-btn4.jpg')" data-subpage="business-detail4" onclick="window.location.href='wordpress-export/offering-2/index.html';">
+                            <span class="btn-text"> </span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/business-btn5.jpg')" data-subpage="business-detail5" onclick="window.location.href='wordpress-export/about/index.html';">
+                            <span class="btn-text"> </span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/business-btn6.jpg')" data-subpage="business-detail6" onclick="window.location.href='wordpress-export/about/index.html';">
+                            <span class="btn-text"> </span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('')" data-subpage="business-detail7" onclick="window.location.href='wordpress-export/contact/index.html';">
+                            <span class="btn-text"> Cooperation Intentions</span>
+                        </button>
+                    </div>
+                </div>
+            </a>
+            <a href="#" class="nav-item" data-page="esg">
+                ESG
+                <div class="dropdown-container">
+                    <div class="dropdown-content">
+                        <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn1.jpg')" data-subpage="environmental-policy">
+                            <span class="btn-text">Environmental Policy</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn2.jpg')" data-subpage="social-responsibility">
+                            <span class="btn-text">Social Responsibility</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn3.jpg')" data-subpage="corporate-governance">
+                            <span class="btn-text">Corporate Governance </span>
+                        </button>
+                    </div>
+                </div>
+            </a>
+            <a href="#" class="nav-item" data-page="careers">
+                CAREERS
+                <div class="dropdown-container">
+                    <div class="dropdown-content">
+                        <button class="dropdown-btn" style="background-image: url('assets/images/career-btn1.jpg')" data-subpage="job-vacancies">
+                            <span class="btn-text">Job vacancies</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/career-btn2.png')" data-subpage="employee-development">
+                            <span class="btn-text">Employee Development</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/career-btn3.jpg')" data-subpage="welfare-treatment">
+                            <span class="btn-text">Welfare Treatment</span>
+                        </button>
+                    </div>
+                </div>
+            </a>
+        </nav>
+    </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainHeader = document.getElementById('mainHeader');
+            const navItems = document.querySelectorAll('.nav-item');
+            const dropdownContainers = document.querySelectorAll('.dropdown-container');
+
+            let headerHideTimeout;
+            let currentActiveDropdown = null;
+            let dropdownShowTime = 0;
+            const minDisplayDuration = 500;
+
+            function showDropdown(dropdownElement) {
+                if (currentActiveDropdown && currentActiveDropdown !== dropdownElement) {
+                    currentActiveDropdown.style.opacity = '0';
+                    currentActiveDropdown.style.visibility = 'hidden';
+                    currentActiveDropdown.style.display = 'none';
+                }
+
+                const headerHeight = mainHeader.offsetHeight;
+                dropdownElement.style.top = `${headerHeight}px`;
+
+                dropdownElement.style.display = 'block';
+                setTimeout(() => {
+                    dropdownElement.style.opacity = '1';
+                    dropdownElement.style.visibility = 'visible';
+                }, 10);
+                currentActiveDropdown = dropdownElement;
+                dropdownShowTime = Date.now();
+            }
+
+            function hideAllDropdowns() {
+                if (!isMouseOverHeaderAndDropdowns()) {
+                    mainHeader.classList.remove('nav-active');
+                }
+
+                if (currentActiveDropdown) {
+                    const timeSinceShow = Date.now() - dropdownShowTime;
+                    const remainingTime = minDisplayDuration - timeSinceShow;
+
+                    if (remainingTime > 0) {
+                        clearTimeout(headerHideTimeout);
+                        headerHideTimeout = setTimeout(() => {
+                            if (!isMouseOverHeaderAndDropdowns()) {
+                                hideAllDropdownsInternal();
+                            }
+                        }, remainingTime);
+                    } else {
+                        hideAllDropdownsInternal();
+                    }
+                }
+            }
+
+            function hideAllDropdownsInternal() {
+                if (currentActiveDropdown) {
+                    currentActiveDropdown.style.opacity = '0';
+                    currentActiveDropdown.style.visibility = 'hidden';
+                    setTimeout(() => {
+                        if (currentActiveDropdown) {
+                            currentActiveDropdown.style.display = 'none';
+                            currentActiveDropdown = null;
+                        }
+                    }, 300);
+                }
+            }
+
+            function isMouseOverHeaderAndDropdowns() {
+                if (mainHeader.matches(':hover')) {
+                    return true;
+                }
+                for (let i = 0; i < dropdownContainers.length; i++) {
+                    const d = dropdownContainers[i];
+                    if (d.matches(':hover') && d.style.display === 'block' && d.style.opacity === '1') {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            navItems.forEach(item => {
+                const dropdown = item.querySelector('.dropdown-container');
+
+                item.addEventListener('mouseenter', function() {
+                    clearTimeout(headerHideTimeout);
+                    mainHeader.classList.add('nav-active');
+                    if (dropdown) {
+                        showDropdown(dropdown);
+                    } else {
+                        hideAllDropdownsInternal();
+                    }
+                });
+
+                item.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768 && e.currentTarget.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+
+                    if (window.innerWidth <= 768) {
+                        const targetDropdown = this.querySelector('.dropdown-container');
+
+                        navItems.forEach(navItem => {
+                            if (navItem !== this && navItem.classList.contains('active')) {
+                                navItem.classList.remove('active');
+                            }
+                        });
+
+                        if (targetDropdown) {
+                            this.classList.toggle('active');
+                            if (this.classList.contains('active')) {
+                                mainHeader.classList.add('nav-active');
+                            } else {
+                                setTimeout(() => {
+                                    if (!document.querySelector('.nav-item.active')) {
+                                        mainHeader.classList.remove('nav-active');
+                                    }
+                                }, 300);
+                            }
+                        }
+                    }
+                });
+            });
+
+            mainHeader.addEventListener('mouseleave', function() {
+                headerHideTimeout = setTimeout(() => {
+                    if (!isMouseOverHeaderAndDropdowns()) {
+                        hideAllDropdowns();
+                    }
+                }, 100);
+            });
+
+            dropdownContainers.forEach(dropdown => {
+                dropdown.addEventListener('mouseleave', function() {
+                    headerHideTimeout = setTimeout(() => {
+                        if (!isMouseOverHeaderAndDropdowns()) {
+                            hideAllDropdowns();
+                        }
+                    }, 100);
+                });
+                dropdown.addEventListener('mouseenter', function() {
+                    clearTimeout(headerHideTimeout);
+                });
+            });
+
+            mainHeader.addEventListener('mouseenter', function() {
+                clearTimeout(headerHideTimeout);
+                mainHeader.classList.add('nav-active');
+            });
+
+            const adjustContentMargin = () => {
+                const headerHeight = mainHeader.offsetHeight;
+            };
+            adjustContentMargin();
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script>
+</body>
+
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>car2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .background-image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('assets/images/semi_equipment/background.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: scroll;
+            z-index: -1;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            padding-top: 10px;
+        }
+
+        .slide-block {
+            transform: translateY(10px);
+            opacity: 0;
+            transition: transform 0.8s ease-out, opacity 0.8s ease-out;
+        }
+
+        .slide-block.in-view {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .image-carousel {
+            cursor: grab;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+
+        .image-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .image-carousel img {
+            width: 300px;
+            height: 200px;
+            object-fit: cover;
+            margin-right: 16px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+
+        .image-carousel.active {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="background-image-container"></div>
+
+    <div class="content-wrapper">
+
+        <div class="h-screen bg-transparent"></div>
+
+<div class="slide-block bg-white bg-opacity-90 mx-auto my-16 p-10 max-w-3xl rounded-xl shadow-lg">
+    <h2 class="text-3xl font-bold text-gray-800 mb-4"></h2>
+    <p class="mt-4 text-md text-gray-600">
+        
+    </p>
+
+    <div class="mt-8 text-center"> <img src="assets/images/semi_equipment/overview.jpg" 
+             class="max-w-full h-auto rounded-lg shadow-md inline-block">
+        </div>
+</div>
+
+        
+
+<div class="slide-block bg-white text-gray-800 w-full py-48 text-center rounded-none shadow-xl full-cover">
+    <div class="max-w-6xl mx-auto px-6">
+        <div class="flex flex-col lg:flex-row items-center justify-center lg:space-x-12 space-y-8 lg:space-y-0">
+            <div class="lg:w-1/2 flex justify-center items-center p-2">
+                <img src="assets/images/semi_equipment/do.jpg" 
+                     class="rounded-lg shadow-lg h-auto object-cover max-w-xl"> </div>
+
+            <div class="lg:w-1/2 text-left">
+                <h2 class="text-4xl font-extrabold mb-2 lg:mb-6 text-center lg:text-left">
+                    公司秉承着质量第一、用户至上的原则，并致力于打造一个全国最专业、服务最全面、性价比最高的中国国产品牌。
+                </h2>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .diamond-indicator {
+            width: 10px;
+            height: 10px;
+            background-color: #d1d5db;
+            transform: rotate(45deg);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .diamond-indicator.active {
+            background-color: #4b5563;
+            transform: rotate(45deg) scale(1.2);
+        }
+
+        .image-carousel::-webkit-scrollbar {
+            display: none;
+        }
+        .image-carousel {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .image-carousel.is-dragging {
+            cursor: grabbing;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slide-block bg-white bg-opacity-90 mx-auto my-16 p-10 max-w-5xl rounded-xl shadow-lg">
+        <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center">主要产品</h2>
+
+        <div id="imageCarousel" class="image-carousel flex overflow-x-scroll snap-x snap-mandatory pb-4 -mx-2 md:-mx-4 lg:-mx-6 cursor-grab">
+            <div class="flex-shrink-0 mx-2 md:mx-4 lg:mx-6 snap-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
+                <img src="assets\images\semi_equipment/Dry.png" class="w-full h-auto rounded shadow">
+                <p class="text-sm text-gray-600 mt-2 text-center">50L/100L/200    </p>
+                <p class="text-sm text-gray-600 mt-2 text-center">LNH3、CL2、HCL、SiH4、BCL3   etc.</p>
+            </div>
+            <div class="flex-shrink-0 mx-2 md:mx-4 lg:mx-6 snap-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
+                <img src="assets\images\semi_equipment/Heat.png"  class="w-full h-auto rounded shadow">
+                <p class="text-sm text-gray-600 mt-2 text-center">500slm, 1000slm, 3500sl, 4000slm</p>
+                <p class="text-sm text-gray-600 mt-2 text-center">ALD,CVD(PE,MO,HDP,SA etc.) DIFF, LCD</p>
+            </div>
+            <div class="flex-shrink-0 mx-2 md:mx-4 lg:mx-6 snap-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
+                <img src="assets\images\semi_equipment/Burn.png" class="w-full h-auto rounded shadow">
+                <p class="text-sm text-gray-600 mt-2 text-center">500slm </p>
+                <p class="text-sm text-gray-600 mt-2 text-center"> CVD,DIFF PFCs Treatment</p>
+            </div>
+            <div class="flex-shrink-0 mx-2 md:mx-4 lg:mx-6 snap-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
+                <img src="assets\images\semi_equipment/Caralyst.png"  class="w-full h-auto rounded shadow">
+                <p class="text-sm text-gray-600 mt-2 text-center">700slm, 2000sml, 3000sml </p>
+                <p class="text-sm text-gray-600 mt-2 text-center"> ALD,CVD(PE,MO,HDP,SA etc.) DIFF, LCD</p>
+            </div>
+            <div class="flex-shrink-0 mx-2 md:mx-4 lg:mx-6 snap-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
+                <img src="assets\images\semi_equipment/Plasma.png"  class="w-full h-auto rounded shadow">
+                <p class="text-sm text-gray-600 mt-2 text-center">500slm</p>
+                <p class="text-sm text-gray-600 mt-2 text-center">CVD, Etch(Oxide, Poly), PFCs Treatment(CxFy>90%, SF6 >95%)</p>               
+            </div>
+            <div class="flex-shrink-0 mx-2 md:mx-4 lg:mx-6 snap-center w-full sm:w-1/2 md:w-1/3 lg:w-1/4 xl:w-1/5">
+                <img src="assets\images\semi_equipment/Wet.png"  class="w-full h-auto rounded shadow">
+                <p class="text-sm text-gray-600 mt-2 text-center">500slm, 1500slm</p>
+                <p class="text-sm text-gray-600 mt-2 text-center">Metal Etch/EPi Process </p>               
+            </div>
+
+        </div>
+
+        <div id="carouselIndicators" class="flex justify-center mt-6 space-x-3">
+            </div>
+    </div>
+
+    <script>
+        const carousel = document.getElementById('imageCarousel');
+        const indicatorsContainer = document.getElementById('carouselIndicators');
+        let scrollInterval;
+        const scrollSpeed = 3000;
+
+        const imageUrls = [
+            { src: "https://placehold.co/300x200/FF0000/FFFFFF?text=Image+1", alt: "精彩图片 1", description: "这是第一张图片的描述。" },
+            { src: "https://placehold.co/300x200/00FF00/FFFFFF?text=Image+2", alt: "精彩图片 2", description: "这是第二张图片的描述。" },
+            { src: "https://placehold.co/300x200/0000FF/FFFFFF?text=Image+3", alt: "精彩图片 3", description: "这是第三张图片的描述。" },
+            { src: "https://placehold.co/300x200/FFFF00/000000?text=Image+4", alt: "精彩图片 4", description: "这是第四张图片的描述。" },
+            { src: "https://placehold.co/300x200/FF00FF/FFFFFF?text=Image+5", alt: "精彩图片 5", description: "这是第五张图片的描述。" },
+            { src: "https://placehold.co/300x200/00FFFF/000000?text=Image+6", alt: "精彩图片 6", description: "这是第六张图片的描述。" },
+            { src: "https://placehold.co/300x200/800080/FFFFFF?text=Image+7", alt: "精彩图片 7", description: "这是第七张图片的描述。" },
+        ];
+
+        function scrollToImage(index) {
+            if (!carousel.children[index]) return;
+
+            const imageWidth = carousel.children[index].offsetWidth;
+            const currentScroll = carousel.scrollLeft;
+            const targetScroll = carousel.children[index].offsetLeft - carousel.children[0].offsetLeft;
+
+            carousel.scrollTo({
+                left: targetScroll,
+                behavior: 'smooth'
+            });
+
+            updateIndicators();
+        }
+
+        function createIndicators() {
+            indicatorsContainer.innerHTML = '';
+            for (let i = 0; i < carousel.children.length; i++) {
+                const indicator = document.createElement('div');
+                indicator.classList.add('diamond-indicator');
+                indicator.dataset.index = i;
+                indicator.addEventListener('click', () => {
+                    scrollToImage(i);
+                    resetAutoScroll();
+                });
+                indicatorsContainer.appendChild(indicator);
+            }
+            updateIndicators();
+        }
+
+        function updateIndicators() {
+            const indicators = Array.from(indicatorsContainer.children);
+            const scrollLeft = carousel.scrollLeft;
+            const carouselWidth = carousel.offsetWidth;
+            const scrollWidth = carousel.scrollWidth;
+
+            let activeIndex = 0;
+            if (carousel.children.length > 0) {
+                if (scrollLeft + carouselWidth >= scrollWidth - 5) {
+                    activeIndex = carousel.children.length - 1;
+                } else {
+                    for (let i = 0; i < carousel.children.length; i++) {
+                        const child = carousel.children[i];
+                        if (scrollLeft >= child.offsetLeft - carouselWidth / 2 && scrollLeft < child.offsetLeft + child.offsetWidth - carouselWidth / 2) {
+                            activeIndex = i;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            indicators.forEach((indicator, index) => {
+                if (index === activeIndex) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+
+        function startAutoScroll() {
+            stopAutoScroll();
+            scrollInterval = setInterval(() => {
+                const currentScroll = carousel.scrollLeft;
+                const scrollWidth = carousel.scrollWidth;
+                const carouselWidth = carousel.offsetWidth;
+
+                let nextScrollPosition = currentScroll + (carousel.children[0] ? carousel.children[0].offsetWidth : 0);
+
+                if (nextScrollPosition >= scrollWidth - carouselWidth) {
+                    nextScrollPosition = 0;
+                }
+                
+                carousel.scrollTo({
+                    left: nextScrollPosition,
+                    behavior: 'smooth'
+                });
+                updateIndicators();
+            }, scrollSpeed);
+        }
+
+        function stopAutoScroll() {
+            clearInterval(scrollInterval);
+        }
+
+        function resetAutoScroll() {
+            stopAutoScroll();
+            startAutoScroll();
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            Array.from(carousel.children).forEach(child => {
+                child.classList.add('snap-center');
+            });
+
+            createIndicators();
+            startAutoScroll();
+
+            let scrollTimeout;
+            carousel.addEventListener('scroll', () => {
+                updateIndicators();
+                stopAutoScroll();
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(startAutoScroll, 5000);
+            });
+
+            let isDragging = false;
+            let startX;
+            let scrollLeft;
+
+            carousel.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                carousel.classList.add('is-dragging');
+                startX = e.pageX - carousel.offsetLeft;
+                scrollLeft = carousel.scrollLeft;
+                stopAutoScroll();
+            });
+
+            carousel.addEventListener('mouseleave', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    carousel.classList.remove('is-dragging');
+                    startAutoScroll();
+                }
+            });
+
+            carousel.addEventListener('mouseup', () => {
+                if (isDragging) {
+                    isDragging = false;
+                    carousel.classList.remove('is-dragging');
+                    startAutoScroll();
+                }
+            });
+
+            carousel.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                e.preventDefault();
+                const x = e.pageX - carousel.offsetLeft;
+                const walk = (x - startX) * 2;
+                carousel.scrollLeft = scrollLeft - walk;
+            });
+
+            carousel.addEventListener('touchstart', (e) => {
+                isDown = true;
+                carousel.classList.add('active');
+                startX = e.touches[0].pageX - carousel.offsetLeft;
+                scrollLeft = carousel.scrollLeft;
+            }, { passive: true });
+
+            carousel.addEventListener('touchend', () => {
+                isDown = false;
+                carousel.classList.remove('active');
+            });
+
+            carousel.addEventListener('touchcancel', () => {
+                isDown = false;
+                carousel.classList.remove('active');
+            });
+
+            carousel.addEventListener('touchmove', (e) => {
+                if (!isDown) return;
+                e.preventDefault();
+                const x = e.touches[0].pageX - carousel.offsetLeft;
+                const walk = (x - startX) * 2;
+                carousel.scrollLeft = scrollLeft - walk;
+            }, { passive: false });
+
+            window.addEventListener('resize', () => {
+                updateIndicators();
+            });
+        });
+    </script>
+</body>
+
+
+
+
+
+
+
+
+
+
+
+<div class="slide-block bg-yellow-400 text-white w-full py-6 text-center rounded-none shadow-xl full-cover">
+    <div class="max-w-4xl mx-auto px-4">
+                <h2 class="text-2xl font-extrabold mb-12">上海市松江区华加路99号 联东U谷 华滨工业园 30幢</h2>
+                <p class="text-xl mb-16">
+                    电话：021-67670912          
+                    邮箱：sales@xhxsemi.com
+                </p>
+        <a href="https://tuhaqiefus.github.io/.github.xhx.io/wordpress-export/contact/index.html"
+           class="bg-white text-black font-bold py-4 px-8 rounded-full shadow-lg hover:bg-gray-200 transition duration-300 transform hover:scale-105 inline-block">
+            Bid now！
+        </a>
+    </div>
+</div>
+
+
+
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slideBlocks = document.querySelectorAll('.slide-block');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    } else {
+                    }
+                });
+            }, observerOptions);
+
+            slideBlocks.forEach(block => {
+                observer.observe(block);
+            });
+
+            const imageCarousel = document.querySelector('.image-carousel');
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            if (imageCarousel) {
+                imageCarousel.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    imageCarousel.classList.add('active');
+                    startX = e.pageX - imageCarousel.offsetLeft;
+                    scrollLeft = imageCarousel.scrollLeft;
+                });
+
+                imageCarousel.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    imageCarousel.classList.remove('active');
+                });
+
+                imageCarousel.addEventListener('mouseup', () => {
+                    isDown = false;
+                    imageCarousel.classList.remove('active');
+                });
+
+                imageCarousel.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - imageCarousel.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    imageCarousel.scrollLeft = scrollLeft - walk;
+                });
+
+                imageCarousel.addEventListener('touchstart', (e) => {
+                    isDown = true;
+                    imageCarousel.classList.add('active');
+                    startX = e.touches[0].pageX - imageCarousel.offsetLeft;
+                    scrollLeft = imageCarousel.scrollLeft;
+                }, { passive: true });
+
+                imageCarousel.addEventListener('touchend', () => {
+                    isDown = false;
+                    imageCarousel.classList.remove('active');
+                });
+
+                imageCarousel.addEventListener('touchcancel', () => {
+                    isDown = false;
+                    imageCarousel.classList.remove('active');
+                });
+
+                imageCarousel.addEventListener('touchmove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.touches[0].pageX - imageCarousel.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    imageCarousel.scrollLeft = scrollLeft - walk;
+                }, { passive: false });
+            }
+        });
+    </script>
+</body>
+</html>
