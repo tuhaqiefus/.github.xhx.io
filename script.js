@@ -1,14 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
     var video = document.getElementById('video-bg');
+    if (video) {
+        video.play().catch(function(error) {
+            video.controls = false;
+        });
 
-    video.play().catch(function(error) {
-        console.log('error:', error);
-        video.controls = false;
-    });
-
-    if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
-        video.setAttribute('playsinline', '');
-        video.setAttribute('muted', '');
+        if (/Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+            video.setAttribute('playsinline', '');
+            video.setAttribute('muted', '');
+        }
     }
 
     document.querySelectorAll('.info-block').forEach(block => {
@@ -23,6 +23,14 @@ document.addEventListener('DOMContentLoaded', function() {
     const mainHeader = document.getElementById('mainHeader');
     const navItems = document.querySelectorAll('.nav-item');
     const dropdownContainers = document.querySelectorAll('.dropdown-container');
+    const mainLogo = document.getElementById('main-logo');
+
+    const initialLogoSrc = 'assets/images/LOGO.svg';
+    const activeLogoSrc = 'assets/images/LOGOB.svg';
+
+    if (mainLogo) {
+        mainLogo.src = initialLogoSrc;
+    }
 
     let headerHideTimeout;
     let currentActiveDropdown = null;
@@ -46,10 +54,18 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 10);
         currentActiveDropdown = dropdownElement;
         dropdownShowTime = Date.now();
+        
+        if (mainLogo) {
+            mainLogo.src = activeLogoSrc;
+        }
     }
 
     function hideAllDropdowns() {
         mainHeader.classList.remove('nav-active');
+        if (mainLogo) {
+            mainLogo.src = initialLogoSrc;
+        }
+
         if (currentActiveDropdown) {
             const timeSinceShow = Date.now() - dropdownShowTime;
             const remainingTime = minDisplayDuration - timeSinceShow;
@@ -86,7 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         for (let i = 0; i < dropdownContainers.length; i++) {
             const d = dropdownContainers[i];
-            if (d.matches(':hover') && d.style.display === 'block') {
+            if (d.matches(':hover') && d.style.display === 'block' && d.style.opacity === '1') {
                 return true;
             }
         }
@@ -99,7 +115,9 @@ document.addEventListener('DOMContentLoaded', function() {
         item.addEventListener('mouseenter', function() {
             clearTimeout(headerHideTimeout);
             mainHeader.classList.add('nav-active');
-            showDropdown(dropdown);
+            if (dropdown) {
+                showDropdown(dropdown);
+            }
         });
     });
 
@@ -146,7 +164,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             popupVideo.load();
             popupVideo.play().catch(error => {
-                console.error("time out:", error);
                 window.location.href = 'html5.html';
             });
 
