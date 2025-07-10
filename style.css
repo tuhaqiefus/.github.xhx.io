@@ -1,0 +1,601 @@
+/* 通用盒模型重置 - Universal Box Model Reset */
+* {
+    /* 将所有元素的 margin（外边距）设置为 0 */
+    margin: 0;
+    /* 将所有元素的 padding（内边距）设置为 0 */
+    padding: 0;
+    /* 设置盒模型为 border-box，这意味着元素的宽度和高度将包含内边距和边框，更易于布局 */
+    box-sizing: border-box;
+}
+
+/* 页面主体样式 - Page Body Styles */
+body {
+    /* 设置字体为 'Microsoft YaHei'（微软雅黑），如果不可用则使用无衬线字体 */
+    font-family: 'Microsoft YaHei', sans-serif;
+    /* 设置文本颜色为白色 */
+    color: #ffffff;
+    /* 隐藏水平方向的滚动条，防止内容溢出时出现横向滚动 */
+    overflow-x: hidden;
+    /* 设置行高为字体的 1.6 倍，增加可读性 */
+    line-height: 1.6;
+}
+
+/* 背景视频样式 - Background Video Styles */
+#video-bg {
+    /* 固定定位，相对于视口定位 */
+    position: fixed;
+    /* 距离顶部 50% */
+    top: 50%;
+    /* 距离左侧 50% */
+    left: 50%;
+    /* 使用 transform 将元素中心点与 top/left 的 50% 对齐，实现居中 */
+    transform: translate(-50%, -50%);
+    /* 最小宽度为视口的 100% */
+    min-width: 100%;
+    /* 最小高度为视口的 100% */
+    min-height: 100%;
+    /* 宽度自动，确保视频比例正确 */
+    width: auto;
+    /* 高度自动，确保视频比例正确 */
+    height: auto;
+    /* 设置 z-index 为 -1，使其位于所有内容的下方 */
+    z-index: -1;
+    /* 视频内容填充整个容器，可能会裁剪部分内容以保持比例 */
+    object-fit: cover;
+}
+
+/* 背景视频叠加层 - Background Video Overlay */
+.overlay {
+    /* 固定定位 */
+    position: fixed;
+    /* 距离顶部 0 */
+    top: 0;
+    /* 距离左侧 0 */
+    left: 0;
+    /* 宽度为 100% */
+    width: 100%;
+    /* 高度为 100% */
+    height: 100%;
+    /* 背景颜色为黑色，透明度为 0.4 */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* 设置 z-index 为 0，位于视频上方，内容下方 */
+    z-index: 0;
+}
+
+/* 主内容容器 - Main Content Container */
+.container {
+    /* 相对定位，以便子元素可以相对于它进行定位 */
+    position: relative;
+    /* 设置 z-index 为 1，确保它位于视频和叠加层之上 */
+    z-index: 1;
+    /* 最大宽度为 1200px */
+    max-width: 1200px;
+    /* 水平居中 */
+    margin: 0 auto;
+    /* 高度为视口高度的 100%，确保内容区域占据整个屏幕高度 */
+    height: 100vh;
+}
+
+/* 头部样式 - Header Styles */
+header {
+    /* 固定定位，使其始终保持在视口顶部 */
+    position: fixed;
+    /* 距离顶部 0 */
+    top: 0;
+    /* 距离左侧 0 */
+    left: 0;
+    /* 距离右侧 0 */
+    right: 0;
+    /* 宽度为 100% */
+    width: 100%;
+    /* 内边距为 20px */
+    padding: 20px;
+    /* 使用 Flexbox 布局 */
+    display: flex;
+    /* 垂直居中对齐子项 */
+    align-items: center;
+    /* 设置 z-index 为 1000，确保头部始终在最顶层 */
+    z-index: 1000;
+    /* 所有属性的过渡效果，持续 0.3 秒，缓和效果 */
+    transition: all 0.3s ease;
+}
+
+/* 头部激活状态（例如滚动时） - Header Active State (e.g., when scrolling) */
+header.nav-active {
+    /* 背景颜色为带有 0.7 透明度的银色（浅灰色）*/
+    background: rgba(192, 192, 192, 0.7);
+    /* 背景模糊效果，模糊度为 1px */
+    backdrop-filter: blur(1px);
+    /* 盒阴影 */
+    box-shadow: 0 1px 2px rgba(192, 192, 192, 0.3);
+    /* 底部边框 */
+    border-bottom: 1px solid rgba(192, 192, 192, 0.8);
+}
+
+/* Logo样式 - Logo Styles */
+.logo {
+    /* 高度为 52px */
+    height: 52px;
+    /* 所有属性的过渡效果 */
+    transition: all 0.3s ease;
+    /* z-index 为 101，确保 Logo 位于导航之上 */
+    z-index: 101;
+}
+
+.logo img {
+    /* 高度为 100% (相对于其父元素 .logo) */
+    height: 100%;
+    /* 宽度自动，保持图片比例 */
+    width: auto;
+    /* 所有属性的过渡效果 */
+    transition: all 0.3s ease;
+}
+
+/* 头部激活时Logo图片调整 - Adjustments to Logo Image when Header is Active */
+header.nav-active .logo img {
+    /* 滤镜效果：增加亮度 1.2 倍 */
+    filter: brightness(1.2);
+}
+
+/* 导航菜单样式 - Navigation Menu Styles */
+nav {
+    /* 使用 Flexbox 布局 */
+    display: flex;
+    /* 相对定位 */
+    position: relative;
+    /* z-index 为 101，确保导航位于头部之下，但高于其他内容 */
+    z-index: 101;
+    /* 左外边距为 100px */
+    margin-left: 100px;
+}
+
+/* 单个导航链接样式 - Individual Navigation Link Styles */
+nav > a {
+    /* 文本颜色为白色 */
+    color: white;
+    /* 移除文本下划线 */
+    text-decoration: none;
+    /* 左外边距为 120px */
+    margin-left: 188px;
+    /* 字体大小为 16px */
+    font-size: 18px;
+    /* 相对定位 */
+    position: relative;
+    /* 上下内边距为 10px，左右为 0 */
+    padding: 5px 0;
+    /* 高度为 40px */
+    height: 10px;
+    /* 使用 Flexbox 布局 */
+    display: flex;
+    /* 垂直居中对齐子项 */
+    align-items: center;
+    /* 所有属性的过渡效果 */
+    transition: all 0.3s ease;
+}
+
+/* 头部激活时导航链接颜色 - Navigation Link Color when Header is Active */
+header.nav-active nav > a {
+    /* 文本颜色为白色 */
+    color: #fff;
+    /* 文本阴影效果 */
+    text-shadow: 0 0 5px rgba(192, 192, 192, 0.5);
+}
+
+/* 下拉容器样式 - Dropdown Container Styles */
+.dropdown-container {
+    /* 固定定位 */
+    position: fixed;
+    /* 距离顶部 80px */
+    top: 40px;
+    /* 距离左侧 0 */
+    left: 0;
+    /* 距离右侧 0 */
+    right: 0;
+    /* 宽度为视口宽度的 100% */
+    width: 100vw;
+    /* 上下内边距 2px，左右 0 */
+    padding: 2px 0;
+    /* 背景颜色为带有 0.7 透明度的银色（浅灰色），这是下拉弹窗的背景色 */
+    background: rgba(192, 192, 192, 0.7);
+    /* 背景模糊效果，模糊度为 1px */
+    backdrop-filter: blur(1px);
+    /* 默认隐藏 */
+    display: none;
+    /* z-index 为 100，使其位于头部之下 */
+    z-index: 100;
+    /* 盒阴影 */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+    /* 顶部边框 */
+    border-top: 1px solid rgba(192, 192, 192, 0.1);
+    /* 底部边框 */
+    border-bottom: 1px solid rgba(192, 192, 192, 0.1);
+    /* 初始透明度为 0 */
+    opacity: 0;
+    /* 初始不可见 */
+    visibility: hidden;
+    /* 透明度和可见性的过渡效果 */
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* 下拉内容对齐 - Dropdown Content Alignment */
+.dropdown-content {
+    /* 最大宽度为 1600px */
+    max-width: 1600px;
+    /* 水平居中 */
+    margin: 0 auto;
+    /* 使用 Flexbox 布局 */
+    display: flex;
+    /* 左对齐子项 */
+    /* justify-content: flex-start;*/
+    /* 允许子项换行 */
+    flex-wrap: wrap;
+    /* 内边距 */
+    padding: 15px 20px;
+}
+
+/* --- 下拉弹窗特定对齐样式 --- */
+
+/* 公司介绍 (about-us) 的下拉弹窗按钮左对齐 */
+.nav-item[data-page="about-us"] .dropdown-content {
+    justify-content: flex-start;
+}
+
+/* 工程业绩 (ir) 的下拉弹窗按钮居中对齐 */
+.nav-item[data-page="ir"] .dropdown-content {
+    justify-content: center;
+}
+
+/* E·S·G (esg) 的下拉弹窗按钮居中对齐 */
+.nav-item[data-page="esg"] .dropdown-content {
+    justify-content: center;
+}
+
+/* 人力资源 (careers) 的下拉弹窗按钮右对齐 */
+.nav-item[data-page="careers"] .dropdown-content {
+    justify-content: flex-end;
+}
+
+/* EN/KR (language) 的下拉弹窗按钮右对齐 */
+.nav-item[data-page="language"] .dropdown-content {
+    justify-content: flex-end;
+}
+
+
+/* --- 下拉按钮样式修改开始 --- - --- Dropdown Button Styles Start --- */
+.dropdown-btn {
+    /* 相对定位 */
+    position: relative;
+    /* 宽度 180px 高度120 */
+    width: 120px;
+    /* 120px，80 */
+    height: 80px;
+    /* 右外边距 5px，底部外边距 5px */
+    margin: 0 5px 5px 0;
+    /* 边框圆角 4px */
+    border-radius: 4px;
+    /* 鼠标指针变为手型 */
+    cursor: pointer;
+    /* 所有属性的过渡效果 */
+    transition: all 0.3s;
+    /* 隐藏超出容器的内容 */
+    overflow: hidden;
+    /* 确保没有边框 */
+    border: none;
+    /* 使用 Flexbox 布局 */
+    display: flex;
+    /* 垂直方向子项排列 */
+    flex-direction: column;
+    /* 垂直方向底部对齐子项 */
+    justify-content: flex-end;
+    /* 内边距 15px */
+    padding: 15px;
+    /* 背景图片覆盖整个容器 */
+    background-size: cover;
+    /* 背景图片居中 */
+    background-position: center;
+    /* 新增：与下拉弹窗背景色一致 */
+    /* *************背景颜色为带有 0.7 透明度的银色（浅灰色），和 .dropdown-container 一致 ************/
+
+
+
+    background-color: rgba(192, 192, 192, 0);
+
+
+
+}
+
+/* Dropdown button overlay (for darkening effect) - 下拉按钮叠加层（用于变暗效果） */
+.dropdown-btn::before {
+    /* 伪元素内容为空 */
+    content: '';
+    /* 绝对定位 */
+    position: absolute;
+    /* 顶部 0 */
+    top: 0;
+    /* 左侧 0 */
+    left: 0;
+    /* 右侧 0 */
+    right: 0;
+    /* 底部 0 */
+    bottom: 0;
+    /* 默认透明，让按钮背景图片或纯色背景直接显示 */
+    background: transparent;
+    /* z-index 为 0 */
+    z-index: 0;
+    /* 所有属性的过渡效果 */
+    transition: all 0.3s;
+}
+
+/* Dropdown button overlay on hover - 下拉按钮悬停时的叠加层 */
+.dropdown-btn:hover::before {
+    /* 悬停时背景变为带有 0.2 透明度的黑色，保持变暗效果 */
+    background: rgba(0, 0, 0, 0.2);
+}
+/* --- 下拉按钮样式修改结束 --- - --- Dropdown Button Styles End --- */
+
+/* Dropdown button hover effect - 下拉按钮悬停效果 */
+.dropdown-btn:hover {
+    /* 垂直向上移动 5px */
+    transform: translateY(-5px);
+    /* 盒阴影效果 */
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* Text inside dropdown buttons - 下拉按钮内部文本 */
+.btn-text {
+    /* 相对定位 */
+    position: relative;
+    /* z-index 为 1，确保文本位于叠加层之上 */
+    z-index: 1;
+    /* 文本颜色为白色 */
+    color: white;
+    /* 文本阴影效果 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+    /* 字体大小 16px *************/
+    font-size: 20px;
+    /* 字体加粗 */
+    font-weight: bold;
+}
+
+
+/* --- 下拉按钮样式修改 --- - --- Dropdown Button Styles Start --- */
+.dropdown-btn {
+    /* ... (existing styles) ... */
+    /* 使用 Flexbox 布局 */
+    display: flex;
+    /* 垂直方向子项排列 */
+    flex-direction: column;
+    /* 垂直方向居中对齐子项 */
+    justify-content: center; /* Changed from flex-end to center */
+    /* 水平方向居中对齐子项 */
+    align-items: center; /* Added for horizontal centering */
+    /* 内边距 15px */
+    padding: 15px;
+    /* ... (existing styles) ... */
+}
+
+/* Text inside dropdown buttons - 下拉按钮内部文本 */
+.btn-text {
+    /* ... (existing styles) ... */
+    /* Remove padding and margin if they interfere with centering by parent */
+    padding: 0; /* Ensures the parent's centering works without interference from text's own padding */
+    margin: 0; /* Ensures the parent's centering works without interference from text's own margin */
+}
+
+/* --- 下拉按钮样式修改 --- - --- Dropdown Button Styles Start --- */
+
+
+
+
+
+/* Hero section styles - 英雄区域样式 */
+.hero {
+    /* 绝对定位 */
+    position: absolute;
+    /* 距离底部 10% */
+    bottom: 10%;
+    /* 距离右侧 5px */
+    right: 5px;
+    /* 宽度为 100% 减去 10px */
+    width: calc(100% - 10px);
+    /* 高度自动 */
+    height: auto;
+    /* 底部内边距 5px */
+    padding-bottom: 5px;
+}
+
+/* Info block styles (common to all info blocks) - 信息块样式（所有信息块通用） */
+.info-block {
+    /* 绝对定位 */
+    position: absolute;
+    /* 宽度 160px */
+    width: 160px;
+    /* 高度 160px */
+    height: 160px;
+    /* 边框圆角 8px */
+    border-radius: 8px;
+    /* 背景图片覆盖整个容器 */
+    background-size: cover;
+    /* 背景图片居中 */
+    background-position: center;
+    /* 鼠标指针变为手型 */
+    cursor: pointer;
+    /* 所有属性的过渡效果 */
+    transition: all 0.3s ease;
+    /* 隐藏超出容器的内容 */
+    overflow: hidden;
+    /* 使用 Flexbox 布局 */
+    display: flex;
+    /* 垂直方向子项排列 */
+    flex-direction: column;
+    /* 垂直方向底部对齐子项 */
+    justify-content: flex-end;
+    /* 内边距 15px */
+    padding: 15px;
+    /* 盒阴影效果 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Info block overlay - 信息块叠加层 */
+.info-block::before {
+    /* 伪元素内容为空 */
+    content: '';
+    /* 绝对定位 */
+    position: absolute;
+    /* 顶部 0 */
+    top: 0;
+    /* 左侧 0 */
+    left: 0;
+    /* 右侧 0 */
+    right: 0;
+    /* 底部 0 */
+    bottom: 0;
+    /* 背景颜色为带有 0.3 透明度的黑色 */
+    background: rgba(0, 0, 0, 0.3);
+    /* z-index 为 0 */
+    z-index: 0;
+}
+
+/* Info block hover effects - 信息块悬停效果 */
+.info-block:hover {
+    /* 垂直向上移动 5px 并放大 1.05 倍 */
+    transform: translateY(-5px) scale(1.05);
+    /* 盒阴影效果 */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+/* Text inside info blocks - 信息块内部文本 */
+.info-block h2,
+.info-block p {
+    /* 相对定位 */
+    position: relative;
+    /* z-index 为 1，确保文本位于叠加层之上 */
+    z-index: 1;
+    /* 文本阴影效果 */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+/* Info block heading (h2) styles - 信息块标题 (h2) 样式 */
+.info-block h2 {
+    /* 字体大小 20px */
+    font-size: 20px;
+    /* 底部外边距 8px */
+    margin-bottom: 8px;
+    /* 文本颜色为白色 */
+    color: #fff;
+}
+
+/* Info block paragraph (p) styles - 信息块段落 (p) 样式 */
+.info-block p {
+    /* 字体大小 14px */
+    font-size: 14px;
+    /* 底部外边距 0 */
+    margin-bottom: 0;
+}
+
+/* Specific positioning and background images for individual info blocks - 单个信息块的特定定位和背景图片 */
+.block-3 {
+    /* 距离底部 0 */
+    bottom: 0;
+    /* 距离右侧 0 */
+    right: 0;
+    /* 背景图片 */
+    background-image: url('cn/assets/images/block3-bg.jpg');
+}
+
+.block-2 {
+    /* 距离底部 0 */
+    bottom: 0;
+    /* 距离右侧 160px */
+    right: 160px;
+    /* 背景图片 */
+    background-image: url('cn/assets/images/block2-bg.jpg');
+}
+
+.block-1 {
+    /* 距离底部 160px */
+    bottom: 160px;
+    /* 距离右侧 0 */
+    right: 0;
+    /* 背景图片 */
+    background-image: url('cn/assets/images/block1-bg.jpg');
+}
+
+/* Dialog (modal) styles - 对话框（模态框）样式 */
+dialog {
+    /* 移除边框 */
+    border: none;
+    /* 移除内边距 */
+    padding: 0;
+    /* 移除背景 */
+    background: none;
+    /* 最大宽度为视口宽度的 90% */
+    max-width: 90vw;
+    /* 最大高度为视口高度的 90% */
+    max-height: 90vh;
+    /* 隐藏超出容器的内容 */
+    overflow: hidden;
+    /* 相对定位 */
+    position: relative;
+}
+
+/* Dialog backdrop (the dimmed area behind the dialog) - 对话框背景（对话框后面的变暗区域） */
+dialog::backdrop {
+    /* 背景颜色为带有 0.7 透明度的黑色 */
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* Image within the dialog - 对话框内的图片 */
+dialog img {
+    /* 将图片设置为块级元素 */
+    display: block;
+    /* 最大宽度为 100% */
+    max-width: 100%;
+    /* 最大高度为 100% */
+    max-height: 100%;
+    /* 图片内容适应容器，保持比例 */
+    object-fit: contain;
+}
+
+/* Close button for the dialog - 对话框的关闭按钮 */
+dialog button {
+    /* 绝对定位 */
+    position: absolute;
+    /* 距离顶部 15px */
+    top: 15px;
+    /* 距离右侧 15px */
+    right: 15px;
+    /* 背景透明 */
+    background: transparent;
+    /* 文本颜色为白色 */
+    color: white;
+    /* 移除边框 */
+    border: none;
+    /* 边框圆角 50%，使其成为圆形 */
+    border-radius: 50%;
+    /* 宽度 30px */
+    width: 30px;
+    /* 高度 30px */
+    height: 30px;
+    /* 字体大小 18px */
+    font-size: 18px;
+    /* 鼠标指针变为手型 */
+    cursor: pointer;
+    /* 使用 Flexbox 布局 */
+    display: flex;
+    /* 水平居中对齐 */
+    justify-content: center;
+    /* 垂直居中对齐 */
+    align-items: center;
+    /* 背景颜色过渡效果 */
+    transition: background 0.3s ease;
+}
+
+/* 重新定义 .dropdown-btn 以确保样式一致性 - Redefine .dropdown-btn to ensure style consistency */
+
+
+/* Close button hover effect - 关闭按钮悬停效果 */
+dialog button:hover {
+    /* 悬停时背景变为红色 */
+    background: red;
+}

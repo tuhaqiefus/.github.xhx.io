@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA - 社会责任</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        /* ==================================== */
+        /* === 此页面特有的内容样式 === */
+        /* ==================================== */
+
+        /* body 基础样式，如果 hf.css 也有定义，此处的定义可能会覆盖 */
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #f4f4f4; /* 页面背景色 */
+            /* min-height, display, flex-direction, overflow-x 已在 hf.css 定义 */
+        }
+
+        /* 占位内容区域，用于保持页脚在底部，并模拟原页面的头部间距 */
+        .placeholder-content {
+            /* min-height 和 margin-top 将由 JS 动态设置 */
+            flex-grow: 1; /* 填充可用空间 */
+            background-color: #f4f4f4; /* 保持与原页面背景色一致 */
+            display: flex;
+            flex-direction: column;
+            /* 新增：限制最大宽度并居中 */
+            max-width: 1200px; /* 设置你想要的居中内容的固定最大宽度 */
+            margin-left: auto; /* 自动左右外边距实现居中 */
+            margin-right: auto;
+            padding: 0 20px; /* 左右内边距，确保内容不贴边，特别是小屏幕下 */
+        }
+
+        /* 新增内容块样式 */
+        .content-block {
+            display: flex;
+            min-height: 33.33vh; /* 每个块占据视口高度的三分之一 */
+            width: 100%; /* 宽度现在相对于父容器（placeholder-content） */
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden; /* 防止内容溢出 */
+            flex-grow: 1; /* 让块尽可能占据空间 */
+            transition: min-height 0.3s ease; /* 添加高度变化的过渡效果 */
+        }
+
+        .content-block:last-child {
+            margin-bottom: 0; /* 最后一个块不需要底部外边距 */
+        }
+
+        .content-left {
+            flex: 0 0 60%; /* 左侧占据60% */
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .content-right {
+            flex: 0 0 40%; /* 右侧占据40% */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #eee;
+            overflow: hidden;
+        }
+
+        .content-right img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 确保图片覆盖整个区域 */
+        }
+
+        .content-block h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .content-block p {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .expand-button {
+            padding: 12px 25px;
+            background-color: #6c757d; /* 按钮颜色改为灰色 */
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .expand-button:hover {
+            background-color: #5a6268; /* 悬停时颜色变深 */
+            transform: translateY(-2px);
+        }
+
+        .expanded-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-out, padding 0.7s ease-out;
+            background-color: #f9f9f9;
+            padding: 0 40px; /* 初始时没有padding */
+            display: flex;
+            flex-wrap: wrap; /* 允许内容换行 */
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #eee; /* 添加分隔线 */
+            margin-top: 20px; /* 与上方内容间隔 */
+            width: 100%; /* 确保展开内容也占据100%宽度 */
+        }
+
+        .expanded-content.show {
+            max-height: 500px; /* 足够大以显示内容，根据实际内容调整 */
+            padding: 20px 40px; /* 展开后的padding */
+        }
+
+        .expanded-content .expanded-text {
+            flex: 1; /* 占据可用空间 */
+            min-width: 300px; /* 最小宽度，防止过窄 */
+            padding-right: 20px;
+        }
+
+        .expanded-content .expanded-image {
+            flex: 1; /* 占据可用空间 */
+            min-width: 300px; /* 最小宽度，防止过窄 */
+            text-align: center;
+        }
+
+        .expanded-content .expanded-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* 移动端响应式调整 */
+        @media (max-width: 768px) {
+            /* 移动端占位内容区域调整 */
+            .placeholder-content {
+                margin-top: 0; /* 在小屏幕上取消头部间距 */
+                min-height: auto;
+                max-width: 100%; /* 移动端占满宽度 */
+                padding: 0 10px; /* 移动端较小左右边距 */
+            }
+
+            /* 针对新的内容块进行移动端调整 */
+            .content-block {
+                flex-direction: column; /* 垂直堆叠 */
+                min-height: auto; /* 自动高度 */
+            }
+
+            .content-left, .content-right {
+                flex: none; /* 取消flex缩放 */
+                width: 100%; /* 占据全部宽度 */
+                padding: 20px;
+            }
+
+            .content-right {
+                order: -1; /* 图片在移动端显示在上方 */
+                height: 250px; /* 给图片一个固定高度 */
+            }
+
+            .content-block h2 {
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+
+            .content-block p {
+                font-size: 1em;
+                margin-bottom: 20px;
+            }
+
+            .expanded-content.show {
+                padding: 15px 20px; /* 移动端展开后的padding */
+                flex-direction: column; /* 展开内容垂直堆叠 */
+            }
+
+            .expanded-content .expanded-text,
+            .expanded-content .expanded-image {
+                padding: 10px 0; /* 调整内边距 */
+                min-width: auto; /* 取消最小宽度限制 */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+    <div class="placeholder-content">
+        <div class="content-block">
+            <div class="content-left">
+                <h2>社会责任与公平</h2>
+                <h2>（Social Responsibility & Fairness）</h2>
+                <p>我们积极承担社会责任，确保就业公平和机会均等。</p>
+                <button class="expand-button">↓</button>
+                <div class="expanded-content">
+                    <div class="expanded-text">
+                        <h3>就业与公平实践</h3>
+                        <p>我们提供平等的就业机会，不分种族、性别、宗教、国籍、年龄。公司由5国公民组成，其中女性员工占比30%许。</p>
+                    </div>
+                    <div class="expanded-image">
+                        <img src="assets/images/S/s011.jpg" alt="就业与公平实践">
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <img src="assets/images/S/s01.jpg" alt="Employment & Fairness">
+            </div>
+        </div>
+
+        <div class="content-block">
+            <div class="content-left">
+                <h2>职业健康与安全 </h2>
+                <h2>(Occupational Health & Safety)</h2>
+                <p>通过实施国际公认的ISO 45001标准，我们优先保障员工的健康、安全和福祉。</p>
+                <button class="expand-button">↓</button>
+                <div class="expanded-content">
+                    <div class="expanded-text">
+                        <h3>ISO 45001认证</h3>
+                        <p>我们严格遵守ISO 45001职业健康安全管理体系标准，投入大量资源进行安全培训，提高员工的安全意识和应急处理能力；健全事故报告调查机制，确保为所有员工提供一个安全健康的工作场所。</p>
+                    </div>
+                    <div class="expanded-image">
+                        <img src="assets/images/S/s022.jpg" alt="职业健康与安全">
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <img src="assets/images/S/s02.jpg">
+            </div>
+        </div>
+
+        <div class="content-block">
+            <div class="content-left">
+                <h2>慈善事业与社区参与 </h2>
+                <h2> (Philanthropy & Community Engagement)</h2>
+                <p>我们坚信回馈社会的重要性，积极参与并支持各种慈善活动，为社区发展贡献力量。</p>
+                <button class="expand-button">↓</button>
+                <div class="expanded-content">
+                    <div class="expanded-text">
+                        <h3>社区贡献</h3>
+                        <p>作为企业公民，我们积极投身于慈善事业和社区建设。我们通过捐款、物资援助和员工志愿服务等多种形式，支持教育、环境保护、扶贫济困等领域的公益项目。</p>
+                    </div>
+                    <div class="expanded-image">
+                        <img src="assets/images/S/s033.jpg" alt="慈善事业">
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <img src="assets/images/S/s03.jpg" alt="Philanthropy">
+            </div>
+        </div>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 获取所有展开按钮
+            const expandButtons = document.querySelectorAll('.expand-button'); 
+
+            // 动态调整占位内容区域的顶部边距，以避开固定头部
+            const adjustPlaceholderContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader');
+                const placeholderContent = document.querySelector('.placeholder-content');
+                if (mainHeader && placeholderContent && window.innerWidth > 768) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    placeholderContent.style.marginTop = `${headerHeight}px`;
+                } else if (placeholderContent && window.innerWidth <= 768) {
+                    // 移动端header是静态的，不需要margin-top
+                    placeholderContent.style.marginTop = '0';
+                }
+            };
+            
+            // 延迟调用 adjustPlaceholderContentMargin，确保 hf.js 中的 DOMContentLoaded 逻辑已执行
+            setTimeout(adjustPlaceholderContentMargin, 50); // 短暂延迟，给浏览器渲染时间
+            window.addEventListener('resize', adjustPlaceholderContentMargin);
+
+            // 展开/收起功能
+            expandButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const expandedContent = this.nextElementSibling; // 获取紧邻的 expanded-content
+                    expandedContent.classList.toggle('show');
+
+                    // 改变按钮文本
+                    if (expandedContent.classList.contains('show')) {
+                        this.textContent = '↑';
+                    } else {
+                        // 恢复原始文本
+                        this.textContent = '↓';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

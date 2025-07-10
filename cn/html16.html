@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资质荣誉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #f4f4f4;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        header#mainHeader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            justify-content: space-between;
+            background: none;
+            box-shadow: none;
+            color: #fffdfd;
+        }
+
+        header#mainHeader.nav-active {
+            background: rgba(192, 192, 192, 0.7);
+            backdrop-filter: blur(1px);
+            box-shadow: 0 1px 2px rgba(192, 192, 192, 0.3);
+            border-bottom: 1px solid rgba(192, 192, 192, 0.8);
+            color: #ffffff;
+        }
+
+        header#mainHeader .logo {
+            height: 50px;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            margin-left: 50px;
+        }
+
+        header#mainHeader .logo img {
+            height: 100%;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+
+        header#mainHeader.nav-active .logo img {
+            filter: brightness(1.2);
+        }
+
+        header#mainHeader nav {
+            display: flex;
+            position: relative;
+            z-index: 1001;
+            margin-right: 100px;
+        }
+
+        header#mainHeader nav > a {
+            color: rgb(5, 3, 3);
+            text-decoration: none;
+            margin-left: 50px;
+            font-size: 16px;
+            position: relative;
+            padding: 10px 0;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        header#mainHeader.nav-active nav > a {
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(192, 192, 192, 0.5);
+        }
+
+        .dropdown-container {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            width: 100vw;
+            padding: 2px 0;
+            background: rgba(192, 192, 192, 0.7);
+            backdrop-filter: blur(1px);
+            display: none;
+            z-index: 999;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(192, 192, 192, 0.1);
+            border-bottom: 1px solid rgba(192, 192, 192, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .nav-item:hover .dropdown-container {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dropdown-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            padding: 15px 20px;
+            gap: 15px;
+        }
+
+        .dropdown-btn {
+            /* 相对定位 */
+            position: relative;
+            /* 宽度 180px 高度120 */
+            width: 120px;
+            /* 120px，80 */
+            height: 80px;
+            /* 右外边距 5px，底部外边距 5px */
+            margin: 0 5px 5px 0;
+            /* 边框圆角 4px */
+            border-radius: 4px;
+            /* 鼠标指针变为手型 */
+            cursor: pointer;
+            /* 所有属性的过渡效果 */
+            transition: all 0.3s;
+            /* 隐藏超出容器的内容 */
+            overflow: hidden;
+            /* 确保没有边框 */
+            border: none;
+            /* 使用 Flexbox 布局 */
+            display: flex;
+            /* 垂直和水平方向都居中对齐子项 */
+            justify-content: center;
+            align-items: center;
+            /* 内边距 15px */
+            padding: 15px;
+            /* 背景图片覆盖整个容器 */
+            background-size: cover;
+            /* 背景图片居中 */
+            background-position: center;
+            /* 新增：与下拉弹窗背景色一致 */
+            /* *************背景颜色为带有 0.7 透明度的银色（浅灰色），和 .dropdown-container 一致 ************/
+
+            background-color: rgba(192, 192, 192, 0); /* 按钮背景色为透明 */
+
+        }
+
+        .dropdown-btn::before {
+            content: ''; /* 伪元素内容为空 */
+            position: absolute; /* 绝对定位 */
+            top: 0; left: 0; right: 0; bottom: 0; /* 铺满整个父容器 */
+            background: rgba(0, 0, 0, 0); /* 黑色半透明遮罩 */
+            z-index: 0; /* Z轴层级，在文本之下 */
+            transition: all 0.3s; /* 过渡效果 */
+        }
+
+        .dropdown-btn:hover::before {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Text inside dropdown buttons - 下拉按钮内部文本 */
+        .btn-text {
+            /* 相对定位 */
+            position: relative;
+            /* z-index 为 1，确保文本位于叠加层之上 */
+            z-index: 1;
+            /* 文本颜色为白色 */
+            color: white;
+            /* 文本阴影效果 */
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            /* 字体大小 20px *************/
+            font-size: 18px;
+            /* 字体加粗 */
+            font-weight: bold;
+        }
+
+        /* 移除语言菜单的特殊样式，使其与其他菜单保持一致 */
+
+        @media (max-width: 768px) {
+            header#mainHeader {
+                flex-direction: column;
+                padding: 10px;
+                align-items: flex-start;
+                position: static;
+            }
+
+            header#mainHeader .logo {
+                margin-bottom: 10px;
+                margin-left: 0;
+            }
+
+            header#mainHeader nav {
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            header#mainHeader nav > a {
+                margin: 5px 10px;
+                height: auto;
+                text-align: center;
+                flex-grow: 1;
+                font-size: 14px;
+                padding: 10px 5px;
+            }
+
+            .dropdown-container {
+                position: static;
+                width: 100%;
+                box-shadow: none;
+                border-radius: 0;
+                padding: 10px 0;
+                display: none;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                background: rgba(192, 192, 192, 0.95);
+            }
+
+            .nav-item.active .dropdown-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .dropdown-content {
+                flex-direction: column;
+                justify-content: center;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .dropdown-btn {
+                width: calc(80% - 20px);
+                max-width: 300px;
+                height: 70px;
+                font-size: 14px;
+            }
+
+            /* 移除移动端语言菜单的特殊样式 */
+        }
+
+        /* --- 新增：图片模态框的CSS样式 --- */
+        .image-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7); /* 半透明黑色背景 */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000; /* 确保在最上层 */
+            opacity: 0; /* 默认隐藏 */
+            visibility: hidden; /* 默认隐藏 */
+            transition: opacity 0.3s ease, visibility 0.3s ease; /* 过渡效果 */
+            max-width: none !important;
+            max-height: none !important;
+            overflow: visible !important;
+        }
+
+        .image-modal-overlay.active {
+            opacity: 1; /* 显示 */
+            visibility: visible; /* 显示 */
+        }
+
+        .image-modal-content {
+            width: 420px;
+            height: auto;
+            max-width: 95vw;
+            max-height: 95vh;
+            background-color: white;
+            padding: 10px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            overflow-y: auto; /* 内容超出时允许滚动 */
+            transform: none;
+        }
+
+        .image-modal-content img {
+            width: 100%;
+            height: auto;
+            max-width: 100%;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            transform: none;
+        }
+
+        .image-modal-text {
+            color: #333;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .image-modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2rem;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .image-modal-close:hover {
+            color: #333;
+        }
+        /* --- 模态框CSS样式结束 --- */
+
+        .slide-block {
+            width: 100vw;
+            max-width: 100vw;
+            overflow: visible !important;
+        }
+        .image-carousel {
+            width: 100vw;
+            max-width: 100vw;
+            overflow: visible !important;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            position: relative;
+        }
+
+        .carousel-item {
+            position: absolute;
+            left: 20%;
+            top: 20%;
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(.4,2,.6,1);
+            opacity: 0.3;
+            transform: scale(0.9) translateZ(-100px) translate(-50%, -50%);
+            z-index: 1;
+        }
+
+        .carousel-item img {
+            width: 352px !important;
+            height: auto !important;
+            max-width: none !important;
+            max-height: 528px !important;
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            border-radius: 8px;
+        }
+
+        .carousel-item.pos-1 {
+            transform: scale(0.6) translateZ(-200px) translateX(-840px) translate(-50%, -50%);
+            opacity: 0.3;
+            z-index: 1;
+        }
+        .carousel-item.pos-2 {
+            transform: scale(0.8) translateZ(-100px) translateX(-320px) translate(-50%, -50%);
+            opacity: 0.6;
+            z-index: 2;
+        }
+        .carousel-item.pos-3 {
+            transform: scale(1.0) translateZ(0px) translateX(0px) translate(-50%, -50%);
+            opacity: 1.0;
+            z-index: 3;
+        }
+        .carousel-item.pos-4 {
+            transform: scale(0.8) translateZ(-100px) translateX(320px) translate(-50%, -50%);
+            opacity: 0.6;
+            z-index: 2;
+        }
+        .carousel-item.pos-5 {
+            transform: scale(0.6) translateZ(-200px) translateX(680px) translate(-50%, -50%);
+            opacity: 0.3;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+
+    <header id="mainHeader">
+        <div class="logo">
+            <a href="https://tuhaqiefus.github.io/.github.xhx.io/">
+                <img src="assets/images/LOGO.png" alt="鑫华夏 xinova">
+            </a>
+        </div>
+        <nav>
+            <a href="#" class="nav-item" data-page="about-us">
+                公司介绍
+                <div class="dropdown-container">
+                    <div class="dropdown-content">
+                        <button class="dropdown-btn" data-subpage="about-us-main" onclick="window.location.href='html11.html';">
+                            <span class="btn-text">公司简介</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn3.jpg')" data-subpage="business-partners" onclick="window.location.href='html13.html'">
+                            <span class="btn-text">合作伙伴</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn4.jpg')" data-subpage="dynamism" onclick="window.location.href='html14.html';">
+                            <span class="btn-text">企业文化</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn5.jpg')" data-subpage="organization-chart" onclick="window.location.href='html15.html';">
+                            <span class="btn-text">组织架构</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn2.jpg')" data-subpage="expansion" onclick="window.location.href='html16.html';">
+                            <span class="btn-text">资质荣誉</span>
+                        </button>
+                        <button class="dropdown-btn">
+                            <span class="btn-text"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        </button>
+                        <button class="dropdown-btn">
+                            <span class="btn-text">关联公司:</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn8.jpg')" onclick="window.location.href='http://www.juya-tech.com';">
+                            <span class="btn-text"> </span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn7.jpg')" onclick="window.location.href='https://semi.xhxcg.com';">
+                            <span class="btn-text"> </span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/about-btn6.jpg')" onclick="window.location.href='http://www.ky-century.com/';">
+                            <span class="btn-text"> </span>
+                        </button>
+                    </div>
+                </div>
+            </a>
+
+            <a class="nav-item" data-page="ir"> 工程业绩
+                <div class="dropdown-container">
+                    <div class="dropdown-content">
+                        <button class="dropdown-btn" style="background-image: url('assets/images/ir-btn1.jpg')" data-subpage="Gas Scrubber" onclick="window.location.href='html31.html#category1';">
+                               <span class="btn-text">微电子</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/ir-btn2.jpg')" data-subpage="shareholder" onclick="window.location.href='html31.html#category2';">
+                            <span class="btn-text">光电产业</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/ir-btn3.jpg')" data-subpage="investor" onclick="window.location.href='html31.html#category3'">
+                            <span class="btn-text">石油化工</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/ir-btn4.jpg')" data-subpage="investor" onclick="window.location.href='html31.html#category5'">
+                            <span class="btn-text">洁净系统</span>
+                        </button>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="nav-item" data-page="esg">
+                E · S · G
+                <div class="dropdown-container">
+                    <div class="dropdown-content">
+                        <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn1.jpg')" data-subpage="Environmental Policy;ISO14001:环境管理体系" onclick="window.location.href='html41.html';">
+                            <span class="btn-text">环境保护</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn2.jpg')" data-subpage="Social Responsibility(cross-cultural management)" onclick="window.location.href='html42.html';">
+                            <span class="btn-text">社会政策</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/esg-btn3.jpg')" data-subpage="Governance;资质、荣誉、IR(Financial\\Shareholder\\Investor)、ISO9001、" onclick="window.location.href='html43.html';">
+                            <span class="btn-text">内部治理</span>
+                        </button>
+                    </div>
+                </div>
+            </a>
+
+            <a href="#" class="nav-item" data-page="careers">
+                人力资源
+                <div class="dropdown-container">
+                    <div class="dropdown-content">
+                        <button class="dropdown-btn" style="background-image: url('assets/images/career-btn1.jpg')" data-subpage="job-vacancies" onclick="window.location.href='html51.html';">
+                            <span class="btn-text">职位空缺</span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/career-btn2.png')" data-subpage="employee-development" onclick="window.location.href='html52.html';">
+                            <span class="btn-text">员工天地</span>
+                        </button>
+                        <button class="dropdown-btn">
+                            <span class="btn-text"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                        </button>
+
+                    </div>
+                </div>
+            </a>
+            <a href="#" class="nav-item" data-page="language">
+                语言
+                <div class="dropdown-container">
+                    <div class="dropdown-content">
+                        <button class="dropdown-btn" style="background-image: url('assets/images/lang-cn.jpg')" data-subpage="english" onclick="window.location.href='../index.html';">
+                            <span class="btn-text"> </span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/lang-en.jpg')" data-subpage="english" onclick="window.location.href='../en/index.html';">
+                            <span class="btn-text"> </span>
+                        </button>
+                        <button class="dropdown-btn" style="background-image: url('assets/images/lang-kr.jpg')" data-subpage="korean" onclick="window.location.href='../kr/index.html';">
+                            <span class="btn-text"> </span>
+                        </button>
+                    </div>
+                </div>
+            </a>
+        </nav>
+    </header>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainHeader = document.getElementById('mainHeader');
+            const navItems = document.querySelectorAll('.nav-item');
+            const dropdownContainers = document.querySelectorAll('.dropdown-container');
+
+            let headerHideTimeout;
+            let currentActiveDropdown = null;
+            let dropdownShowTime = 0;
+            const minDisplayDuration = 500;
+
+            function showDropdown(dropdownElement) {
+                if (currentActiveDropdown && currentActiveDropdown !== dropdownElement) {
+                    currentActiveDropdown.style.opacity = '0';
+                    currentActiveDropdown.style.visibility = 'hidden';
+                    currentActiveDropdown.style.display = 'none';
+                }
+
+                const headerHeight = mainHeader.offsetHeight;
+                dropdownElement.style.top = `${headerHeight}px`;
+
+                dropdownElement.style.display = 'block';
+                setTimeout(() => {
+                    dropdownElement.style.opacity = '1';
+                    dropdownElement.style.visibility = 'visible';
+                }, 10);
+                currentActiveDropdown = dropdownElement;
+                dropdownShowTime = Date.now();
+            }
+
+            function hideAllDropdowns() {
+                if (!isMouseOverHeaderAndDropdowns()) {
+                    mainHeader.classList.remove('nav-active');
+                }
+
+                if (currentActiveDropdown) {
+                    const timeSinceShow = Date.now() - dropdownShowTime;
+                    const remainingTime = minDisplayDuration - timeSinceShow;
+
+                    if (remainingTime > 0) {
+                        clearTimeout(headerHideTimeout);
+                        headerHideTimeout = setTimeout(() => {
+                            if (!isMouseOverHeaderAndDropdowns()) {
+                                hideAllDropdownsInternal();
+                            }
+                        }, remainingTime);
+                    } else {
+                        hideAllDropdownsInternal();
+                    }
+                }
+            }
+
+            function hideAllDropdownsInternal() {
+                if (currentActiveDropdown) {
+                    currentActiveDropdown.style.opacity = '0';
+                    currentActiveDropdown.style.visibility = 'hidden';
+                    setTimeout(() => {
+                        if (currentActiveDropdown) {
+                            currentActiveDropdown.style.display = 'none';
+                            currentActiveDropdown = null;
+                        }
+                    }, 300);
+                }
+            }
+
+            function isMouseOverHeaderAndDropdowns() {
+                if (mainHeader.matches(':hover')) {
+                    return true;
+                }
+                for (let i = 0; i < dropdownContainers.length; i++) {
+                    const d = dropdownContainers[i];
+                    if (d.matches(':hover') && d.style.display === 'block' && d.style.opacity === '1') {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            navItems.forEach(item => {
+                const dropdown = item.querySelector('.dropdown-container');
+
+                item.addEventListener('mouseenter', function() {
+                    clearTimeout(headerHideTimeout);
+                    mainHeader.classList.add('nav-active');
+                    if (dropdown) {
+                        showDropdown(dropdown);
+                    } else {
+                        hideAllDropdownsInternal();
+                    }
+                });
+
+                item.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768 && e.currentTarget.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+
+                    if (window.innerWidth <= 768) {
+                        const targetDropdown = this.querySelector('.dropdown-container');
+
+                        navItems.forEach(navItem => {
+                            if (navItem !== this && navItem.classList.contains('active')) {
+                                navItem.classList.remove('active');
+                            }
+                        });
+
+                        if (targetDropdown) {
+                            this.classList.toggle('active');
+                            if (this.classList.contains('active')) {
+                                mainHeader.classList.add('nav-active');
+                            } else {
+                                setTimeout(() => {
+                                    if (!document.querySelector('.nav-item.active')) {
+                                        mainHeader.classList.remove('nav-active');
+                                    }
+                                }, 300);
+                            }
+                        }
+                    }
+                });
+            });
+
+            mainHeader.addEventListener('mouseleave', function() {
+                headerHideTimeout = setTimeout(() => {
+                    if (!isMouseOverHeaderAndDropdowns()) {
+                        hideAllDropdowns();
+                    }
+                }, 100);
+            });
+
+            dropdownContainers.forEach(dropdown => {
+                dropdown.addEventListener('mouseleave', function() {
+                    headerHideTimeout = setTimeout(() => {
+                        if (!isMouseOverHeaderAndDropdowns()) {
+                            hideAllDropdowns();
+                        }
+                    }, 100);
+                });
+                dropdown.addEventListener('mouseenter', function() {
+                    clearTimeout(headerHideTimeout);
+                });
+            });
+
+            mainHeader.addEventListener('mouseenter', function() {
+                clearTimeout(headerHideTimeout);
+                mainHeader.classList.add('nav-active');
+            });
+
+            const adjustContentMargin = () => {
+                const headerHeight = mainHeader.offsetHeight;
+            };
+            adjustContentMargin();
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script>
+</body>
+
+
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>car2</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+
+        .background-image-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background-image: url('assets/images/Tianchi_Lake_on Changbai_Mountain.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: scroll;
+            z-index: -1;
+        }
+
+        /* 调整 content-wrapper 样式以居中内容 */
+        .content-wrapper {
+            position: relative;
+            z-index: 1;
+            /* 移除 padding-top: 10px; */
+            display: flex; /* 使用 Flexbox */
+            flex-direction: column; /* 垂直排列 */
+            justify-content: center; /* 垂直居中 */
+            align-items: center; /* 水平居中 */
+            min-height: 100vh; /* 确保内容区至少与视口高度相同，以便居中 */
+        }
+
+        /* 移除 h-screen bg-transparent 块，它会导致额外的空白空间 */
+        /* .h-screen.bg-transparent { display: none; } */
+
+        .slide-block {
+            transform: translateY(0); /* 初始位置为0，使其一开始就可见 */
+            opacity: 1; /* 初始透明度为1，使其一开始就可见 */
+            transition: none; /* 移除过渡效果，因为我们希望它立即出现 */
+            /* 确保 slide-block 在内容中心 */
+            margin-top: auto; /* 自动边距将帮助居中 */
+            margin-bottom: auto; /* 自动边距将帮助居中 */
+        }
+
+        .image-carousel {
+            cursor: grab;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            /* 3D轮播效果 */
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            position: relative;
+            height: 400px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .image-carousel::-webkit-scrollbar {
+            display: none;
+        }
+
+        .image-carousel img {
+            width: 200px;
+            height: auto;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            user-select: none;
+            -webkit-user-drag: none;
+            transition: all 0.5s ease;
+        }
+
+        /* 图片容器样式 */
+        .carousel-item {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform-style: preserve-3d;
+            transition: all 0.5s ease;
+            opacity: 0.3;
+            transform: scale(0.6) translateZ(-200px) translate(-50%, -50%);
+        }
+
+        /* 5个位置的样式 */
+        .carousel-item.pos-1 {
+            transform: scale(0.6) translateZ(-200px) translateX(-840px) translate(-50%, -50%);
+            opacity: 0.3;
+            z-index: 1;
+        }
+        .carousel-item.pos-2 {
+            transform: scale(0.8) translateZ(-100px) translateX(-320px) translate(-50%, -50%);
+            opacity: 0.6;
+            z-index: 2;
+        }
+        .carousel-item.pos-3 {
+            transform: scale(1.0) translateZ(0px) translateX(0px) translate(-50%, -50%);
+            opacity: 1.0;
+            z-index: 3;
+        }
+        .carousel-item.pos-4 {
+            transform: scale(0.8) translateZ(-100px) translateX(320px) translate(-50%, -50%);
+            opacity: 0.6;
+            z-index: 2;
+        }
+        .carousel-item.pos-5 {
+            transform: scale(0.6) translateZ(-200px) translateX(680px) translate(-50%, -50%);
+            opacity: 0.3;
+            z-index: 1;
+        }
+
+        .image-carousel.active {
+            cursor: grabbing;
+        }
+
+        /* 进度条样式 */
+        .progress-bar-container {
+            margin-top: 40px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .progress-bar {
+            display: flex;
+            gap: 18px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 1200px;
+        }
+
+        .progress-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+        }
+
+        .progress-item:hover {
+            transform: scale(1.1);
+        }
+
+        .progress-diamond {
+            width: 12px;
+            height: 12px;
+            background-color: rgba(255, 255, 255, 0.6);
+            transform: rotate(45deg);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.3s ease;
+            margin-bottom: 8px;
+        }
+
+        .progress-item.active .progress-diamond {
+            background-color: #ffffff;
+            border-color: #ffffff;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+        }
+
+        .progress-text {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 12px;
+            font-weight: 500;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            transition: all 0.3s ease;
+        }
+
+        .progress-item.active .progress-text {
+            color: #ffffff;
+            font-weight: bold;
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .progress-bar {
+                gap: 12px;
+            }
+            
+            .progress-diamond {
+                width: 10px;
+                height: 10px;
+            }
+            
+            .progress-text {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="background-image-container"></div>
+
+    <div class="content-wrapper">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="https://cdn.tailwindcss.com"></script>
+            <style>
+
+
+                .image-carousel::-webkit-scrollbar {
+                    display: none;
+                }
+                .image-carousel {
+                    -ms-overflow-style: none;
+                    scrollbar-width: none;
+                }
+
+                .image-carousel.is-dragging {
+                    cursor: grabbing;
+                }
+            </style>
+        </head>
+        <body>
+
+
+            <div class="slide-block" style="background:transparent; box-shadow:none; padding:0; margin:0; width:auto;">
+                <h2 class="text-3xl font-bold text-gray-800 mb-6 text-center"> </h2>
+
+                <div id="imageCarousel" class="image-carousel">
+
+                    <div class="carousel-item" data-index="0">
+                        <img src="assets\images\honor6/honor1.jpg" 
+                            data-modal-image="assets\images\honor6/honor1.jpg"
+                            data-modal-text=" . ">
+                        <p class="text-sm text-gray-600 mt-2 text-center">     </p>
+                        <p class="text-sm text-gray-600 mt-2 text-center">         </p>
+                    </div>
+                    <div class="carousel-item" data-index="1">
+                        <img src="assets\images\honor6/honor2.jpg" 
+                            data-modal-image="assets\images\honor6/honor2.jpg"
+                            data-modal-text=" ">
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                    </div>
+                    <div class="carousel-item" data-index="2">
+                        <img src="assets\images\honor6/honor3.jpg" 
+                            data-modal-image="assets\images\honor6/honor3.jpg"
+                            data-modal-text=" ">
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                    </div>
+                    <div class="carousel-item" data-index="3">
+                        <img src="assets\images\honor6/honor4.jpg" 
+                            data-modal-image="assets\images\honor6/honor4.jpg"
+                            data-modal-text=" ">
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                    </div>
+                    <div class="carousel-item" data-index="4">
+                        <img src="assets\images\honor6/honor5.jpg" 
+                            data-modal-image="assets\images\honor6/honor5.jpg"
+                            data-modal-text=" ">
+                        <p class="text-sm text-gray-600 mt-2 text-center"> </p>
+                        <p class="text-sm text-gray-600 mt-2 text-center"> </p>
+                    </div>
+                    <div class="carousel-item" data-index="5">
+                        <img src="assets\images\honor6/honor6.jpg" 
+                            data-modal-image="assets\images\honor6/honor6.jpg"
+                            data-modal-text=" ">
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                    </div>
+                    <div class="carousel-item" data-index="0">
+                        <img src="assets\images\honor6/honor7.jpg" 
+                            data-modal-image="assets\images\honor6/honor7.jpg"
+                            data-modal-text=" . ">
+                        <p class="text-sm text-gray-600 mt-2 text-center">     </p>
+                        <p class="text-sm text-gray-600 mt-2 text-center">         </p>
+                    </div>
+                    <div class="carousel-item" data-index="1">
+                        <img src="assets\images\honor6/honor8.jpg" 
+                            data-modal-image="assets\images\honor6/honor8.jpg"
+                            data-modal-text=" ">
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                    </div>
+                    <div class="carousel-item" data-index="2">
+                        <img src="assets\images\honor6/honor9.jpg" 
+                            data-modal-image="assets\images\honor6/honor9.jpg"
+                            data-modal-text=" ">
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                    </div>
+                    <div class="carousel-item" data-index="3">
+                        <img src="assets\images\honor6/honor10.jpg" 
+                            data-modal-image="assets\images\honor6/honor10.jpg"
+                            data-modal-text=" ">
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                        <p class="text-sm text-gray-600 mt-2 text-center">  </p>
+                    </div>
+                    
+                </div>
+
+                <!-- 进度条 -->
+                <div class="progress-bar-container">
+                    <div class="progress-bar">
+                        <div class="progress-item" data-index="0">
+                            <div class="progress-diamond"></div>
+                            <span class="progress-text">ISO9001</span>
+                        </div>
+                        <div class="progress-item" data-index="1">
+                            <div class="progress-diamond"></div>
+                            <span class="progress-text">ISO45001</span>
+                        </div>
+                        <div class="progress-item" data-index="2">
+                            <div class="progress-diamond"></div>
+                            <span class="progress-text">ISO14001</span>
+                        </div>
+                        <div class="progress-item" data-index="3">
+                            <div class="progress-diamond"></div>
+                            <span class="progress-text">建筑资质</span>
+                        </div>
+                        <div class="progress-item" data-index="4">
+                            <div class="progress-diamond"></div>
+                            <span class="progress-text">安全</span>
+                        </div>
+                        <div class="progress-item" data-index="5">
+                            <div class="progress-diamond"></div>
+                            <span class="progress-text">特种设备</span>
+                        </div>
+                        <div class="progress-item" data-index="6">
+                            <div class="progress-diamond"></div>
+                            <span class="progress-text">机电工程资质</span>
+                        </div>
+                        <div class="progress-item" data-index="7">
+                            <div class="progress-diamond"></div>
+                            <span class="progress-text">外贸</span>
+                        </div>
+                        <div class="progress-item" data-index="8">
+                            <div class="progress-diamond"></div>
+                            <span class="progress-text">执照</span>
+                        </div>
+                        <div class="progress-item" data-index="9">
+                            <div class="progress-diamond"></div>
+                            <span class="progress-text">高新技术企业证书</span>
+                        </div>
+
+
+                    </div>
+                </div>
+
+            </div>
+            <script>
+                const carousel = document.getElementById('imageCarousel');
+                const items = carousel.querySelectorAll('.carousel-item');
+                let currentIndex = 0;
+                let isDragging = false;
+                let startX = 0;
+                let currentX = 0;
+                let autoScrollInterval;
+
+                // 初始化轮播
+                function initCarousel() {
+                    console.log('初始化轮播，图片数量:', items.length);
+                    updatePositions();
+                    startAutoScroll();
+                }
+
+                // 更新所有图片的位置
+                function updatePositions() {
+                    console.log('更新位置，当前索引:', currentIndex);
+                    items.forEach((item, index) => {
+                        // 计算相对于当前中心的位置
+                        let relativeIndex = index - currentIndex;
+                        
+                        // 处理循环
+                        if (relativeIndex < -2) relativeIndex += items.length;
+                        if (relativeIndex > 2) relativeIndex -= items.length;
+                        
+                        // 移除所有位置类
+                        item.classList.remove('pos-1', 'pos-2', 'pos-3', 'pos-4', 'pos-5');
+                        
+                        // 根据相对位置添加对应的类
+                        if (relativeIndex >= -2 && relativeIndex <= 2) {
+                            const posClass = `pos-${relativeIndex + 3}`;
+                            item.classList.add(posClass);
+                            console.log(`图片 ${index} 设置为 ${posClass}`);
+                        } else {
+                            console.log(`图片 ${index} 隐藏`);
+                        }
+                    });
+                }
+
+                // 移动到下一张图片
+                function nextSlide() {
+                    currentIndex = (currentIndex + 1) % items.length;
+                    updatePositions();
+                }
+
+                // 移动到上一张图片
+                function prevSlide() {
+                    currentIndex = (currentIndex - 1 + items.length) % items.length;
+                    updatePositions();
+                }
+
+                // 自动滚动
+                function startAutoScroll() {
+                    stopAutoScroll();
+                    autoScrollInterval = setInterval(nextSlide, 3000);
+                }
+
+                function stopAutoScroll() {
+                    if (autoScrollInterval) {
+                        clearInterval(autoScrollInterval);
+                        autoScrollInterval = null;
+                    }
+                }
+
+                // 鼠标事件处理
+                carousel.addEventListener('mousedown', (e) => {
+                    isDragging = true;
+                    startX = e.clientX;
+                    currentX = e.clientX;
+                    stopAutoScroll();
+                    carousel.style.cursor = 'grabbing';
+                });
+
+                carousel.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    currentX = e.clientX;
+                });
+
+                carousel.addEventListener('mouseup', (e) => {
+                    if (!isDragging) return;
+                    
+                    const diff = startX - currentX;
+                    const threshold = 50; // 拖动阈值
+                    
+                    if (Math.abs(diff) > threshold) {
+                        if (diff > 0) {
+                            nextSlide(); // 向左拖动，显示下一张
+                        } else {
+                            prevSlide(); // 向右拖动，显示上一张
+                        }
+                    }
+                    
+                    isDragging = false;
+                    carousel.style.cursor = 'grab';
+                    startAutoScroll();
+                });
+
+                carousel.addEventListener('mouseleave', () => {
+                    if (isDragging) {
+                        isDragging = false;
+                        carousel.style.cursor = 'grab';
+                        startAutoScroll();
+                    }
+                });
+
+                // 触摸事件处理
+                carousel.addEventListener('touchstart', (e) => {
+                    isDragging = true;
+                    startX = e.touches[0].clientX;
+                    currentX = e.touches[0].clientX;
+                    stopAutoScroll();
+                });
+
+                carousel.addEventListener('touchmove', (e) => {
+                    if (!isDragging) return;
+                    currentX = e.touches[0].clientX;
+                });
+
+                carousel.addEventListener('touchend', (e) => {
+                    if (!isDragging) return;
+                    
+                    const diff = startX - currentX;
+                    const threshold = 50;
+                    
+                    if (Math.abs(diff) > threshold) {
+                        if (diff > 0) {
+                            nextSlide();
+                        } else {
+                            prevSlide();
+                        }
+                    }
+                    
+                    isDragging = false;
+                    startAutoScroll();
+                });
+
+                // 进度条功能
+                const progressItems = document.querySelectorAll('.progress-item');
+                
+                function updateProgressBar() {
+                    progressItems.forEach((item, index) => {
+                        item.classList.remove('active');
+                        if (index === currentIndex) {
+                            item.classList.add('active');
+                        }
+                    });
+                }
+
+                function goToSlide(index) {
+                    currentIndex = index;
+                    updatePositions();
+                    updateProgressBar();
+                }
+
+                // 为进度条添加点击事件
+                progressItems.forEach((item, index) => {
+                    item.addEventListener('click', () => {
+                        goToSlide(index);
+                        stopAutoScroll();
+                        startAutoScroll();
+                    });
+                });
+
+                // 更新初始化函数
+                function initCarousel() {
+                    console.log('初始化轮播，图片数量:', items.length);
+                    updatePositions();
+                    updateProgressBar();
+                    startAutoScroll();
+                }
+
+                // 更新位置函数时也更新进度条
+                function updatePositions() {
+                    console.log('更新位置，当前索引:', currentIndex);
+                    items.forEach((item, index) => {
+                        let relativeIndex = index - currentIndex;
+                        
+                        if (relativeIndex < -2) relativeIndex += items.length;
+                        if (relativeIndex > 2) relativeIndex -= items.length;
+                        
+                        item.classList.remove('pos-1', 'pos-2', 'pos-3', 'pos-4', 'pos-5');
+                        
+                        if (relativeIndex >= -2 && relativeIndex <= 2) {
+                            const posClass = `pos-${relativeIndex + 3}`;
+                            item.classList.add(posClass);
+                            console.log(`图片 ${index} 设置为 ${posClass}`);
+                        } else {
+                            console.log(`图片 ${index} 隐藏`);
+                        }
+                    });
+                    updateProgressBar();
+                }
+
+                // 初始化
+                document.addEventListener('DOMContentLoaded', () => {
+                    initCarousel();
+                });
+            </script>
+        </body>
+
+
+    </div>
+
+    <div id="imageModal" class="image-modal-overlay">
+        <div class="image-modal-content">
+            <span class="image-modal-close">&times;</span> <img id="modalImage" src="" alt="Product Image"> <p id="modalText" class="image-modal-text"></p> </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ... (您现有的全部 JavaScript 代码，位于第一个 <script> 标签内，这里只是示意) ...
+
+            // --- 新增：图片模态框的JavaScript逻辑 ---
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalText = document.getElementById('modalText');
+            const modalCloseButton = document.querySelector('.image-modal-close');
+            // 选择所有在 carousel 内部的 <img> 标签
+            const carouselImages = document.querySelectorAll('#imageCarousel img');
+
+            // 打开模态框的函数
+            function openImageModal(imageSrc, textContent) {
+                modalImage.src = imageSrc; // 设置模态框图片的来源
+                modalText.textContent = textContent; // 设置模态框文字内容
+                imageModal.classList.add('active'); // 添加 active 类以显示模态框
+                document.body.style.overflow = 'hidden'; // 禁止背景滚动
+            }
+
+            // 关闭模态框的函数
+            function closeImageModal() {
+                imageModal.classList.remove('active'); // 移除 active 类以隐藏模态框
+                document.body.style.overflow = ''; // 恢复背景滚动
+            }
+
+            // 为每个轮播图中的图片添加点击事件监听器
+            carouselImages.forEach(img => {
+                img.addEventListener('click', function() {
+                    // 从被点击的图片中获取数据属性
+                    const imageSrc = this.getAttribute('data-modal-image');
+                    const textContent = this.getAttribute('data-modal-text');
+                    openImageModal(imageSrc, textContent);
+                });
+            });
+
+            // 点击关闭按钮时关闭模态框
+            modalCloseButton.addEventListener('click', closeImageModal);
+
+            // 点击模态框背景（非内容区域）时关闭模态框
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal) { // 确保点击的是 overlay 本身，而不是模态框内部
+                    closeImageModal();
+                }
+            });
+            // --- 图片模态框JavaScript逻辑结束 ---
+
+            // --- 您原始的JS代码 ---
+            const slideBlocks = document.querySelectorAll('.slide-block');
+
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.2
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                    } else {
+                        // 可以选择在这里移除 'in-view' 类，如果希望元素离开视口后再次隐藏
+                        // entry.target.classList.remove('in-view');
+                    }
+                });
+            }, observerOptions);
+
+            slideBlocks.forEach(block => {
+                observer.observe(block);
+            });
+
+            const imageCarousel = document.querySelector('.image-carousel');
+            let isDown = false;
+            let startX;
+            let scrollLeft;
+
+            if (imageCarousel) {
+                imageCarousel.addEventListener('mousedown', (e) => {
+                    isDown = true;
+                    imageCarousel.classList.add('active');
+                    startX = e.pageX - imageCarousel.offsetLeft;
+                    scrollLeft = imageCarousel.scrollLeft;
+                });
+
+                imageCarousel.addEventListener('mouseleave', () => {
+                    isDown = false;
+                    imageCarousel.classList.remove('active');
+                });
+
+                imageCarousel.addEventListener('mouseup', () => {
+                    isDown = false;
+                    imageCarousel.classList.remove('active');
+                });
+
+                imageCarousel.addEventListener('mousemove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.pageX - imageCarousel.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    imageCarousel.scrollLeft = scrollLeft - walk;
+                });
+
+                imageCarousel.addEventListener('touchstart', (e) => {
+                    isDown = true;
+                    imageCarousel.classList.add('active');
+                    startX = e.touches[0].pageX - imageCarousel.offsetLeft;
+                    scrollLeft = imageCarousel.scrollLeft;
+                }, { passive: true });
+
+                imageCarousel.addEventListener('touchend', () => {
+                    isDown = false;
+                    imageCarousel.classList.remove('active');
+                });
+
+                imageCarousel.addEventListener('touchcancel', () => {
+                    isDown = false;
+                    imageCarousel.classList.remove('active');
+                });
+
+                imageCarousel.addEventListener('touchmove', (e) => {
+                    if (!isDown) return;
+                    e.preventDefault();
+                    const x = e.touches[0].pageX - imageCarousel.offsetLeft;
+                    const walk = (x - startX) * 2;
+                    imageCarousel.scrollLeft = scrollLeft - walk;
+                }, { passive: false });
+            }
+        });
+    </script>
+</body>
+</html>

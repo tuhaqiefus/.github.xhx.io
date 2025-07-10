@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>业绩产品展示</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        /* ==================================== */
+        /* === 此页面特有的内容样式 === */
+        /* ==================================== */
+
+        /* body 基础样式，如果 hf.css 也有定义，此处的定义可能会覆盖 */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #f4f4f4; /* 页面背景色 */
+            overflow-x: hidden; /* 防止水平滚动条 */
+            /* min-height, display, flex-direction 已在 hf.css 定义 */
+        }
+
+        /* 全宽图片 */
+        .full-width-image {
+            width: 100%;
+            overflow: hidden; /* 防止图片溢出 */
+        }
+
+        .full-width-image img {
+            width: 100%;
+            height: auto; /* 保持图片比例 */
+            display: block; /* 移除图片底部空白 */
+        }
+
+        /* 主要内容块 */
+        .main-content {
+            max-width: 1200px; /* 限制内容最大宽度 */
+            margin: 30px auto; /* 居中并上下留白 */
+            padding: 0 20px; /* 左右内边距 */
+            flex-grow: 1; /* 使内容区域填充可用空间，将页脚推到底部 */
+        }
+
+        /* 按钮索引 */
+        .product-index-buttons {
+            display: flex;
+            justify-content: center; /* 按钮居中 */
+            gap: 15px; /* 按钮间距 */
+            margin-bottom: 30px;
+            flex-wrap: wrap; /* 按钮自动换行 */
+        }
+
+        .product-index-buttons .product-category-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .product-index-buttons .product-category-btn:hover,
+        .product-index-buttons .product-category-btn.active {
+            background-color: #0056b3; /* 悬停和选中状态 */
+        }
+
+        /* 产品展示区 */
+        .product-display-area {
+            display: grid;
+            /* 默认每排4个块，在小屏幕上会调整 */
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px; /* 块之间间距 */
+        }
+
+        .product-block {
+            background-color: #ffffff; /* 纯白背景 */
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); /* 轻微阴影 */
+            text-align: center;
+            display: flex; /* 让图片和文字在块内垂直居中排列 */
+            flex-direction: column;
+            justify-content: space-between; /* 上下对齐 */
+            cursor: pointer; /* 添加光标指示可点击 */
+            transition: transform 0.2s ease-in-out; /* 添加点击动画 */
+        }
+
+        .product-block:hover {
+            transform: translateY(-5px); /* 鼠标悬停效果 */
+        }
+
+        .product-block img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 10px;
+            display: block; /* 移除底部空白 */
+            margin-left: auto; /* 图片居中 */
+            margin-right: auto;
+        }
+
+        .product-block p {
+            font-size: 14px;
+            color: #333;
+            flex-grow: 1; /* 让文字部分填充剩余空间 */
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+        }
+
+        /* 弹窗 (Modal) 的样式 */
+        .modal {
+            display: none; /* 默认隐藏 */
+            position: fixed; /* 固定定位，覆盖整个页面 */
+            z-index: 10000; /* 确保在最上层，比header和dropdowns更高 */
+            left: 0;
+            top: 0;
+            width: 100%; /* 全宽 */
+            height: 100%; /* 全高 */
+            overflow: auto; /* 内容超出时可滚动 */
+            background-color: rgba(0,0,0,0.8); /* 透明黑色背景 */
+            justify-content: center; /* 使用 flexbox 居中内容 */
+            align-items: center; /* 使用 flexbox 居中内容 */
+        }
+
+        .modal-content {
+            background-color: #fff;
+            margin: auto;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            width: 90%; /* 宽度自适应 */
+            max-width: 700px; /* 最大宽度 */
+            text-align: center;
+            position: relative; /* 用于关闭按钮定位 */
+            animation-name: animatetop; /* 引入动画效果 */
+            animation-duration: 0.4s;
+        }
+
+        /* 弹窗打开动画 */
+        @keyframes animatetop {
+            from {top: -300px; opacity: 0}
+            to {top: 0; opacity: 1}
+        }
+
+        .modal-content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .modal-content p {
+            font-size: 1.1em;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        /* 关闭按钮样式 */
+        .close-button {
+            color: #aaa;
+            float: right;
+            font-size: 35px;
+            font-weight: bold;
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-button:hover,
+        .close-button:focus {
+            color: #333;
+            text-decoration: none;
+        }
+
+        /* 移动端响应式调整 */
+        @media (max-width: 768px) {
+            /* 移动端占位内容区域调整 */
+            .placeholder-content {
+                margin-top: 0; /* 在小屏幕上取消头部间距 */
+                min-height: auto;
+                padding: 15px; /* 移动端调整内边距 */
+            }
+
+            /* 移动端产品按钮和展示区 */
+            .product-index-buttons {
+                flex-direction: column; /* 按钮在小屏幕上垂直排列 */
+                align-items: center;
+            }
+
+            .product-display-area {
+                grid-template-columns: 1fr; /* 小屏幕上每排1个块 */
+            }
+            /* 移动端页脚调整已在 hf.css */
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+    <div class="placeholder-content">
+        <div class="full-width-image">
+            <img src="assets/images/semi_equipment/header.jpg">
+        </div>
+
+        <main class="main-content">
+            <section class="product-index-buttons">
+                <button class="product-category-btn" data-category="category1">微电子</button>
+                <button class="product-category-btn" data-category="category2">光电产业</button>
+                <button class="product-category-btn" data-category="category3">石油化工</button>
+                <button class="product-category-btn" data-category="category5">洁净系统</button>
+            </section>
+
+            <section class="product-display-area">
+                </section>
+        </main>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span>
+            <img id="modalImage" src="" alt="产品图片">
+            <p id="modalDescription"></p>
+        </div>
+    </div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const productDisplayArea = document.querySelector('.product-display-area');
+            const categoryButtons = document.querySelectorAll('.product-category-btn');
+
+            // 获取弹窗元素
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const modalDescription = document.getElementById('modalDescription');
+            const closeButton = document.querySelector('.modal .close-button');
+
+
+            // 假设的产品数据 (实际项目中可能从JSON文件或API获取)
+            const productsData = {
+                category1: [
+                    { img: 'assets/images/semi_equipment/category101.png', desc: '天津三星电机 2期', modalText: ' - 风管、钢结构安装工程' },
+                    { img: 'assets/images/semi_equipment/category102.png', desc: '无锡海力士C1,C2', modalText: '- CO2 供应系统设备安装;二次配管道' },
+                    { img: 'assets/images/semi_equipment/category103.png', desc: '大连英特尔', modalText: '- RED SEA ,TANGO 特气、化学品 二次配' },
+                    { img: 'assets/images/semi_equipment/category104.png', desc: '西安三星半导体1期', modalText: '-PCW,GASS 管道' },
+                    { img: 'assets/images/semi_equipment/category105.png', desc: '西安三星半导体2期', modalText: '-化学 MAIN LINE, 临建工程 洁净室、棚房' },
+                ],
+                category2: [
+                    { img: 'assets/images/semi_equipment/category201.jpg', desc: '合肥京东方', modalText: '-DCS. DRS 系统' },
+                    { img: 'assets/images/semi_equipment/category202.png', desc: '成都京东方', modalText: '   - DCS.DRS 系统' },
+                    { img: 'assets/images/semi_equipment/category203.png', desc: '广州 LGD', modalText: ' -FAB栋工程中的再利用水池及废水转换池CPL防水工程   ' },
+                ],
+                category3: [
+                    { img: 'assets/images/semi_equipment/category301.png', desc: '常州住化电子', modalText: '- 设备及工艺管道安装' },
+                    { img: 'assets/images/semi_equipment/category302.jpg', desc: '重庆秀博瑞殷', modalText: '  - 洁净室及设备管道安装' },
+                    { img: 'assets/images/semi_equipment/category303.jpg', desc: '镇江 SKM', modalText: '   - 电解槽设备及管道安装' },
+                ],
+                category4: [ // 你的数据中没有 category4，但有按钮指向它
+                    { img: 'assets/images/semi_equipment/category401.jpg', desc: '金刚石砂轮', modalText: '高品质金刚石砂轮，具有卓越的耐磨性和锋利度，广泛应用于硬脆材料如陶瓷、玻璃、硬质合金等的精密研磨和切割。' },
+                ],
+                category5: [
+                    { img: 'assets/images/semi_equipment/category501.png', desc: '上海 CS 项目 ', modalText: '庆元使用自产设备和自有工人，在上海建设国内一流标准洁净室' },
+                    { img: 'assets/images/semi_equipment/category502.png', desc: '越南 DT 项目 ', modalText: '符合国际标准的洁净等级要求，助力客户在东南亚市场的拓展' },
+                    { img: 'assets/images/semi_equipment/category503.png', desc: '苏州 LJ 项目 ', modalText: '采用了模块化设计和快速施工技术' },
+                    // { img: 'assets/images/semi_equipment/category504.jpg', desc: '庆元世纪FFU', modalText: '庆元世纪FFU（风机过滤单元）产品，采用日本AIRTECH公司的低噪声高效率专用TA电机，具有低碳节能、免维护,高可靠性和使用寿命长等显著的优势。可搭载国内具有自主知识产权并与国际先进技术同步的DCBL（直流无刷）电机，则控制更精确、节能效果可达40%以上。' }, // 注释掉，因为这里有语法错误 { img: ... } 后缺少逗号
+                    { img: 'assets/images/semi_equipment/category506.jpg', desc: '庆元世纪AS-风淋室', modalText: '1.特有的超薄吹淋箱体和风机、配以可旋转的嵌入式不锈钢喷嘴，极达的增加了空间利用率和吹淋效果；2.内置多套操作程序，可方便灵活调用。智能化的人机对话界面使运行联锁等状态实时监控；3.标准的模块化设计，使现场组装更加快捷、维护更方便；4.可根据用户使用需求和现场条件变换功能和形式。' },
+                ]
+            };
+
+            /**
+             * 根据类别渲染产品到展示区
+             * @param {string} categoryName - 产品的类别名称 (如 'category1')
+             */
+            function renderProducts(categoryName) {
+                productDisplayArea.innerHTML = ''; // 清空现有内容
+                const products = productsData[categoryName];
+
+                if (products && products.length > 0) {
+                    products.forEach(product => {
+                        const productBlock = document.createElement('div');
+                        productBlock.classList.add('product-block');
+
+                        const img = document.createElement('img');
+                        img.src = product.img;
+                        img.alt = product.desc.split('：')[0]; // 用产品名称作为alt文本
+
+                        const desc = document.createElement('p');
+                        desc.textContent = product.desc;
+
+                        productBlock.appendChild(img);
+                        productBlock.appendChild(desc);
+
+                        // 为每个产品块添加点击事件，打开弹窗
+                        productBlock.addEventListener('click', () => {
+                            modalImage.src = product.img; // 设置弹窗图片为点击的图片
+                            modalDescription.textContent = product.modalText || product.desc; // 使用 modalText，如果没有则回退到 desc
+                            imageModal.style.display = 'flex'; // 显示弹窗
+                        });
+
+                        productDisplayArea.appendChild(productBlock);
+                    });
+                } else {
+                    productDisplayArea.innerHTML = `<p>暂无 "${categoryName}" 类别产品。</p>`;
+                }
+            }
+
+            /**
+             * 更新按钮的激活状态
+             * @param {string} activeCategory - 当前激活的类别名称
+             */
+            function updateActiveButton(activeCategory) {
+                categoryButtons.forEach(button => {
+                    if (button.dataset.category === activeCategory) {
+                        button.classList.add('active');
+                    } else {
+                        button.classList.remove('active');
+                    }
+                });
+            }
+
+            // 处理页面内部按钮点击
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const category = button.dataset.category;
+                    renderProducts(category);
+                    updateActiveButton(category);
+                    // 可以在这里更新URL的hash，以便刷新页面后内容不变
+                    window.location.hash = category; // 更新URL hash
+                });
+            });
+
+            // 处理从外部页面跳转时，根据URL参数加载内容
+            function loadContentFromURL() {
+                // 从URL中获取hash值，例如 #category2
+                const hash = window.location.hash.substring(1); // 移除 #
+                let initialCategory = 'category1'; // 默认显示第一个类别
+
+                if (hash && productsData[hash]) {
+                    initialCategory = hash;
+                }
+
+                renderProducts(initialCategory);
+                updateActiveButton(initialCategory);
+            }
+
+            // 页面加载时执行
+            loadContentFromURL();
+
+            // 监听URL hash变化，以便在同一页面内通过hash导航也能更新内容
+            window.addEventListener('hashchange', loadContentFromURL);
+
+            // 弹窗关闭逻辑
+            closeButton.addEventListener('click', () => {
+                imageModal.style.display = 'none'; // 隐藏弹窗
+            });
+
+            // 点击弹窗外部区域关闭弹窗
+            window.addEventListener('click', (event) => {
+                if (event.target === imageModal) {
+                    imageModal.style.display = 'none';
+                }
+            });
+
+            // 动态调整占位内容区域的顶部边距，以避开固定头部
+            const adjustPlaceholderContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader');
+                const placeholderContent = document.querySelector('.placeholder-content');
+                if (mainHeader && placeholderContent && window.innerWidth > 768) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    placeholderContent.style.marginTop = `${headerHeight}px`;
+                } else if (placeholderContent && window.innerWidth <= 768) {
+                    // 移动端header是静态的，不需要margin-top
+                    placeholderContent.style.marginTop = '0';
+                }
+            };
+            
+            // 延迟调用 adjustPlaceholderContentMargin，确保 hf.js 中的 DOMContentLoaded 逻辑已执行
+            setTimeout(adjustPlaceholderContentMargin, 50); // 短暂延迟，给浏览器渲染时间
+            window.addEventListener('resize', adjustPlaceholderContentMargin);
+        });
+    </script>
+</body>
+</html>

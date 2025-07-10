@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA - 鑫华夏</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        /* 这部分样式是此页面特有的内容样式 */
+
+        /* 主要内容区域 */
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            /* min-height 和 margin-top 将由 JS 动态设置 */
+            background-color: #f4f4f4;
+            flex-grow: 1; /* 填充可用空间，将页脚推到底部 */
+        }
+
+        .main-content-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 40px 50px;
+            background-color: #e0e0e0;
+            flex-grow: 1;
+        }
+
+        .main-content-top h1 {
+            font-size: 3em;
+            color: #333;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .main-content-top .top-image {
+            width: 150px; /* 调整为150px，与你之前提供的原始值一致 */
+            height: auto;
+            margin-left: 30px;
+        }
+
+        .main-content-bottom {
+            background-color: #ffffff;
+            flex-grow: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .main-content-bottom .centered-image {
+            max-width: 120%;
+            /* max-height: 250vh; 这行原始代码中的值可能导致图片过大，我保留了你的原始值，
+               但如果显示有问题，可以尝试更小的vh值或移除此行 */
+            max-height: 250vh; 
+            height: auto;
+            display: block;
+        }
+
+        /* 移动端响应式调整 */
+        @media (max-width: 768px) {
+            .main-content {
+                margin-top: 0; /* 移动端页眉是静态的，所以内容顶部无需额外边距 */
+                min-height: auto; /* 移动端内容高度自适应 */
+            }
+
+            .main-content-top {
+                flex-direction: column;
+                align-items: center;
+                text-align: center;
+                padding: 20px;
+            }
+
+            .main-content-top h1 {
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+
+            .main-content-top .top-image {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+    <div class="main-content">
+
+        <div class="main-content-bottom">
+            <img src="assets/images/G/G01.jpg" alt="Centered Image" class="centered-image">
+        </div>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 动态调整主要内容区域的顶部边距，以避开固定头部
+            const adjustContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader');
+                const mainContent = document.querySelector('.main-content');
+                if (mainHeader && mainContent && window.innerWidth > 768) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    mainContent.style.marginTop = `${headerHeight}px`;
+                } else if (mainContent && window.innerWidth <= 768) {
+                    // 移动端header是静态的，不需要margin-top
+                    mainContent.style.marginTop = '0';
+                }
+            };
+
+            // 延迟调用 adjustContentMargin，确保 hf.js 中的 DOMContentLoaded 逻辑已执行
+            setTimeout(adjustContentMargin, 50); // 短暂延迟，给浏览器渲染时间
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script>
+</body>
+</html>
