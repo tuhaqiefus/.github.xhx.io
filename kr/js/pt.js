@@ -378,7 +378,7 @@ document.addEventListener('DOMContentLoaded', function() {
   `
 },
 "CN-43": {
-  image: "../images/hunan.jpg",
+  image: "../images/zhan_wei.jpg",
   text: `
     <table style="width:100%; border-collapse: collapse;">
 
