@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>news</title>
+    <link rel="stylesheet" href="hf.css">
+    <link rel="stylesheet" href="../css/new.css">
+    <style>
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+
+            background-color: #f4f4f4;
+            flex-grow: 1; /*将页脚推到底部*/
+        }
+
+        .main-content-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 40px 50px;
+            background-color: #e0e0e0;
+            flex-grow: 1;
+        }
+
+        .main-content-top h1 {
+            font-size: 3em;
+            color: #333;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .main-content-top .top-image {
+            width: 200px;
+            height: auto;
+            margin-left: 30px;
+        }
+
+        .main-content-bottom {
+            background-color: #ffffff;
+            flex-grow: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .main-content-bottom .centered-image {
+            max-width: 150%;
+            max-height: 400vh; /*别太大只*/
+            height: auto;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+    <div class="main-content">
+    <h1>&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;集团新闻</h1>
+    
+    <div class="search-container">
+    <input type="text" id="searchInput" placeholder="search...">
+    <button id="searchButton">✔</button>
+</div>
+
+
+
+
+
+
+
+
+    
+    
+    <div class="photo-gallery-container" id="photo-gallery">
+    </div>
+            <div id="photoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button">&times;</span> 
+            <div id="modalBody">
+            </div>
+        </div>
+    </div>
+
+        <!--div class="main-content-bottom">
+            <p>&ensp;&ensp;IMGUR+NRT（photos.json）</p>
+        </div-->
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+    <script src="../js/new.js"></script>
+
+    <!--script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const adjustContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader');
+                const mainContent = document.querySelector('.main-content');
+                if (mainHeader && mainContent && window.innerWidth > 768) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    mainContent.style.marginTop = `${headerHeight}px`;
+                } else if (mainContent && window.innerWidth <= 768) {
+                    mainContent.style.marginTop = '0';
+                }
+            };
+
+            // 延迟调用 adjustContentMargin
+            setTimeout(adjustContentMargin, 50); 
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script-->
+</body>
+</html>

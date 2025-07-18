@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA_业务架构</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 20px 0;
+            box-sizing: border-box;
+        }
+
+        .image-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .image-box {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .image-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .arrow-icon {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            z-index: 10;
+        }
+
+        .arrow-icon:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+        }
+
+        .arrow-icon::after {
+            content: '▼';
+            font-size: 24px;
+            color: #333;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow-icon.rotated::after {
+            transform: rotate(180deg);
+        }
+
+        .expanded-content {
+            display: none;
+            padding: 30px;
+            background-color: #ffffff;
+            border-top: 1px solid #eee;
+            box-sizing: border-box;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease-out, max-height 0.5s ease-out;
+        }
+
+        .expanded-content.show {
+            display: block;
+            opacity: 1;
+            max-height: 1000px;
+        }
+
+        .expanded-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 30px;
+        }
+
+        .expanded-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .expanded-item-image {
+            width: 45%;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .expanded-item-image img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .expanded-item-text {
+            flex: 1;
+            padding: 15px 0;
+        }
+
+        .expanded-item-text h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 22px;
+            color: #333;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+        }
+
+        .expanded-item-text p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .expanded-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        @media (min-width: 769px) {
+            .main-content {
+                margin-top: var(--header-height, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .image-container {
+                width: 95%;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .image-preview {
+                height: 200px;
+            }
+
+            .arrow-icon {
+                width: 40px;
+                height: 40px;
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .arrow-icon::after {
+                font-size: 20px;
+            }
+
+            .expanded-content {
+                padding: 20px;
+            }
+
+            .expanded-row,
+            .expanded-row.reverse {
+                flex-direction: column;
+                margin-bottom: 30px;
+                gap: 20px;
+            }
+
+            .expanded-item-image {
+                width: 100%;
+            }
+
+            .expanded-item-image img {
+                height: 180px;
+            }
+
+            .expanded-item-text {
+                padding: 10px 0;
+            }
+
+            .expanded-item-text h3 {
+                font-size: 18px;
+            }
+
+            .expanded-item-text p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+    <div class="main-content">
+        <div class="image-container">
+            <div class="image-box">
+                <div class="image-preview">
+                    <img src="assets/images/E/iso.jpg">
+                    <div class="arrow-icon" onclick="toggleExpand('expand2', this)"></div>
+                </div>
+                <div id="expand2" class="expanded-content">
+                    <div class="expanded-row">
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/honor16liubai.jpg">
+                        </div>
+                        <div class="expanded-item-text">
+                            <h3>ISO 14001</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;公司已连续10年取得ISO 14001认证。</p>
+                        </div>
+                    </div>
+                    <div class="expanded-row reverse">
+                        <div class="expanded-item-text">
+                            <h3>生产环境管理</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;在日常生产运营中，鑫华夏严格遵循ISO 14001环境管理体系的要求。这意味着从原材料采购到产品交付的每一个环节，我们都将环境保护融入其中。我们不仅致力于减少生产过程中的能源消耗和废弃物产生，还积极采取措施预防污染，并持续优化环境绩效。通过ISO 14001的严格指导，确保所有生产活动都符合最高的环保标准，为客户提供绿色、可持续的产品和服务。</p>
+                        </div>
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/t1.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-box">
+                <div class="image-preview">
+                    <img src="assets/images/E/trush.jpg">
+                    <div class="arrow-icon" onclick="toggleExpand('expand1', this)"></div>
+                </div>
+                <div id="expand1" class="expanded-content">
+                    <div class="expanded-row">
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/t2.jpg">
+                        </div>
+                        <div class="expanded-item-text">
+                            <h3>垃圾分类</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;除了生产环节，我们将ISO 14001环境管理体系的要求延伸到日常办公中。我们积极倡导办公室垃圾分类，在办公区域设置了分类回收箱，引导员工正确投放纸张、塑料、金属、玻璃等可回收物以及其他垃圾。通过细致的分类管理，我们有效减少了办公废弃物的产生量，提高了资源回收率，共同营造一个更加绿色、环保的办公环境。</p>
+                        </div>
+                    </div>
+                    <div class="expanded-row reverse">
+                        <div class="expanded-item-text">
+                            <h3>志愿环卫</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;我们鼓励员工积极参与环保行动。定期组织环保志愿者活动，例如参与社区清洁、植树造林、环保宣传等。这些活动不仅提升了员工的环保意识和团队协作精神，也展现了公司回馈社会、共建美好家园的决心。</p>
+                            <p>&ensp;&ensp;&ensp;&ensp;我们相信，人的本质是其一切社会关系之总和，和谐共生，人人有责。</p>
+                        </div>
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/t3.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        function toggleExpand(expandId, arrowElement) {
+            const expandedContent = document.getElementById(expandId);
+            if (expandedContent) {
+                const isVisible = expandedContent.classList.contains('show');
+                
+                if (isVisible) {
+                    expandedContent.classList.remove('show');
+                    arrowElement.classList.remove('rotated');
+                } else {
+                    expandedContent.classList.add('show');
+                    arrowElement.classList.add('rotated');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const adjustContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader');
+                const mainContent = document.querySelector('.main-content');
+                if (mainHeader && mainContent && window.innerWidth > 768) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+                } else if (mainContent) {
+                    document.documentElement.style.setProperty('--header-height', '0px');
+                }
+            };
+
+            setTimeout(adjustContentMargin, 100); 
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script>
+</body>
+</html>

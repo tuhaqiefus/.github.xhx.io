@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA - 사회적 책임</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #f4f4f4;
+        }
+
+        .placeholder-content {
+            flex-grow: 1;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+
+        .content-block {
+            display: flex;
+            min-height: 33.33vh;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            flex-grow: 1;
+            transition: min-height 0.3s ease;
+        }
+
+        .content-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-left {
+            flex: 0 0 60%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .content-right {
+            flex: 0 0 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #eee;
+            overflow: hidden;
+        }
+
+        .content-right img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .content-block h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .content-block p {
+            font-size: 1.1em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .expand-button {
+            padding: 12px 25px;
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .expand-button:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .expanded-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-out, padding 0.7s ease-out;
+            background-color: #f9f9f9;
+            padding: 0 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .expanded-content.show {
+            max-height: 500px;
+            padding: 20px 40px;
+        }
+
+        .expanded-content .expanded-text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 20px;
+        }
+
+        .expanded-content .expanded-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .expanded-content .expanded-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .expanded-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 30px;
+        }
+
+        .expanded-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .expanded-item-image {
+            width: 45%;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .expanded-item-image img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .expanded-item-text {
+            flex: 1;
+            padding: 15px 0;
+        }
+
+        .expanded-item-text h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 22px;
+            color: #333;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+        }
+
+        .expanded-item-text p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .expanded-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        @media (min-width: 769px) {
+            .main-content {
+                margin-top: var(--header-height, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .placeholder-content {
+                margin-top: 0;
+                min-height: auto;
+                max-width: 100%;
+                padding: 0 10px;
+            }
+
+            .content-block {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .content-left, .content-right {
+                flex: none;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .content-right {
+                order: -1;
+                height: 250px;
+            }
+
+            .content-block h2 {
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+
+            .content-block p {
+                font-size: 1em;
+                margin-bottom: 20px;
+            }
+
+            .expanded-content.show {
+                padding: 15px 20px;
+                flex-direction: column;
+            }
+
+            .expanded-content .expanded-text,
+            .expanded-content .expanded-image {
+                padding: 10px 0;
+                min-width: auto;
+            }
+
+            .expanded-row,
+            .expanded-row.reverse {
+                flex-direction: column;
+                margin-bottom: 30px;
+                gap: 20px;
+            }
+
+            .expanded-item-image {
+                width: 100%;
+            }
+
+            .expanded-item-image img {
+                height: 180px;
+            }
+
+            .expanded-item-text {
+                padding: 10px 0;
+            }
+
+            .expanded-item-text h3 {
+                font-size: 18px;
+            }
+
+            .expanded-item-text p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+    <div class="placeholder-content">
+        <div class="content-block">
+            <div class="content-left">
+                <h2>사회적 책임과 공정성</h2>
+                <h2>（Social Responsibility & Fairness）</h2>
+                <p>우리는 사회적 책임을 적극적으로 이행하여 고용의 공정성과 기회의 균등을 보장합니다.</p>
+                <button class="expand-button">↓</button>
+                <div class="expanded-content">
+                    <div class="expanded-text">
+                        <h3>고용과 공정성의 실천</h3>
+                        <p>우리는 인종, 성별, 종교, 국적, 연령에 관계없이 평등한 취업 기회를 제공합니다. 회사는 5개국 시민으로 구성되어 있으며, 그 중 여성 직원이 약 30%를 차지합니다.</p>
+                    </div>
+                    <div class="expanded-image">
+                        <img src="assets/images/S/s011.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <img src="assets/images/S/s01.jpg">
+            </div>
+        </div>
+
+        <div class="content-block">
+            <div class="content-left">
+                <h2>직업 건강 및 안전 </h2>
+                <h2>(Occupational Health & Safety)</h2>
+                <p>국제적으로 인정된 ISO 45001 표준을 시행함으로써 우리는 직원의 건강, 안전 및 복지를 우선적으로 보장합니다.</p>
+                <button class="expand-button">↓</button>
+                <div class="expanded-content">
+                    <div class="expanded-text">
+                        <h3>ISO 45001인증</h3>
+                        <p>우리는 ISO 45001 직업건강안전관리시스템표준을 엄격히 준수하고, 대량의 자원을 투입하여 안전교육을 실시하며, 직원의 안전 인식과 비상 대응 능력을 향상시킵니다. 사고 보고 조사 메커니즘을 완비하여 모든 직원에게 안전하고 건강한 작업장을 제공합니다.</p>
+                    </div>
+                    <div class="expanded-image">
+                        <img src="assets/images/S/s022.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <img src="assets/images/S/s02.jpg">
+            </div>
+        </div>
+
+        <div class="content-block">
+            <div class="content-left">
+                <h2>자선사업 및 지역사회 참여 </h2>
+                <h2> (Philanthropy & Community Engagement)</h2>
+                <p>우리는 사회에 대한 보답의 중요성을 굳게 믿으며, 다양한 자선 활동에 적극적으로 참여하고 지원하여 지역 사회 발전에 기여하고 있습니다.</p>
+                <button class="expand-button">↓</button>
+                <div class="expanded-content">
+                    <div class="expanded-text">
+                        <h3>지역사회 공헌</h3>
+                        <p>기업 시민으로서 우리는 자선 사업과 지역 사회 건설에 적극적으로 참여하고 있습니다. 우리는 기부금, 물자 지원 및 직원 자원봉사 등 다양한 형태로 교육, 환경 보호, 빈곤 퇴치 및 빈곤 구제 등 분야의 공익 프로젝트를 지원하고 있습니다.</p>
+                    </div>
+                    <div class="expanded-image">
+                        <img src="assets/images/S/s033.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <img src="assets/images/S/s03.jpg">
+            </div>
+        </div>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        function toggleExpand(expandId, arrowElement) {
+            const expandedContent = document.getElementById(expandId);
+            if (expandedContent) {
+                const isVisible = expandedContent.classList.contains('show');
+                
+                if (isVisible) {
+                    expandedContent.classList.remove('show');
+                    arrowElement.classList.remove('rotated');
+                } else {
+                    expandedContent.classList.add('show');
+                    arrowElement.classList.add('rotated');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const expandButtons = document.querySelectorAll('.expand-button'); 
+
+            const adjustPlaceholderContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader');
+                const placeholderContent = document.querySelector('.placeholder-content');
+                if (mainHeader && placeholderContent && window.innerWidth > 768) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    placeholderContent.style.marginTop = `${headerHeight}px`;
+                } else if (placeholderContent && window.innerWidth <= 768) {
+                    placeholderContent.style.marginTop = '0';
+                }
+            };
+            
+            setTimeout(adjustPlaceholderContentMargin, 50);
+            window.addEventListener('resize', adjustPlaceholderContentMargin);
+
+            expandButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const expandedContent = this.nextElementSibling;
+                    expandedContent.classList.toggle('show');
+
+                    if (expandedContent.classList.contains('show')) {
+                        this.textContent = '↑';
+                    } else {
+                        this.textContent = '↓';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA-Overview</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        .content-wrapper {
+            max-width: 1000px;
+            margin: 10px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 40px;
+            color: #333;
+            padding-top: 80px;
+            flex-grow: 1;
+        }
+
+        .content-wrapper h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .content-wrapper h1::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #3498db;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .section-header {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 4px solid #3498db;
+        }
+
+        .content-block {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .content-block.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .content-block img {
+            max-width: 50%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        .content-text {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .content-block.reverse .content-text {
+            padding-right: 0;
+            padding-left: 20px;
+        }
+
+        .content-text p {
+            margin-bottom: 15px;
+            text-align: justify;
+            font-size: 1.1em;
+            font-family:Georgia, serif;;
+            line-height: 1.8;
+}
+        .info-card-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .info-card {
+            flex: 1;
+            background-color: #ecf0f1;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 200px;
+            color: #333;
+        }
+
+        .info-card .value {
+            font-size: 36px;
+            color: #2980b9;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .info-card .label {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                margin: 0 auto;
+                padding: 20px;
+                padding-top: 20px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .content-block {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .content-block.reverse {
+                flex-direction: column;
+            }
+
+            .content-block img {
+                max-width: 100%;
+            }
+
+            .content-text {
+                padding-right: 0;
+                padding-left: 0;
+            }
+
+            .info-card-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .info-card {
+                min-width: unset;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+<div class="container">
+        <div class="content-wrapper">
+            <h1>&nbsp;</h1> <h2 class="section-header">Company Profile</h2>
+            <div class="content-block">
+                <img src="assets/images/overview/chuangshiren.jpg">
+                <div class="content-text">
+                    <p style="text-indent: 2em;">
+                        Xinhuaxia Construction was founded by Mr. Jin Taizhou. In its early development stages, the company received meticulous guidance from Chengdao Construction. Over the years, Xinhuaxia Construction has strictly adhered to international standards, integrated advanced Chinese and Korean technologies, and accumulated rich engineering experience in the fields of precision chemistry and semiconductors.
+                    </p>
+                    <p style="text-indent: 2em;">
+                        The company has obtained international certifications such as ISO9001, ISO14001, and ISO45001, demonstrating excellent management in quality, environmental protection, and occupational health and safety. Facing the stringent environmental control requirements of precision chemistry and the extreme demands for cleanliness, constant temperature and humidity, and ultrapure water in semiconductor production, we provide comprehensive system solutions, from process layout optimization, specialized equipment supply, and critical system integration, to the final handover of the completed plant.
+                    </p>
+                </div>
+            </div>
+
+            <h2 class="section-header">Main Business</h2>
+
+            <div class="content-block">
+                <img src="assets/images/overview/1.png">
+                <div class="content-text">
+                    <h3>Mechanical and Electrical Engineering General Contracting</h3>
+                    <p style="text-indent: 2em;">In mechanical and electrical engineering general contracting, Xinhuaxia provides full-process services from project planning, design, procurement, construction, to commissioning and maintenance. Whether it's complex industrial automation systems, advanced building intelligent solutions, or large-scale power facility construction, Xinhuaxia leverages its professional team and extensive experience to provide clients with efficient, reliable, one-stop mechanical and electrical engineering services, helping projects to be completed with high quality and efficiency.</p>
+                </div>
+            </div>
+
+            <div class="content-block reverse">
+                <img src="assets/images/overview/2.png">
+                <div class="content-text">
+                    <h3>Petrochemical General Contracting</h3>
+                    <p style="text-indent: 2em;">Xinhuaxia possesses extensive experience and professional technology in petrochemical general contracting, capable of undertaking overall planning, engineering design, equipment procurement, construction management, and project handover for various petrochemical projects. Xinhuaxia strictly adheres to industry standards and safety regulations, ensuring high-quality and efficient project completion, providing a solid guarantee for clients' production and operations.</p>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <img src="assets/images/overview/3.png">
+                <div class="content-text">
+                    <h3>Construction Labor Subcontracting</h3>
+                    <p style="text-indent: 2em;">Xinhuaxia provides professional construction labor subcontracting services, offering experienced and skilled construction workers for various engineering projects. Whether it's civil engineering, installation, decoration, or other specialized projects, Xinhuaxia can provide flexible and efficient human resource support as needed, ensuring smooth project progress and meeting various labor requirements.</p>
+                </div>
+            </div>
+
+            <div class="content-block reverse">
+                <img src="assets/images/overview/Acceptance.jpg">
+                <div class="content-text">
+                    <h3>Pressure Pipeline Installation</h3>
+                    <p style="text-indent: 2em;">Xinhuaxia excels in pressure pipeline installation, possessing professional qualifications and a technical team capable of undertaking pipeline system installation projects of various materials and pressures. Xinhuaxia strictly adheres to relevant national regulations and technical standards, ensuring that every pipe connection is safe and reliable, providing stable assurance for industrial production and infrastructure operations.</p>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <img src="assets/images/overview/5.jpg">
+                <div class="content-text">
+                    <h3>Engineering Design and Construction</h3>
+                    <p style="text-indent: 2em;">Xinhuaxia's engineering design and construction team can provide clients with innovative and practical engineering solutions, covering the entire process from project conceptual design, detailed design, to construction management. Xinhuaxia focuses on the economy, practicality, and sustainability of engineering, committed to transforming clients' visions into reality and creating high-quality engineering projects.</p>
+                    <p style="text-indent: 2em;">
+                        What Xinhuaxia delivers is not just an engineering project, but a complete and reliable production solution!
+                    </p>
+                </div>
+            </div>
+
+            <div class="info-card-container">
+                <div class="info-card">
+                    <div class="value" data-target="2009">0</div> <div class="label">Year Established</div>
+                </div>
+                <div class="info-card">
+                    <div class="value" data-target="127">0</div> <div class="label">Number of Employees</div>
+                </div>
+                <div class="info-card">
+                    <div class="value" data-target="12">0</div> <div class="label">Countries/Regions of Operation</div>
+                </div>
+                <div class="info-card">
+                    <div class="value" data-target="6">0</div> <div class="label">Branches</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const counters = document.querySelectorAll('.info-card .value');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+
+            const animateNumber = (element) => {
+                const target = +element.dataset.target;
+                const duration = 1500;
+                const start = 0;
+                let startTime = null;
+
+                const step = (currentTime) => {
+                    if (!startTime) startTime = currentTime;
+                    const progress = Math.min((currentTime - startTime) / duration, 1);
+                    element.textContent = Math.floor(progress * (target - start) + start);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        element.textContent = target;
+                    }
+                };
+                requestAnimationFrame(step);
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateNumber(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            counters.forEach(counter => {
+                observer.observe(counter);
+            });
+            
+            const adjustContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader'); 
+                const contentWrapper = document.querySelector('.content-wrapper');
+                if (mainHeader && contentWrapper) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    contentWrapper.style.marginTop = `${headerHeight + 20}px`;
+                } else if (contentWrapper) {
+                    contentWrapper.style.marginTop = '90px';
+                }
+            };
+            adjustContentMargin();
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>그룹</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', sans-serif;
+            background-color: #f4f4f4;
+            overflow-x: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header#mainHeader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            z-index: 1000;
+            transition: all 0.3s ease;
+            justify-content: center;
+            background: #f7f0f0;
+            box-shadow: none;
+            color: #fffdfd;
+        }
+
+        header#mainHeader.nav-active {
+            background: rgba(192, 192, 192, 0.7);
+            backdrop-filter: blur(1px);
+            box-shadow: 0 1px 2px rgba(192, 192, 192, 0.3);
+            border-bottom: 1px solid rgba(192, 192, 192, 0.8);
+            color: #ffffff;
+        }
+
+        header#mainHeader .logo {
+            height: 50px;
+            transition: all 0.3s ease;
+            z-index: 1001;
+            margin: 0 auto;
+        }
+
+        header#mainHeader .logo img {
+            height: 100%;
+            width: auto;
+            transition: all 0.3s ease;
+        }
+
+        header#mainHeader.nav-active .logo img {
+            filter: brightness(1.2);
+        }
+
+        header#mainHeader nav {
+            display: none;
+            position: relative;
+            z-index: 1001;
+            margin-right: 500px;
+        }
+
+        header#mainHeader nav > a {
+            color: rgb(5, 3, 3);
+            text-decoration: none;
+            margin-left: 50px;
+            font-size: 16px;
+            position: relative;
+            padding: 10px 0;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        header#mainHeader.nav-active nav > a {
+            color: #ffffff;
+            text-shadow: 0 0 5px rgba(192, 192, 192, 0.5);
+        }
+
+        .dropdown-container {
+            position: fixed;
+            top: 70px;
+            left: 0;
+            right: 0;
+            width: 100vw;
+            padding: 2px 0;
+            background: rgba(192, 192, 192, 0.7);
+            backdrop-filter: blur(1px);
+            display: none;
+            z-index: 999;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(192, 192, 192, 0.1);
+            border-bottom: 1px solid rgba(192, 192, 192, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .nav-item:hover .dropdown-container {
+            display: flex;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .dropdown-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-end;
+            flex-wrap: wrap;
+            padding: 15px 20px;
+            gap: 15px;
+        }
+
+        .dropdown-btn {
+            position: relative;
+            width: 120px;
+            height: 80px;
+            margin: 0 5px 5px 0;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+            overflow: hidden;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+            background-size: cover;
+            background-position: center;
+            background-color: rgba(192, 192, 192, 0);
+        }
+
+        .dropdown-btn::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0);
+            z-index: 0;
+            transition: all 0.3s;
+        }
+
+        .dropdown-btn:hover::before {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .dropdown-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-text {
+            position: relative;
+            z-index: 1;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .placeholder-content {
+            min-height: calc(100vh - 90px);
+            margin-top: 90px;
+            flex-grow: 1;
+            background-color: #f4f4f4;
+        }
+
+        footer#mainFooter {
+            background-color: #333;
+            color: #fff;
+            padding: 20px 50px;
+            text-align: center;
+            font-size: 0.9em;
+            line-height: 1.6;
+            flex-shrink: 0;
+        }
+
+        footer#mainFooter p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            header#mainHeader {
+                flex-direction: column;
+                padding: 10px;
+                align-items: flex-start;
+                position: static;
+            }
+
+            header#mainHeader .logo {
+                margin-bottom: 10px;
+                margin-left: 0;
+            }
+
+            header#mainHeader nav {
+                width: 100%;
+                margin-left: 0;
+                margin-right: 0;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            header#mainHeader nav > a {
+                margin: 5px 10px;
+                height: auto;
+                text-align: center;
+                flex-grow: 1;
+                font-size: 14px;
+                padding: 10px 5px;
+            }
+
+            .dropdown-container {
+                position: static;
+                width: 100%;
+                box-shadow: none;
+                border-radius: 0;
+                padding: 10px 0;
+                display: none;
+                opacity: 1;
+                visibility: visible;
+                transform: none;
+                background: rgba(192, 192, 192, 0.95);
+            }
+
+            .nav-item.active .dropdown-container {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .dropdown-content {
+                flex-direction: column;
+                justify-content: center;
+                padding: 10px;
+                gap: 10px;
+            }
+
+            .dropdown-btn {
+                width: calc(80% - 20px);
+                max-width: 300px;
+                height: 70px;
+                font-size: 14px;
+            }
+
+            .placeholder-content {
+                margin-top: 0;
+                min-height: auto;
+            }
+
+            footer#mainFooter {
+                padding: 15px 20px;
+                font-size: 0.8em;
+            }
+        }
+
+        .invisible-zones {
+            position: fixed;
+            left: 0;
+            width: 100vw;
+            height: 50vh;
+            bottom: 0;
+            z-index: 9999;
+            pointer-events: none;
+        }
+        .invisible-zones .zone {
+            position: absolute;
+            top: 0;
+            width: 25vw;
+            height: 100%;
+            pointer-events: auto;
+            display: block;
+            background: transparent;
+        }
+        .invisible-zones .zone:active {
+            background: rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+
+    <header id="mainHeader">
+        <div class="logo">
+            <a href="https://tuhaqiefus.github.io/.github.xhx.io/">
+                <img src="assets/images/LOGO.png">
+            </a>
+        </div>
+        <nav>
+        </nav>
+    </header>
+
+    <img src="assets/images/group/G17.jpg">
+
+    <div class="invisible-zones">
+        <a class="zone" style="left:0%;" href="http://www.juya-tech.com/products/"></a>
+        <a class="zone" style="left:25%;" href="http://www.ky-century.com/list2.php"></a>
+        <a class="zone" style="left:50%;" href="https://semi.xhxcg.com/lljy.php?cid=52"></a>
+        <a class="zone" style="left:75%;" href="https://tuhaqiefus.github.io/.github.xhx.io/cn/html31.html#category1"></a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mainHeader = document.getElementById('mainHeader'); 
+            const navItems = document.querySelectorAll('.nav-item'); 
+            const dropdownContainers = document.querySelectorAll('.dropdown-container'); 
+
+            let headerHideTimeout; 
+            let currentActiveDropdown = null; 
+            let dropdownShowTime = 0; 
+            const minDisplayDuration = 500; 
+            function showDropdown(dropdownElement) {
+
+                if (currentActiveDropdown && currentActiveDropdown !== dropdownElement) {
+                    currentActiveDropdown.style.opacity = '0'; 
+                    currentActiveDropdown.style.visibility = 'hidden';
+                    currentActiveDropdown.style.display = 'none';
+                }
+
+                const headerHeight = mainHeader.offsetHeight;
+                dropdownElement.style.top = `${headerHeight}px`; 
+
+                dropdownElement.style.display = 'block';
+                setTimeout(() => {
+                    dropdownElement.style.opacity = '1';
+                    dropdownElement.style.visibility = 'visible';
+                }, 10);
+                currentActiveDropdown = dropdownElement;
+                dropdownShowTime = Date.now();
+            }
+
+            function hideAllDropdowns() {
+                if (!isMouseOverHeaderAndDropdowns()) {
+                    mainHeader.classList.remove('nav-active');
+                }
+
+                if (currentActiveDropdown) {
+                    const timeSinceShow = Date.now() - dropdownShowTime;
+                    const remainingTime = minDisplayDuration - timeSinceShow;
+
+                    if (remainingTime > 0) {
+                        clearTimeout(headerHideTimeout);
+                        headerHideTimeout = setTimeout(() => {
+                            if (!isMouseOverHeaderAndDropdowns()) {
+                                hideAllDropdownsInternal();
+                            }
+                        }, remainingTime);
+                    } else {
+                        hideAllDropdownsInternal();
+                    }
+                }
+            }
+
+            function hideAllDropdownsInternal() {
+                if (currentActiveDropdown) {
+                    currentActiveDropdown.style.opacity = '0';
+                    currentActiveDropdown.style.visibility = 'hidden';
+                    setTimeout(() => {
+                        if (currentActiveDropdown) {
+                            currentActiveDropdown.style.display = 'none';
+                            currentActiveDropdown = null;
+                        }
+                    }, 300);
+                }
+            }
+
+            function isMouseOverHeaderAndDropdowns() {
+                if (mainHeader.matches(':hover')) {
+                    return true;
+                }
+                for (let i = 0; i < dropdownContainers.length; i++) {
+                    const d = dropdownContainers[i];
+                    if (d.matches(':hover') && d.style.display === 'block' && d.style.opacity === '1') {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            navItems.forEach(item => {
+                const dropdown = item.querySelector('.dropdown-container');
+
+                item.addEventListener('mouseenter', function() {
+                    clearTimeout(headerHideTimeout);
+                    mainHeader.classList.add('nav-active');
+                    if (dropdown) {
+                        showDropdown(dropdown);
+                    } else {
+                        hideAllDropdownsInternal();
+                    }
+                });
+
+                item.addEventListener('click', function(e) {
+                    if (window.innerWidth <= 768 && e.currentTarget.getAttribute('href') === '#') {
+                        e.preventDefault();
+                    }
+
+                    if (window.innerWidth <= 768) {
+                        const targetDropdown = this.querySelector('.dropdown-container');
+
+                        navItems.forEach(navItem => {
+                            if (navItem !== this && navItem.classList.contains('active')) {
+                                navItem.classList.remove('active');
+                            }
+                        });
+
+                        if (targetDropdown) {
+                            this.classList.toggle('active');
+                            if (this.classList.contains('active')) {
+                                mainHeader.classList.add('nav-active');
+                            } else {
+                                setTimeout(() => {
+                                    if (!document.querySelector('.nav-item.active')) {
+                                        mainHeader.classList.remove('nav-active');
+                                    }
+                                }, 300);
+                            }
+                        }
+                    }
+                });
+            });
+
+            mainHeader.addEventListener('mouseleave', function() {
+                headerHideTimeout = setTimeout(() => {
+                    if (!isMouseOverHeaderAndDropdowns()) {
+                        hideAllDropdowns();
+                    }
+                }, 100);
+            });
+
+            dropdownContainers.forEach(dropdown => {
+                dropdown.addEventListener('mouseleave', function() {
+                    headerHideTimeout = setTimeout(() => {
+                        if (!isMouseOverHeaderAndDropdowns()) {
+                            hideAllDropdowns();
+                        }
+                    }, 100);
+                });
+                dropdown.addEventListener('mouseenter', function() {
+                    clearTimeout(headerHideTimeout);
+                });
+            });
+
+            mainHeader.addEventListener('mouseenter', function() {
+                clearTimeout(headerHideTimeout);
+                mainHeader.classList.add('nav-active');
+            });
+
+            const adjustContentMargin = () => {
+                const headerHeight = mainHeader.offsetHeight;
+                const placeholderContent = document.querySelector('.placeholder-content');
+                if (placeholderContent && window.innerWidth > 768) {
+                    placeholderContent.style.marginTop = `${headerHeight}px`;
+                } else if (placeholderContent && window.innerWidth <= 768) {
+                    placeholderContent.style.marginTop = '0';
+                }
+            };
+            adjustContentMargin();
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA_career</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        .main-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 40px;
+            width: 90%;
+            max-width: 1100px;
+            margin: 0 auto;
+            border: 1px solid #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        .page-header-content {
+            width: 100%;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .page-header-content h1 {
+            color: #333;
+            margin: 1px auto 0;
+            text-align: center;
+            width: 100%;
+            font-size: 2.2em;
+        }
+
+        .page-header-content h5 {
+            color: #333;
+            margin: 0px 0 20px 0;
+            text-align: right;
+            width: 100%;
+            font-size: 21px;
+        }
+
+        .map-container {
+            width: 95%;
+            padding-bottom: 75%;
+            height: 0;
+            background-color: white;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .background-map-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            z-index: 1;
+        }
+
+        .overlay-spot {
+            position: absolute;
+            height: auto;
+            cursor: pointer;
+            z-index: 2;
+        }
+
+        #spot1 { width: 1%; top: 58.1%; left: 62.9%; }
+        #spot2 { width: 1%; top: 57%; left: 59%; }
+        #spot3 { width: 1%; top: 37.7%; right: 66%; }
+        #spot4 { width: 1%; top: 60.5%; left: 46.7%; }
+        #spot5 { width: 1%; top: 57.7%; right: 37%; }
+        #spot6 { width: 1%; top: 60.5%; right: 37%; }
+        #spot7 { width: 0.7%; top: 54.7%; right: 32.9%; }
+
+        #provinceTooltip {
+            position: fixed;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+            padding: 12px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            display: none;
+            z-index: 10000;
+            pointer-events: none;
+            flex-direction: column;
+            align-items: center;
+            min-width: 180px;
+            max-width: 250px;
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        #provinceTooltip img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            margin-bottom: 10px;
+        }
+
+        #provinceTooltip p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+
+        .block-table-container {
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 0px;
+            text-align: center;
+        }
+
+        .block-table-container h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        .block-table-container table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 0 auto;
+            font-size: 0.90em;
+            color: #555;
+        }
+
+        .block-table-container th {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+        .block-table-container td {
+            padding: 20px 25px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        .block-table-container th {
+            background-color: #f0f0f0;
+            font-weight: bold;
+            color: #333;
+            border-bottom: 2px solid #ccc;
+        }
+
+        .block-table-container tbody tr:nth-child(2n-1) {
+            background-color: #f9f9f9;
+        }
+
+        .block-table-container tbody tr:nth-child(2n) {
+            background-color: #eaf2f8;
+        }
+
+        .block-table-container tbody tr:hover {
+            background-color: #dbe9f5;
+            cursor: pointer;
+        }
+
+        .block-address-container {
+            width: 100%;
+            max-width: 1100px;
+            margin-top: 40px;
+            padding: 30px;
+            background-color: #ffffff;
+            border-radius: 0px;
+            text-align: center;
+        }
+
+        .block-address-container h2 {
+            color: #333;
+            margin-bottom: 25px;
+            font-size: 2em;
+        }
+
+        .address-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            justify-content: center;
+            align-items: start;
+        }
+
+        .address-item {
+            background-color: white;
+            border: 1px solid white;
+            border-radius: 8px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            min-height: 220px;
+        }
+
+        .address-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .address-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 15px;
+        }
+
+        .address-item h3 {
+            color: #555;
+            font-size: 1.3em;
+            margin-bottom: 10px;
+        }
+
+        .address-item p {
+            color: #777;
+            font-size: 0.95em;
+            line-height: 1.5;
+            margin-bottom: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                margin-top: 0;
+                min-height: auto;
+                width: 80%;
+                padding: 0 10px;
+            }
+
+            .page-header-content {
+                padding: 10px;
+            }
+
+            .page-header-content h1 {
+                font-size: 1.8em;
+            }
+            .page-header-content h5 {
+                font-size: 16px;
+                margin-bottom: 10px;
+                text-align: center;
+            }
+
+            .map-container {
+                width: 100%;
+                height: 300px;
+                padding-bottom: 0;
+            }
+
+            .address-grid {
+                grid-template-columns: 1fr;
+            }
+            .address-item {
+                min-height: auto;
+            }
+            .block-address-container, .block-table-container {
+                padding: 15px;
+                margin-top: 20px;
+            }
+            .block-table-container table {
+                font-size: 0.8em;
+            }
+            .block-table-container th, .block-table-container td {
+                padding: 8px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+    <div class="main-content">
+
+        <div class="block-table-container">
+            <h2>직위공석</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>직책</th>
+                        <th>주소</th>
+                        <th>부서</th>
+                        <th>전업요구</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>전기 엔지니어</td><td>상하이</td><td>제조본부</td><td>전기 제어 및 프로그래밍 경력 5년</td></tr>
+                    <tr><td>시공 감리</td><td>서안</td><td>사업관리부</td><td>5-8년 화공/반도체 공장업무 공정관리, 다단위/사업주/설계원 조정에 능함</td></tr>
+                    <tr><td>비즈니스영어번역(엔지니어링업계)</td><td>상하이</td><td>영업2부</td><td>비즈니스영어전문, 2년 국제공학업무 경력 유</td></tr>
+                    <tr><td>시공매니저</td><td>광저우</td><td>사업관리부</td><td>5-8년 화공/반도체 공정관리 경험, 1급 건설사 자격증 소지</td></tr>
+                    <tr><td>시공총무</td><td>러시아 모스크바</td><td>사업관리부</td><td>3년 엔지니어링 업계 공무/자료원 경력</td></tr>
+                    <tr><td>품질 엔지니어</td><td>상하이(출장빈도 높음)</td><td>품질안전부</td><td>반도체업계 품질관리경험 5년 </td></tr>
+                    <tr><td>BIM설계</td><td>상하이</td><td>기술부</td><td>화공전업, BIM설계경험 5년</td></tr>
+                    <tr><td>화공 공예 설계</td><td>상하이</td><td>연구개발부</td><td>화공설계원/정밀화학품 설계경험 5년</td></tr>
+                    <tr><td>재무관리</td><td>인도 노이다</td><td>품질안전부</td><td>영어、중국어 듣기와 말하기 유창；국제 회계/ACCA증서</td></tr>
+                    <tr><td>계기 엔지니어</td><td>상하이</td><td>제조본부</td><td>전기 자동화 전공, 엔지니어링 경력 8년</td></tr>
+                    <tr><td>계약관리</td><td>서안</td><td>사업관리부</td><td>엔지니어링 관리 전공, 엔지니어링 경력 3년</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="page-header-content">
+
+            <a href="https://companyadc.51job.com/companyads/2022/ah/36841101/index.htm" target="_blank">
+                <h5>☞ Apply>> </h5>
+            </a>
+        </div>
+
+        <p style="text-align: left; color: #333; margin: 30px 0 20px 0; padding-left: 20px; font-size: 24px; font-family: 'SimSun', serif;font-weight: bold;">❀ 工作地点 ❀</p>
+        <p style="text-align: center; color: #999; margin: 0 0 20px 0;">__________________________________________________________________________________________________________________________________</p>
+
+        <div class="map-and-address-container">
+            <div class="map-container">
+                <img src="assets/images/job_map/background.jpg" alt="Background Map" class="background-map-image">
+
+                <img src="assets/images/job_map/spot.jpg" class="overlay-spot" id="spot1" alt="상하이 사무소">
+                <img src="assets/images/job_map/spot.jpg" class="overlay-spot" id="spot2" alt="서안 사무소">
+                <img src="assets/images/job_map/spot.jpg" class="overlay-spot" id="spot3" alt="모스크바 사무소">
+                <img src="assets/images/job_map/spot.jpg" class="overlay-spot" id="spot4" alt="델리 사무소">
+                <img src="assets/images/job_map/spot.jpg" class="overlay-spot" id="spot5" alt="합비 사무소">
+                <img src="assets/images/job_map/spot.jpg" class="overlay-spot" id="spot6" alt="장저우 사무소">
+                <img src="assets/images/job_map/spot.jpg" class="overlay-spot" id="spot7" alt="한국 사무소">
+            </div>
+
+            <div class="block-address-container">
+                <h2>글로벌 오피스</h2>
+                <div class="address-grid">
+                    <div class="address-item">
+                        <h3>상하이 사무소</h3>
+                        <p>Address：상하이시 쑹장구 화자루 99호 롄둥 U밸리 30동</p>
+                        <p>Tel：86-021-6767-0912</p>
+                        <a href="https://ditu.amap.com/search?id=B0LU6NJXNJ&city=310117&geoobj=121.210675%7C31.019864%7C121.225105%7C31.027184&query_type=IDQ&query=%E4%B8%8A%E6%B5%B7%E9%91%AB%E5%8D%8E%E5%A4%8F%E5%8D%8A%E5%AF%BC%E4%BD%93%E8%AE%BE%E5%A4%87%E6%9C%89%E9%99%90%E5%85%AC%E5%8F%B8&zoom=17" target="_blank">
+                            <img src="assets/images/job_map/tiao_zhuan.jpg" 
+                        </a>
+                    </div>
+                    <div class="address-item">
+                        <h3>서안 사무소</h3>
+                        <p> Address：섬서성 서안시 비림구 중무역광장 15호동 2단원 21층</p>
+                        <p>Tel：86-029-8787-6559</p>
+                        <a href="https://ditu.amap.com/search?query=%E9%99%95%E8%A5%BF%E7%9C%81%E8%A5%BF%E5%AE%89%E5%B8%82%E7%A2%91%E6%9E%97%E5%8C%BA%E4%B8%AD%E8%B4%B8%E5%B9%BF%E5%9C%BA15%E5%8F%B7%E6%A5%BC2%E5%8D%95%E5%85%8321%E5%B1%82&city=110000&geoobj=115.159397%7C39.259421%7C118.363109%7C40.595231&zoom=9.3" target="_blank">
+                            <img src="assets/images/job_map/tiao_zhuan.jpg" 
+                        </a>
+                    </div>
+                    <div class="address-item">
+                        <h3>합비 사무소</h3>
+                        <p>Address：안휘성 합비시 신역구 신방부로 1990호 우주광장 오피스텔 706실</p>
+                        <p>Tel：86-123456</p>
+                        <a href="https://ditu.amap.com/search?query=%E5%AE%89%E5%BE%BD%E7%9C%81%E5%90%88%E8%82%A5%E5%B8%82%E6%96%B0%E7%AB%99%E5%8C%BA%E6%96%B0%E8%9A%8C%E5%9F%A0%E8%B7%AF1990%E5%8F%B7%E7%A6%B9%E6%B4%B2%E5%B9%BF%E5%9C%BA%E5%86%99%E5%AD%97%E6%A5%BC706%E5%AE%A4&city=610100&geoobj=117.30867%7C31.899743%7C117.319594%7C31.904786&zoom=17.5" target="_blank">
+                            <img src="assets/images/job_map/tiao_zhuan.jpg" 
+                        </a>
+                    </div>
+                    <div class="address-item">
+                        <h3>장저우 사무소</h3>
+                        <p> Address：복건성 장주시 룡문구 보문가두 건원동로 2호 만달센터 A좌 2102</p>
+                        <p>Tel：86-114</p>
+                        <a href="https://ditu.amap.com/search?query=%E7%A6%8F%E5%BB%BA%E7%9C%81%E6%BC%B3%E5%B7%9E%E5%B8%82%E9%BE%99%E6%96%87%E5%8C%BA%E6%AD%A5%E6%96%87%E8%A1%97%E9%81%93%E5%BB%BA%E5%85%83%E4%B8%9C%E8%B7%AF2%E5%8F%B7%E4%B8%87%E8%BE%BE%E4%B8%AD%E5%BF%83A%E5%BA%A72102&city=340100&geoobj=117.30867%7C31.899743%7C117.319594%7C31.904786&zoom=17.5" target="_blank">
+                            <img src="assets/images/job_map/tiao_zhuan.jpg" 
+                        </a>
+                    </div>
+                    <div class="address-item">
+                        <h3>모스크바 사무소</h3>
+                        <p>Address：러시아 연방 모스크바시 크류코보 시내 제레노그라드 하급시</p>
+                        <p>Tel：123321</p>
+                        <a href="https://www.google.com/maps/place/%E4%BF%84%E7%BD%97%E6%96%AF%E8%8E%AB%E6%96%AF%E7%A7%91%E6%B3%BD%E5%8B%92%E8%AF%BA%E6%A0%BC%E5%8B%92/@55.9864806,37.1609137,13z/data=!3m1!4b1!4m6!3m5!1s0x46b515040599b08b:0x3b05106b263a30c4!8m2!3d55.9871526!4d37.2021514!16zL20vMDNiNjN4!5m1!1e4?entry=ttu&g_ep=EgoyMDI1MDYyMy4yIKXMDSoASAFQAw%3D%3D" target="_blank">
+                            <img src="assets/images/job_map/tiao_zhuan.jpg" 
+                        </a>
+                    </div>
+                    <div class="address-item">
+                        <h3>델리 사무소</h3>
+                        <p>Address：우타르프라데시주 노이다고탐푸다나가르 137호</p>
+                        <p>Tel：114514</p>
+                        <a href="https://www.google.com/maps/search/%E5%8D%B0%E5%BA%A6%E5%8C%97%E6%96%B9%E9%82%A6%E8%AF%BA%E4%BC%8A%E8%BE%BE%E9%AB%98%E5%A1%94%E5%A7%86%E4%BD%9B%E9%99%80%E9%82%A3%E5%8A%A0%E5%B0%94137%E5%8F%B7/@28.5223278,77.3194254,12z/data=!3m1!4b1!5m1!1e4?entry=ttu&g_ep=EgoyMDI1MDYyMy4yIKXMDSoASAFQAw%3D%3D" target="_blank">
+                            <img src="assets/images/job_map/tiao_zhuan.jpg" 
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mapContainer = document.querySelector('.map-container');
+            const tooltip = document.getElementById('provinceTooltip');
+            const tooltipImage = document.getElementById('tooltipImage');
+            const tooltipText = document.getElementById('tooltipText');
+
+            const spotData = {
+                spot1: { text: "상하이 사무소", image: "assets/images/job_map/shanghai.jpg" },
+                spot2: { text: "서안 사무소", image: "assets/images/job_map/xian.jpg" },
+                spot3: { text: "모스크바 사무소", image: "assets/images/job_map/mosike.jpg" },
+                spot4: { text: "델리 사무소", image: "assets/images/job_map/deli.jpg" },
+                spot5: { text: "합비 사무소", image: "assets/images/job_map/hefei.jpg" },
+                spot6: { text: "장저우 사무소", image: "assets/images/job_map/zhangzhou.jpg" },
+                spot7: { text: "한국 사무소", image: "assets/images/job_map/hanguo.jpg" }
+            };
+
+            if (mapContainer) {
+                mapContainer.addEventListener('mousemove', function(event) {
+                    let tooltipX = event.clientX + 15;
+                    let tooltipY = event.clientY + 15;
+
+                    const tooltipWidth = tooltip.offsetWidth;
+                    const tooltipHeight = tooltip.offsetHeight;
+
+                    if (tooltipX + tooltipWidth > window.innerWidth) {
+                        tooltipX = event.clientX - tooltipWidth - 15;
+                    }
+                    if (tooltipY + tooltipHeight > window.innerHeight) {
+                        tooltipY = event.clientY - tooltipHeight - 15;
+                    }
+
+                    tooltip.style.left = tooltipX + 'px';
+                    tooltip.style.top = tooltipY + 'px';
+                });
+
+                const allSpots = document.querySelectorAll('.overlay-spot');
+                allSpots.forEach(spot => {
+                    spot.addEventListener('mouseover', function() {
+                        const spotId = this.id;
+                        const data = spotData[spotId];
+
+                        if (data) {
+                            tooltipImage.src = data.image;
+                            tooltipText.textContent = data.text;
+                            tooltip.style.display = 'flex';
+                        } else {
+                            tooltipImage.src = '';
+                            tooltipText.textContent = this.alt || '...';
+                            tooltip.style.display = 'flex';
+                        }
+                    });
+
+                    spot.addEventListener('mouseout', function() {
+                        tooltip.style.display = 'none';
+                    });
+                });
+                
+                mapContainer.addEventListener('mouseout', function(event) {
+                    if (!mapContainer.contains(event.relatedTarget) && !tooltip.contains(event.relatedTarget)) {
+                        tooltip.style.display = 'none';
+                    }
+                });
+            }
+
+            const allSpotsForScroll = document.querySelectorAll('.overlay-spot');
+            const blockAddressContainer = document.querySelector('.block-address-container');
+
+            allSpotsForScroll.forEach(spot => {
+                spot.addEventListener('click', function() {
+                    if (blockAddressContainer) {
+                        blockAddressContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+
+            const adjustContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader');
+                const mainContent = document.querySelector('.main-content');
+                const pageHeaderContent = document.querySelector('.page-header-content');
+
+                if (mainHeader && mainContent && pageHeaderContent) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    if (window.innerWidth > 768) {
+                        mainContent.style.marginTop = `${headerHeight}px`;
+                        pageHeaderContent.style.marginTop = '0px'; 
+                    } else {
+                        mainContent.style.marginTop = '0';
+                        pageHeaderContent.style.marginTop = '0px';
+                    }
+                }
+            };
+
+            setTimeout(adjustContentMargin, 50);
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script>
+</body>
+</html>

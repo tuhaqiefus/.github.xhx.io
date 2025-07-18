@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>semi_v</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        video {
+            width: 560px;
+            height:560px;
+            object-fit: contain;
+            border: none;
+        }
+        .loading-text {
+            position: absolute;
+            z-index: 10;
+            font-size: 1.5em;
+            color: #eee;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <p class="loading-text">Loading...</p>
+
+    <video id="introVideo" autoplay muted>
+        <source src="../cn/assets/videos/semi.mp4" type="video/mp4">
+        Your browser does not support HTML5 video.
+    </video>
+
+    <script>
+        const introVideo = document.getElementById('introVideo');
+        const loadingText = document.querySelector('.loading-text');
+
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        };
+
+        const targetUrl = getUrlParameter('target');
+
+        function navigateToTarget() {
+            if (targetUrl) {
+                console.log("Navigating to:", targetUrl);
+                window.location.href = targetUrl;
+            } else {
+                console.warn("No target URL specified. Navigating to default page 'html3.html'.");
+
+                            // **************难绷)
+                window.location.href = 'html31.html#category1';
+            }
+        }
+
+        introVideo.play()
+            .then(() => {
+                loadingText.style.display = 'none';
+                console.log("Video started.");
+            })
+            .catch(error => {
+                console.error("error:", error);
+                loadingText.textContent = "error";
+                navigateToTarget();
+            });
+
+        introVideo.onended = function() {
+            console.log("Video ended. Navigating...");
+            navigateToTarget();
+        };
+
+        introVideo.addEventListener('error', function() {
+            console.error("error");
+            loadingText.textContent = "error";
+            navigateToTarget();
+        });
+
+        introVideo.addEventListener('loadedmetadata', function() {
+            console.log("Metadata loaded. Duration:", introVideo.duration, "seconds");
+            loadingText.textContent = "Playing...";
+        });
+    </script>
+
+</body>
+</html>

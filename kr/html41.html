@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA_업무구조</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 20px 0;
+            box-sizing: border-box;
+        }
+
+        .image-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .image-box {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .image-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .arrow-icon {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            z-index: 10;
+        }
+
+        .arrow-icon:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+        }
+
+        .arrow-icon::after {
+            content: '▼';
+            font-size: 24px;
+            color: #333;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow-icon.rotated::after {
+            transform: rotate(180deg);
+        }
+
+        .expanded-content {
+            display: none;
+            padding: 30px;
+            background-color: #ffffff;
+            border-top: 1px solid #eee;
+            box-sizing: border-box;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease-out, max-height 0.5s ease-out;
+        }
+
+        .expanded-content.show {
+            display: block;
+            opacity: 1;
+            max-height: 1000px;
+        }
+
+        .expanded-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 30px;
+        }
+
+        .expanded-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .expanded-item-image {
+            width: 45%;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .expanded-item-image img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .expanded-item-text {
+            flex: 1;
+            padding: 15px 0;
+        }
+
+        .expanded-item-text h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 22px;
+            color: #333;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+        }
+
+        .expanded-item-text p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .expanded-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        @media (min-width: 769px) {
+            .main-content {
+                margin-top: var(--header-height, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .image-container {
+                width: 95%;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .image-preview {
+                height: 200px;
+            }
+
+            .arrow-icon {
+                width: 40px;
+                height: 40px;
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .arrow-icon::after {
+                font-size: 20px;
+            }
+
+            .expanded-content {
+                padding: 20px;
+            }
+
+            .expanded-row,
+            .expanded-row.reverse {
+                flex-direction: column;
+                margin-bottom: 30px;
+                gap: 20px;
+            }
+
+            .expanded-item-image {
+                width: 100%;
+            }
+
+            .expanded-item-image img {
+                height: 180px;
+            }
+
+            .expanded-item-text {
+                padding: 10px 0;
+            }
+
+            .expanded-item-text h3 {
+                font-size: 18px;
+            }
+
+            .expanded-item-text p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+    <div class="main-content">
+        <div class="image-container">
+            <div class="image-box">
+                <div class="image-preview">
+                    <img src="assets/images/E/iso.jpg">
+                    <div class="arrow-icon" onclick="toggleExpand('expand2', this)"></div>
+                </div>
+                <div id="expand2" class="expanded-content">
+                    <div class="expanded-row">
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/honor16liubai.jpg">
+                        </div>
+                        <div class="expanded-item-text">
+                            <h3>ISO 14001</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;회사는 10년 연속 ISO 14001 인증을 획득했습니다.</p>
+                        </div>
+                    </div>
+                    <div class="expanded-row reverse">
+                        <div class="expanded-item-text">
+                            <h3>생산환경관리</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;일상적인 생산 운영에서 신화샤는 ISO 14001 환경 관리 시스템의 요구 사항을 엄격히 준수합니다. 이는 원자재 구매부터 제품 인도까지 모든 단계에서 환경 보호를 그 안에 통합한다는 것을 의미합니다. 우리는 생산 과정에서 에너지 소비와 폐기물 발생을 줄이기 위해 노력할 뿐만 아니라, 오염을 예방하기 위한 조치를 적극적으로 취하고 환경 성과를 지속적으로 최적화하고 있습니다. ISO 14001의 엄격한 지침을 통해 모든 생산 활동이 최고의 환경 보호 표준을 충족하고 고객에게 친환경적이고 지속 가능한 제품과 서비스를 제공하도록 보장합니다.</p>
+                        </div>
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/t1.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-box">
+                <div class="image-preview">
+                    <img src="assets/images/E/trush.jpg">
+                    <div class="arrow-icon" onclick="toggleExpand('expand1', this)"></div>
+                </div>
+                <div id="expand1" class="expanded-content">
+                    <div class="expanded-row">
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/t2.jpg">
+                        </div>
+                        <div class="expanded-item-text">
+                            <h3>쓰레기 분류</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;생산 단계 외에도 ISO 14001 환경 관리 시스템의 요구 사항을 일상 업무로 확장하여 진행하고 있습니다. 우리는 사무실 쓰레기 분리수거를 적극적으로 권장하며, 사무실 구역에 분리리 수거함을 설치하여 직원들이 종이, 플라스틱, 금속, 유리 등의 재활용품 및 기타 쓰레기를 올바르게 수거할 수 있도록 안내하고 있습니다. 세심한 분리 수거 관리를 통해 우리는 사무실 폐기물 발생량을 효과적으로 줄이고, 자원 회수율을 높였으며, 함께 더욱 친환경적이고 환경 친화적인 사무실 환경을 조성하고 있습니다.</p>
+                        </div>
+                    </div>
+                    <div class="expanded-row reverse">
+                        <div class="expanded-item-text">
+                            <h3>환경미화원 지원</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;우리는 직원들이 환경보호 활동에 적극적으로 참여하도록 장려합니다. 정기적으로 지역 청소 참여, 나무 심기, 환경 보호 홍보 등과 같은 환경 보호 자원봉사 활동을 조직합니다. 이러한 활동은 직원들의 환경 보호 의식과 팀워크 정신을 향상시켰을 뿐만 아니라, 회사가 사회에 보답하고 아름다운 집을 함께 건설하려는 결의를 보여주었습니다.</p>
+                            <p>&ensp;&ensp;&ensp;&ensp;우리는 인간의 본질이 모든 사회 관계의 총체이며, 조화롭게 공존하는 것은 모두의 책임이라고 믿습니다.</p>
+                        </div>
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/t3.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        function toggleExpand(expandId, arrowElement) {
+            const expandedContent = document.getElementById(expandId);
+            if (expandedContent) {
+                const isVisible = expandedContent.classList.contains('show');
+                
+                if (isVisible) {
+                    expandedContent.classList.remove('show');
+                    arrowElement.classList.remove('rotated');
+                } else {
+                    expandedContent.classList.add('show');
+                    arrowElement.classList.add('rotated');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const adjustContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader');
+                const mainContent = document.querySelector('.main-content');
+                if (mainHeader && mainContent && window.innerWidth > 768) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+                } else if (mainContent) {
+                    document.documentElement.style.setProperty('--header-height', '0px');
+                }
+            };
+
+            setTimeout(adjustContentMargin, 100); 
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script>
+</body>
+</html>
