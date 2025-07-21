@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA_environmental</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            margin: 0;
+font-family: Georgia, serif;
+            background-color: #f0f2f5;
+        }
+
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            padding: 20px 0;
+            box-sizing: border-box;
+        }
+
+        .image-container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .image-box {
+            background-color: #f9f9f9;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            overflow: hidden;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .image-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .image-preview {
+            width: 100%;
+            height: 400px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .arrow-icon {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            width: 50px;
+            height: 50px;
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            z-index: 10;
+        }
+
+        .arrow-icon:hover {
+            background-color: rgba(255, 255, 255, 1);
+            transform: scale(1.05);
+        }
+
+        .arrow-icon::after {
+            content: '▼';
+            font-size: 24px;
+            color: #333;
+            transition: transform 0.3s ease;
+        }
+
+        .arrow-icon.rotated::after {
+            transform: rotate(180deg);
+        }
+
+        .expanded-content {
+            display: none;
+            padding: 30px;
+            background-color: #ffffff;
+            border-top: 1px solid #eee;
+            box-sizing: border-box;
+            opacity: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: opacity 0.5s ease-out, max-height 0.5s ease-out;
+        }
+
+        .expanded-content.show {
+            display: block;
+            opacity: 1;
+            max-height: 1000px;
+        }
+
+        .expanded-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 30px;
+        }
+
+        .expanded-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .expanded-item-image {
+            width: 45%;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .expanded-item-image img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .expanded-item-text {
+            flex: 1;
+            padding: 15px 0;
+        }
+
+        .expanded-item-text h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 22px;
+            color: #333;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+        }
+
+        .expanded-item-text p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .expanded-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        @media (min-width: 769px) {
+            .main-content {
+                margin-top: var(--header-height, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .image-container {
+                width: 95%;
+                padding: 20px;
+                gap: 20px;
+            }
+
+            .image-preview {
+                height: 200px;
+            }
+
+            .arrow-icon {
+                width: 40px;
+                height: 40px;
+                bottom: 15px;
+                right: 15px;
+            }
+
+            .arrow-icon::after {
+                font-size: 20px;
+            }
+
+            .expanded-content {
+                padding: 20px;
+            }
+
+            .expanded-row,
+            .expanded-row.reverse {
+                flex-direction: column;
+                margin-bottom: 30px;
+                gap: 20px;
+            }
+
+            .expanded-item-image {
+                width: 100%;
+            }
+
+            .expanded-item-image img {
+                height: 180px;
+            }
+
+            .expanded-item-text {
+                padding: 10px 0;
+            }
+
+            .expanded-item-text h3 {
+                font-size: 18px;
+            }
+
+            .expanded-item-text p {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+<div class="main-content">
+        <div class="image-container">
+            <div class="image-box">
+                <div class="image-preview">
+                    <img src="assets/images/E/iso.jpg">
+                    <div class="arrow-icon" onclick="toggleExpand('expand2', this)"></div>
+                </div>
+                <div id="expand2" class="expanded-content">
+                    <div class="expanded-row">
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/honor16liubai.jpg">
+                        </div>
+                        <div class="expanded-item-text">
+                            <h3>ISO 14001</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;The company has been ISO 14001 certified for 10 consecutive years.</p>
+                        </div>
+                    </div>
+                    <div class="expanded-row reverse">
+                        <div class="expanded-item-text">
+                            <h3>Production Environment Management</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;In daily production operations, Xinhuaxia strictly adheres to the requirements of the ISO 14001 environmental management system. This means that environmental protection is integrated into every stage, from raw material procurement to product delivery. We are committed not only to reducing energy consumption and waste generation during production but also to actively taking measures to prevent pollution and continuously optimizing environmental performance. Through the strict guidance of ISO 14001, we ensure that all production activities comply with the highest environmental standards, providing customers with green, sustainable products and services.</p>
+                        </div>
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/t1.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+<div class="image-box">
+                <div class="image-preview">
+                    <img src="assets/images/E/trush.jpg">
+                    <div class="arrow-icon" onclick="toggleExpand('expand1', this)"></div>
+                </div>
+                <div id="expand1" class="expanded-content">
+                    <div class="expanded-row">
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/t2.jpg">
+                        </div>
+                        <div class="expanded-item-text">
+                            <h3>Waste Classification</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;Beyond our production processes, we extend the requirements of the ISO 14001 environmental management system to our daily office operations. We actively promote office waste classification by setting up sorted recycling bins in office areas, guiding employees to correctly dispose of recyclable materials like paper, plastic, metal, and glass, as well as other waste. Through meticulous classification management, we effectively reduce the amount of office waste generated, increase resource recovery rates, and collectively foster a greener, more environmentally friendly office environment.</p>
+                        </div>
+                    </div>
+                    <div class="expanded-row reverse">
+                        <div class="expanded-item-text">
+                            <h3>Volunteer Environmental Sanitation</h3>
+                            <p>&ensp;&ensp;&ensp;&ensp;We encourage our employees to actively participate in environmental protection initiatives. We regularly organize environmental volunteer activities, such as participating in community clean-ups, tree planting, and environmental awareness campaigns. These activities not only enhance employees' environmental awareness and teamwork spirit but also demonstrate the company's determination to give back to society and build a better home for all.</p>
+                            <p>&ensp;&ensp;&ensp;&ensp;We believe that the essence of a person is the sum of all their social relations, and harmonious coexistence is everyone's responsibility.</p>
+                        </div>
+                        <div class="expanded-item-image">
+                            <img src="assets/images/E/t3.jpg">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        function toggleExpand(expandId, arrowElement) {
+            const expandedContent = document.getElementById(expandId);
+            if (expandedContent) {
+                const isVisible = expandedContent.classList.contains('show');
+                
+                if (isVisible) {
+                    expandedContent.classList.remove('show');
+                    arrowElement.classList.remove('rotated');
+                } else {
+                    expandedContent.classList.add('show');
+                    arrowElement.classList.add('rotated');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const adjustContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader');
+                const mainContent = document.querySelector('.main-content');
+                if (mainHeader && mainContent && window.innerWidth > 768) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    document.documentElement.style.setProperty('--header-height', `${headerHeight}px`);
+                } else if (mainContent) {
+                    document.documentElement.style.setProperty('--header-height', '0px');
+                }
+            };
+
+            setTimeout(adjustContentMargin, 100); 
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script>
+</body>
+</html>

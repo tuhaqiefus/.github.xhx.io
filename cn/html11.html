@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA-Overview</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        .content-wrapper {
+            max-width: 1000px;
+            margin: 10px auto;
+            padding: 30px;
+            background-color: #fff;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            border-radius: 40px;
+            color: #333;
+            padding-top: 80px;
+            flex-grow: 1;
+        }
+
+        .content-wrapper h1 {
+            text-align: center;
+            color: #2c3e50;
+            font-size: 2em;
+            margin-bottom: 40px;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .content-wrapper h1::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #3498db;
+            margin: 10px auto 0;
+            border-radius: 2px;
+        }
+
+        .section-header {
+            font-size: 1.8em;
+            color: #34495e;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding-left: 15px;
+            border-left: 4px solid #3498db;
+        }
+
+        .content-block {
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .content-block.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .content-block img {
+            max-width: 50%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            object-fit: cover;
+        }
+
+        .content-text {
+            flex: 1;
+            padding-right: 20px;
+        }
+
+        .content-block.reverse .content-text {
+            padding-right: 0;
+            padding-left: 20px;
+        }
+
+        .content-text p {
+            margin-bottom: 15px;
+            text-align: justify;
+            font-size: 21px;
+            font-family: "宋体", "SimSun", "STSong", serif;
+            line-height: 1.8;
+}
+        .info-card-container {
+            display: flex;
+            justify-content: space-around;
+            gap: 20px;
+            margin-top: 50px;
+            padding-top: 30px;
+            border-top: 1px solid #eee;
+        }
+
+        .info-card {
+            flex: 1;
+            background-color: #ecf0f1;
+            padding: 25px;
+            border-radius: 8px;
+            text-align: center;
+            min-width: 200px;
+            color: #333;
+        }
+
+        .info-card .value {
+            font-size: 36px;
+            color: #2980b9;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .info-card .label {
+            font-size: 1.1em;
+            color: #555;
+        }
+
+        @media (max-width: 768px) {
+            .content-wrapper {
+                margin: 0 auto;
+                padding: 20px;
+                padding-top: 20px;
+                border-radius: 0;
+                box-shadow: none;
+            }
+
+            .content-block {
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .content-block.reverse {
+                flex-direction: column;
+            }
+
+            .content-block img {
+                max-width: 100%;
+            }
+
+            .content-text {
+                padding-right: 0;
+                padding-left: 0;
+            }
+
+            .info-card-container {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .info-card {
+                min-width: unset;
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+    <div class="container">
+        <div class="content-wrapper">
+            <h1>&nbsp;</h1> <h2 class="section-header">公司介绍</h2>
+            <div class="content-block">
+                <img src="assets/images/overview/chuangshiren.jpg">
+                <div class="content-text">
+                    <p style="text-indent: 2em;">
+                        鑫华夏建设由金太周先生创立。公司早期发展阶段，得到了成道建设的悉心指引。多年来鑫华夏建设严格遵循国际标准，融合中韩先进技术，积累了精密化学和半导体领域丰富的工程经验。
+                    </p>
+                    <p style="text-indent: 2em;">
+                        公司已取得ISO9001、ISO14001及ISO45001等国际认证，在质量、环保与职业健康安全领域管理优异。面对精密化学对环境控制的严苛要求以及半导体生产对洁净度、恒温恒湿、超纯水等极端条件的极致需求，能提供从工艺布局优化、专用设备供给、关键系统集成，直至厂房竣工交付的全流程系统解决方案。
+                    </p>
+                </div>
+            </div>
+
+            <h2 class="section-header">主营业务</h2>
+
+            <div class="content-block">
+                <img src="assets/images/overview/1.png">
+                <div class="content-text">
+                    <h3>机电工程总承包</h3>
+                    <p style="text-indent: 2em;">在机电工程总承包方面，鑫华夏提供从项目规划、设计、采购、施工到调试和维护的全流程服务。无论是复杂的工业自动化系统、先进的楼宇智能化解决方案，还是大规模的电力设施建设，鑫华夏都能凭借专业的团队和丰富的经验，为客户提供高效、可靠、一站式的机电工程服务，助力项目高质高效完成。</p>
+                </div>
+            </div>
+
+            <div class="content-block reverse">
+                <img src="assets/images/overview/2.png">
+                <div class="content-text">
+                    <h3>石油化工总承包</h3>
+                    <p style="text-indent: 2em;">鑫华夏在石油化工总承包领域具备丰富的经验和专业技术，能够承担各类石油化工项目的整体规划、工程设计、设备采购、施工管理及竣工交付。鑫华夏严格遵循行业标准和安全规范，确保项目高效高质完成，为客户的生产运营提供坚实保障。</p>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <img src="assets/images/overview/3.png">
+                <div class="content-text">
+                    <h3>建筑劳务分包</h3>
+                    <p style="text-indent: 2em;">鑫华夏提供专业的建筑劳务分包服务，为各类工程项目提供经验丰富、技能娴熟的建筑劳务人员。无论是土建、安装、装饰还是其他专项工程，鑫华夏都能根据需求，提供灵活高效的人力支持，确保项目顺利进行，满足各项用工需求。</p>
+                </div>
+            </div>
+
+            <div class="content-block reverse">
+                <img src="assets/images/overview/Acceptance.jpg">
+                <div class="content-text">
+                    <h3>压力管道安装</h3>
+                    <p style="text-indent: 2em;">鑫华夏精通压力管道安装，拥有专业的资质和技术团队，能够承担各种材质和压力的管道系统安装工程。鑫华夏严格遵守国家相关法规和技术标准，确保每一段管道的连接都安全可靠，为工业生产和基础设施运行提供稳定保障。</p>
+                </div>
+            </div>
+
+            <div class="content-block">
+                <img src="assets/images/overview/5.jpg">
+                <div class="content-text">
+                    <h3>工程设计施工</h3>
+                    <p style="text-indent: 2em;">鑫华夏的工程设计施工团队能够为客户提供创新且实用的工程方案，涵盖从项目概念设计、详细设计到施工管理的全过程。鑫华夏注重工程的经济性、实用性和可持续性，致力于将客户的愿景转化为现实，打造高质量的工程项目。</p>
+                    <p style="text-indent: 2em;">
+                        鑫华夏交付的不仅是工程，而是一套完整可靠的生产解决方案!
+                    </p>
+                </div>
+            </div>
+
+            <div class="info-card-container">
+                <div class="info-card">
+                    <div class="value" data-target="2009">0</div> <div class="label">创立年份</div>
+                </div>
+                <div class="info-card">
+                    <div class="value" data-target="127">0</div> <div class="label">员工人数</div>
+                </div>
+                <div class="info-card">
+                    <div class="value" data-target="12">0</div> <div class="label">经营国家/地区</div>
+                </div>
+                <div class="info-card">
+                    <div class="value" data-target="6">0</div> <div class="label">分公司</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const counters = document.querySelectorAll('.info-card .value');
+            const observerOptions = {
+                root: null,
+                rootMargin: '0px',
+                threshold: 0.5
+            };
+
+            const animateNumber = (element) => {
+                const target = +element.dataset.target;
+                const duration = 1500;
+                const start = 0;
+                let startTime = null;
+
+                const step = (currentTime) => {
+                    if (!startTime) startTime = currentTime;
+                    const progress = Math.min((currentTime - startTime) / duration, 1);
+                    element.textContent = Math.floor(progress * (target - start) + start);
+
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    } else {
+                        element.textContent = target;
+                    }
+                };
+                requestAnimationFrame(step);
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        animateNumber(entry.target);
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+
+            counters.forEach(counter => {
+                observer.observe(counter);
+            });
+            
+            const adjustContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader'); 
+                const contentWrapper = document.querySelector('.content-wrapper');
+                if (mainHeader && contentWrapper) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    contentWrapper.style.marginTop = `${headerHeight + 20}px`;
+                } else if (contentWrapper) {
+                    contentWrapper.style.marginTop = '90px';
+                }
+            };
+            adjustContentMargin();
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,441 @@
+body {
+    margin: 0; /* 移除body元素默认的外边距 */
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* 设置统一的字体族 */
+    color: #333; /* 设置body元素的默认文本颜色 */
+    line-height: 1.6; /* 设置行高，提高文本可读性 */
+    display: flex; /* 将body设置为Flex容器，用于实现页面整体布局（header, main-content, footer）的垂直堆叠 */
+    flex-direction: column; /* Flex项目（页眉、主要内容、页脚）垂直堆叠 */
+    min-height: 100vh; /* 确保body的最小高度占满整个视口高度，即使内容很少也能撑开 */
+}
+
+/* 预留 3vh */
+.main-content {
+    display: flex; /* 将main-content设置为Flex容器 */
+    flex-direction: column; /* 使其内部的H1标题、photo-gallery-container和main-content-bottom垂直堆叠 */
+    padding-top: 20vh; /* 在main-content顶部预留2视口高度的内边距 */
+    background-color: transparent; /* 设置背景颜色为透明 */
+    flex-grow: 1; /* 允许main-content尽可能占据可用空间，将页脚推到底部 */
+}
+
+/* 重新定义 H1 样式，现在它直接在 .main-content 中 */
+.main-content h1 {
+    text-align: left; /* 标题文本左对齐 */
+    color: #8995a0; /* 设置标题文本颜色 */
+    margin-top: 0; /* 移除标题顶部的外边距，因为父元素main-content已经通过padding-top预留了空间 */
+    margin-bottom: 10vh; /* 设置标题下方和内容区之间的外边距 */
+    font-size: 2.5em; /* 设置标题字体大小，相对于父元素字体大小的2.5倍 */
+    font-weight: 600; /* 设置字体粗细 */
+}
+
+.main-content-bottom {
+    background-color: #ffffff; /* 设置底部区域的背景颜色为白色 */
+    padding: 20px; /* 设置底部区域的内边距 */
+    flex-shrink: 0; /* 防止此Flex项目（底部区域）在空间不足时收缩 */
+    text-align: center; /* 确保底部区域的文本内容居中 */
+    margin-top: auto; /* 将此Flex项目（底部区域）推到Flex容器（main-content）的底部，如果photo-gallery-container的flex-grow为1 */
+}
+
+.main-content-bottom .centered-image {
+    max-width: 100%; /* 限制图片的最大宽度为父容器的100% */
+    max-height: 400px; /* 限制图片的最大高度为400像素 */
+    height: auto; /* 保持图片纵横比 */
+    display: block; /* 将图片显示为块级元素，以便可以设置margin等 */
+}
+
+/* --- 照片画廊和模态框的样式 --- */
+
+
+/* 主页面照片摘要画廊容器 */
+.photo-gallery-container {
+    display: grid;
+    /* 关键修改：直接用 vw 单位设置两列的宽度 */
+    /* 例如，如果希望每列内容宽度是 40vw */
+    grid-template-columns: 30vw 30vw; /* 两列，每列固定宽度40vw */
+    
+    gap: 3vw; /* 图片之间保持 3vw 间距 */
+    max-width: unset; /* 移除最大宽度限制 */
+    margin: 0 auto 20px; /* 左右居中，底部外边距 */
+    
+    /* 容器左右的内边距，用于控制整体与视口边缘的间距 */
+    /* 例如，如果两列是 40vw+40vw=80vw，中间gap是3vw，那么总内容宽度是83vw。
+       如果希望左右也与gap相同，那么左右padding加起来应该是 100vw - 83vw = 17vw。
+       所以左右各 8.5vw。 */
+    /* 另一种更简单的设置是：整个容器居中，让grid自动处理间距 */
+    padding: 0; /* 移除容器自身的左右内边距，让 grid 的 gap 负责间距 */
+    justify-content: center; /* 将整个网格内容在容器中居中 */
+
+    box-sizing: border-box;
+    flex-grow: 1;
+}
+
+
+
+
+
+
+
+
+/* 统一的摘要块样式 (图文上下排布) */
+.abstract-block {
+    display: flex; /* 将每个摘要块设置为Flex容器 */
+    flex-direction: column; /* 关键修改：使Flex项目（图片和文本）垂直堆叠，实现图片在上，文字在下 */
+    background-color: transparent; /* 设置背景颜色为透明 */
+    border-radius: 5px; /* 设置圆角边框 */
+    box-shadow: 0 6px 15px rgba(0,0,0,0.08); /* 添加阴影效果 */
+    overflow: hidden; /* 隐藏超出容器的内容 */
+    cursor: pointer; /* 鼠标悬停时显示手型光标 */
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* 定义过渡效果 */
+}
+.abstract-block:hover {
+    transform: translateY(-8px); /* 鼠标悬停时向上移动8像素 */
+    box-shadow: 0 10px 25px rgba(0,0,0,0.0); /* 鼠标悬停时阴影变为透明，实现消失效果 */
+}
+
+.abstract-block .abstract-image {
+    /* 图片容器宽度充满父级（Grid单元格的100%） */
+    width: 100%;
+    /* 使用padding-bottom技巧来保持图片的纵横比（20 / 30 = 0.6666...） */
+    padding-bottom: 66.66%;
+    height: 0; /* 配合padding-bottom实现纵横比 */
+    position: relative; /* 为内部img的绝对定位提供参考点 */
+    overflow: hidden; /* 隐藏超出容器的内容 */
+    border-bottom: 1px solid #f0f0f0; /* 在图片下方添加边框，分隔图片和文字 */
+    box-sizing: border-box; /* 确保内边距包含在宽度计算中 */
+}
+.abstract-block .abstract-image img {
+    position: absolute; /* 绝对定位，使其能够填满父容器 */
+    top: 0; /* 顶部对齐 */
+    left: 0; /* 左侧对齐 */
+    width: 100%; /* 图片宽度填充父容器100% */
+    height: 100%; /* 图片高度填充父容器100% */
+    object-fit: cover; /* 确保图片覆盖整个容器，可能会裁剪以适应 */
+    display: block; /* 将图片显示为块级元素 */
+}
+
+.abstract-block .abstract-text {
+    width: 100%; /* 关键：让文字容器宽度与图片容器宽度一致 */
+    padding: 15px 20px; /* 设置内边距，左右稍微大一些 */
+    display: flex; /* 将文本容器设置为Flex容器 */
+    flex-direction: column; /* 使内部元素（标题、预览文本）垂直堆叠 */
+    justify-content: flex-start; /* 文字内容从容器顶部开始对齐 */
+    text-align: left; /* 文本左对齐 */
+    box-sizing: border-box; /* 确保内边距包含在总宽度中 */
+}
+.abstract-block .abstract-title {
+    width: 100%; /* 确保标题宽度不超过文字容器 */
+    font-size: 1.25em; /* 设置字体大小 */
+    font-weight: 700; /* 设置字体粗细 */
+    color: #34495e; /* 设置标题颜色 */
+    margin-bottom: 8px; /* 设置标题下方外边距 */
+    line-height: 1.3; /* 设置行高 */
+    text-decoration: none; /* 移除文本装饰（如下划线） */
+    cursor: pointer; /* 鼠标悬停时显示手型光标 */
+    transition: color 0.2s ease-in-out; /* 定义颜色过渡效果 */
+}
+.abstract-block .abstract-title:hover {
+    color: #4a90e2; /* 鼠标悬停时改变标题颜色 */
+}
+
+.abstract-block .abstract-preview {
+    width: 100%; /* 确保预览文本宽度不超过文字容器 */
+    font-size: 0.95em; /* 设置字体大小 */
+    color: #7f8c8d; /* 设置文本颜色 */
+    line-height: 1.5; /* 设置行高 */
+    overflow: hidden; /* 隐藏超出容器的内容 */
+    text-overflow: ellipsis; /* 当文本溢出时显示省略号 */
+    display: -webkit-box; /* 启用WebKit的弹性盒子模型，用于多行文本溢出控制 */
+    -webkit-line-clamp: 2; /* 限制文本显示为两行 */
+    -webkit-box-orient: vertical; /* 指定文本盒子的排列方向为垂直，配合-webkit-line-clamp */
+    word-wrap: break-word; /* 允许长单词在达到容器边界时强制换行 */
+    overflow-wrap: break-word; /* 现代浏览器推荐使用，与word-wrap功能类似 */
+    white-space: normal; /* 确保文本会正常换行，而不是保持在单行 */
+}
+
+/* --- 模态框 (弹窗) 样式 --- */
+.modal {
+    display: none; /* 默认隐藏弹窗，通过 JavaScript 控制显示为 flex */
+    position: fixed; /* 固定定位，使其相对于视口定位 */
+    z-index: 3; /* 设置堆叠顺序，确保在其他内容之上（根据页眉z-index可能需要调整） */
+    left: 0; /* 左侧对齐 */
+    top: 0; /* 顶部对齐 */
+    width: 100%; /* 宽度占满视口 */
+    height: 100%; /* 高度占满视口 */
+    overflow: auto; /* 当内容超出时显示滚动条 */
+    background-color: rgba(0,0,0,0.7); /* 半透明黑色背景 */
+    align-items: center; /* Flex项目（modal-content）在交叉轴（垂直方向）上居中 */
+    justify-content: center; /* Flex项目（modal-content）在主轴（水平方向）上居中 */
+}
+
+.modal-content {
+    background-color: #fefefe; /* 设置模态框内容的背景颜色 */
+    padding: 30px; /* 设置内边距 */
+    border-radius: 15px; /* 设置圆角边框 */
+    max-width: 90vw; /* 模态框最大宽度为视口宽度的80% */
+    min-width: 60vw; /* 模态框最小宽度为视口宽度的60% */
+    max-height: 70vh; /* 模态框最大高度为视口高度的90% */
+    overflow-y: auto; /* 当内容超出时，垂直方向显示滚动条 */
+    position: relative; /* 为关闭按钮的绝对定位提供参考点 */
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4); /* 添加阴影效果 */
+    animation: fadeInScale 0.3s ease-out; /* 播放进入动画 */
+}
+
+
+
+
+
+/* 搜索框容器样式 */
+.search-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 10vh; /* 距离上方h1 10vh间距 */
+    margin-bottom: 5vh;
+    padding: 0 20vw 0 0; /* 右侧20vw间距，左侧为0 */
+    box-sizing: border-box;
+}
+
+/* 搜索输入框样式 */
+#searchInput {
+    flex-grow: 0; /* 不再自动拉伸 */
+    width: 20vw; /* 固定宽度 */
+    max-width: 20vw;
+    min-width: 120px;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    border-radius: 25px;
+    font-size: 1em;
+    outline: none;
+    transition: border-color 0.3s ease;
+    margin-left: 0;
+}
+
+#searchInput:focus {
+    border-color: #4a90e2; /* 聚焦时边框颜色 */
+    box-shadow: 0 0 5px rgba(74, 144, 226, 0.5); /* 聚焦时阴影 */
+}
+
+/* 搜索按钮样式 */
+#searchButton {
+    padding: 12px 25px;
+    margin-left: 15px;
+    background-color: #125ba3;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+#searchButton:hover {
+    background-color: #0e4c85; /* 鼠标悬停时背景色变深 */
+    transform: translateY(-2px); /* 鼠标悬停时稍微上移 */
+}
+
+/* 如果您的H1本身是居中的，search-container可以考虑不需要justify-content: center;
+   或者调整H1的样式，让它和搜索框一起居中。
+   目前H1是text-align: left;，如果搜索框也需要左对齐，可以移除 search-container 的 justify-content: center; */
+.main-content h1 {
+    text-align: left; /* 保持左对齐 */
+    color: #125ba3;
+    margin-top: 0;
+    margin-bottom: 20px; /* 调整与搜索框之间的间距 */
+    font-size: 2.5em;
+    font-weight: 600;
+    padding: 0 5vw; /* 让H1也与搜索框和画廊的左右对齐 */
+    box-sizing: border-box;
+}
+
+/* 调整 photo-gallery-container 的 margin-top，避免与搜索框重叠 */
+.photo-gallery-container {
+    margin-top: 0; /* 移除顶部外边距，因为搜索框已经提供了下方外边距 */
+    /* ... 其他样式保持不变 ... */
+}
+
+
+
+/* 响应式调整 - 在小屏幕上搜索框可能需要更宽 */
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column; /* 在小屏幕上改为垂直堆叠 */
+        align-items: flex-end; /* 小屏幕也靠右 */
+        padding: 0 10px; /* 调整内边距 */
+        margin-bottom: 30px;
+    }
+    #searchInput {
+        width: 100%; /* 宽度占满 */
+        max-width: 100%;
+        margin-bottom: 15px; /* 与按钮之间的间距 */
+    }
+    #searchButton {
+        margin-left: 0; /* 移除左侧外边距 */
+        width: 100%; /* 按钮宽度占满 */
+    }
+    .main-content h1 {
+        padding: 0 10px; /* 调整小屏幕下H1的内边距 */
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* 弹窗出现动画 */
+@keyframes fadeInScale {
+    from {
+        opacity: 0; /* 从完全透明开始 */
+        transform: scale(0.95); /* 从缩小95%开始 */
+    }
+    to {
+        opacity: 1; /* 到完全不透明 */
+        transform: scale(1); /* 到原始大小 */
+    }
+}
+
+.close-button {
+    color: #aaa; /* 设置关闭按钮颜色 */
+    font-size: 32px; /* 设置字体大小 */
+    font-weight: bold; /* 字体加粗 */
+    position: absolute; /* 绝对定位 */
+    top: 15px; /* 距离顶部15像素 */
+    right: 25px; /* 距离右侧25像素 */
+    cursor: pointer; /* 鼠标悬停时显示手型光标 */
+    transition: color 0.2s ease-in-out; /* 定义颜色过渡效果 */
+}
+.close-button:hover,
+.close-button:focus {
+    color: #555; /* 鼠标悬停或聚焦时改变颜色 */
+    text-decoration: none; /* 移除文本装饰 */
+}
+
+/* --- 模态框内统一的详情样式 --- */
+.detail-content {
+    padding: 10px; /* 模态框内详情内容的内边距 */
+}
+
+.detail-content .modal-main-title {
+    text-align: center; /* 详情主标题居中 */
+    color: #2c3e50; /* 设置标题颜色 */
+    margin-bottom: 30px; /* 标题下方外边距 */
+    font-size: 2.2em; /* 字体大小 */
+    font-weight: 700; /* 字体粗细 */
+    border-bottom: 2px solid #e0e0e0; /* 底部边框 */
+    padding-bottom: 10px; /* 边框下方的内边距 */
+    text-align: center;
+}
+
+.detail-content .content-block-paragraph {
+    font-size: 1.05em; /* 段落字体大小 */
+    line-height: 1.8; /* 段落行高 */
+    color: #34495e; /* 段落颜色 */
+    margin-bottom: 25px; /* 段落下方外边距 */
+    text-align: justify; /* 文本两端对齐 */
+    padding: 0 5px; /* 左右内边距 */
+}
+
+.detail-content .content-block-image-group {
+    display: flex;
+    justify-content: center;   /* 水平居中所有图片 */
+    gap: 18px;                 /* 图片间距 */
+    margin: 30px 0;
+    flex-wrap: wrap;           /* 超出自动换行 */
+    text-align: center;
+    align-items: center;       /* 垂直居中（如果有多行） */
+}
+.detail-content .content-block-image-group img {
+    width: 40vh;              /* 固定宽度 */
+    height: 30vh;              /* 高度可自定义 */
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease-in-out;
+}
+
+
+
+
+
+
+
+
+.detail-content .content-block-image-group img:hover {
+    transform: scale(1.02); /* 鼠标悬停时放大 */
+}
+
+.detail-content .image-group-caption {
+    font-size: 0.9em; /* 字体大小 */
+    color: #7f8c8d; /* 文本颜色 */
+    margin-top: 12px; /* 上方外边距 */
+    text-align: center; /* 文本居中 */
+    font-style: italic; /* 斜体 */
+    width: 100%;
+}
+
+/* 响应式调整 */
+@media (max-width: 1024px) { /* 当屏幕宽度小于或等于1024px时应用 */
+     .photo-gallery-container {
+        grid-template-columns: 1fr; /* 小屏幕上改为单列 */
+        gap: 20px; /* 调整间距 */
+        padding: 10px; /* 调整左右内边距 */
+    }
+     .abstract-block .abstract-image {
+        width: 100%; /* 小屏幕下图片宽度占满 */
+        padding-bottom: 66.66%; /* 保持比例 */
+        height: 0; /* 配合 padding-bottom */
+    }
+     .abstract-block .abstract-text {
+        padding: 10px 15px; /* 调整内边距 */
+    }
+}
+
+@media (max-width: 768px) { /* 当屏幕宽度小于或等于768px时应用 */
+    /* 调整 main-content 的 padding-top 在小屏幕下，如果需要 */
+    .main-content {
+        padding-top: 15vh; /* 小屏幕下可以少一点，或根据页眉高度调整 */
+    }
+
+    .main-content h1 {
+        font-size: 2em;
+        margin-bottom: 30px;
+    }
+
+    .abstract-block .abstract-title {
+        font-size: 1.15em;
+        margin-bottom: 5px;
+    }
+    .abstract-block .abstract-preview {
+        font-size: 0.85em;
+    }
+
+    .modal-content {
+        max-width: 95%;
+        min-width: unset;
+        padding: 20px;
+    }
+    .detail-content .modal-main-title {
+        font-size: 1.8em;
+        margin-bottom: 20px;
+    }
+    .detail-content .content-block-paragraph {
+        font-size: 1em;
+        margin-bottom: 15px;
+    }
+    .detail-content .content-block-image-group {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin: 20px 0;
+    }
+    .detail-content .content-block-image-group img {
+        height: 120px;
+    }
+    .detail-content .image-group-caption {
+        font-size: 0.85em;
+    }
+}

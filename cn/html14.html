@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA culture</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        .placeholder-content {
+            min-height: calc(100vh - 90px);
+            flex-grow: 1;
+            background-color: #f4f4f4;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .content-block-1 {
+            display: flex;
+            align-items: center;
+            height: 600px;
+            background-color: #fff;
+            margin-bottom: 0px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            width: 100%;
+            max-width: 1088px;
+            padding: 0;
+        }
+
+        .content-block-1 .image-section {
+            flex: 1;
+            height: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            padding: 20px;
+        }
+
+        .content-block-1 .image-section img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .content-block-1 .text-section {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .content-block-1 .text-section h3 {
+            font-family: 'STKaiti', 'KaiTi', sans-serif;
+            font-weight: bold;
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: center;
+        }
+
+        .content-block-1 .text-section p {
+            font-family: 'STKaiti', 'KaiTi', sans-serif;
+            margin-bottom: 10px;
+            font-size: 24px;
+            line-height: 1.5;
+            color: #333;
+        }
+
+        .content-block-1 .emoji-links {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: right;
+            margin-top: 20px;
+        }
+
+        .content-block-1 .emoji-links a {
+            text-decoration: none;
+            font-size: 24px;
+            transition: transform 0.2s ease-in-out;
+            display: inline-block;
+        }
+
+        .content-block-1 .emoji-links a:hover {
+            transform: scale(1.2);
+        }
+
+        .content-block-2 {
+            background-color: #fff;
+            padding: 20px;
+            height: 500px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            text-align: center;
+            width: 100%;
+            max-width: 1088px;
+            margin-bottom: 0px;
+        }
+
+        .content-block-2 .image-container {
+            max-width: 800px;
+            height: 300px;
+            margin: 0 auto 15px auto;
+            overflow: hidden;
+            border-radius: 4px;
+        }
+
+        .content-block-2 .image-container img {
+            width: 800px;
+            height: 250px;
+            display: block;
+        }
+
+        .content-block-2 .qiyeyuanjing {
+            font-family: 'STKaiti', 'KaiTi', sans-serif;
+            font-weight: bold;
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #333;
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        .content-block-2 .image-description {
+            font-size: 36px;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 768px) {
+            .placeholder-content {
+                margin-top: 0;
+                min-height: auto;
+                padding: 15px;
+                align-items: stretch;
+            }
+
+            .content-block-1 {
+                flex-direction: column;
+                height: auto;
+                padding: 15px;
+                max-width: 100%;
+            }
+
+            .content-block-1 .image-section {
+                width: 100%;
+                height: 150px;
+                margin-bottom: 15px;
+                padding: 0;
+            }
+
+            .content-block-1 .image-section img {
+                object-fit: cover;
+            }
+
+            .content-block-1 .text-section {
+                width: 100%;
+                padding: 0;
+            }
+
+            .content-block-1 .text-section h3 {
+                font-size: 20px;
+                margin-bottom: 15px;
+            }
+
+            .content-block-1 .emoji-links {
+                justify-content: center;
+            }
+
+            .content-block-2 {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+    <div class="placeholder-content">
+        <div class="content-block-1">
+            <div class="image-section">
+                <img src="assets/images/taejoo.jpg">
+            </div>
+            <div class="text-section">
+                <h3>经营理念</h3>
+                <p style="text-indent: 2em;">自创立以来，鑫华夏集团始终站在工业前沿，成长为一家值得信赖的EPC综合服务企业。</p>
+                <p style="text-indent: 2em;">我们不忘初心，始终以技术为基础，在众多项目中不断挑战自我，稳步前行。</p>
+                <p style="text-indent: 2em;">通过持续改进、继往开来，我们不断增强全球竞争力，正在成为客户可信赖、社会尊敬的EPC引领者。</p>
+                <p style="text-indent: 2em;">我们将继续以诚信立业，以责任铸魂，为客户、员工与社会创造更大价值。</p>
+                <p style="text-indent: 2em;">衷心感谢您的关注与支持!</p>
+
+                <div class="image-container">
+                    <img src="assets/images/sign.jpg">
+                </div>
+                
+                <div class="emoji-links">
+                    <a href="https://m.cyberseodang.or.kr/verbalTrans/classic_view.asp?idx=860&listLevel=3" target="_blank"> </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="content-block-2">
+            <p class="qiyeyuanjing">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;企业愿景 <p>
+
+            <div class="image-container">
+                <img src="assets/images/culture2.jpg">
+            </div>
+
+            <p class="image-description">传承初心，锐意进取，迈向国际EPC领导者！ <p>
+        </div>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const adjustContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader');
+                const placeholderContent = document.querySelector('.placeholder-content');
+                if (mainHeader && placeholderContent && window.innerWidth > 768) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    placeholderContent.style.marginTop = `${headerHeight}px`;
+                } else if (placeholderContent && window.innerWidth <= 768) {
+                    placeholderContent.style.marginTop = '0';
+                }
+            };
+
+            setTimeout(adjustContentMargin, 50);
+            window.addEventListener('resize', adjustContentMargin);
+        });
+    </script>
+
+</body>
+</html>

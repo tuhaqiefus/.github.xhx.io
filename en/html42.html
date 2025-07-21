@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA social</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+        body {
+font-family: Georgia, serif;
+            background-color: #f4f4f4;
+        }
+
+        .placeholder-content {
+            flex-grow: 1;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 20px;
+        }
+
+        .content-block {
+            display: flex;
+            min-height: 33.33vh;
+            width: 100%;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+            flex-grow: 1;
+            transition: min-height 0.3s ease;
+        }
+
+        .content-block:last-child {
+            margin-bottom: 0;
+        }
+
+        .content-left {
+            flex: 0 0 60%;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: flex-start;
+            text-align: left;
+        }
+
+        .content-right {
+            flex: 0 0 40%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #eee;
+            overflow: hidden;
+        }
+
+        .content-right img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .content-block h2 {
+            font-size: 2em;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .content-block p {
+            font-size: 0.7em;
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .expand-button {
+            padding: 12px 25px;
+            background-color: #6c757d;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .expand-button:hover {
+            background-color: #5a6268;
+            transform: translateY(-2px);
+        }
+
+        .expanded-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.7s ease-out, padding 0.7s ease-out;
+            background-color: #f9f9f9;
+            padding: 0 40px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            align-items: center;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+            width: 100%;
+        }
+
+        .expanded-content.show {
+            max-height: 500px;
+            padding: 20px 40px;
+        }
+
+        .expanded-content .expanded-text {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 20px;
+        }
+
+        .expanded-content .expanded-image {
+            flex: 1;
+            min-width: 300px;
+            text-align: center;
+        }
+
+        .expanded-content .expanded-image img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .expanded-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 40px;
+            gap: 30px;
+        }
+
+        .expanded-row:last-child {
+            margin-bottom: 0;
+        }
+
+        .expanded-item-image {
+            width: 45%;
+            flex-shrink: 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .expanded-item-image img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .expanded-item-text {
+            flex: 1;
+            padding: 15px 0;
+        }
+
+        .expanded-item-text h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 22px;
+            color: #333;
+            border-left: 4px solid #007bff;
+            padding-left: 10px;
+        }
+
+        .expanded-item-text p {
+            font-size: 16px;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .expanded-row.reverse {
+            flex-direction: row-reverse;
+        }
+
+        @media (min-width: 769px) {
+            .main-content {
+                margin-top: var(--header-height, 0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .placeholder-content {
+                margin-top: 0;
+                min-height: auto;
+                max-width: 100%;
+                padding: 0 10px;
+            }
+
+            .content-block {
+                flex-direction: column;
+                min-height: auto;
+            }
+
+            .content-left, .content-right {
+                flex: none;
+                width: 100%;
+                padding: 20px;
+            }
+
+            .content-right {
+                order: -1;
+                height: 250px;
+            }
+
+            .content-block h2 {
+                font-size: 2em;
+                margin-bottom: 15px;
+            }
+
+            .content-block p {
+                font-size: 0.8em;
+                margin-bottom: 20px;
+            }
+
+            .expanded-content.show {
+                padding: 15px 20px;
+                flex-direction: column;
+            }
+
+            .expanded-content .expanded-text,
+            .expanded-content .expanded-image {
+                padding: 10px 0;
+                min-width: auto;
+            }
+
+            .expanded-row,
+            .expanded-row.reverse {
+                flex-direction: column;
+                margin-bottom: 30px;
+                gap: 20px;
+            }
+
+            .expanded-item-image {
+                width: 100%;
+            }
+
+            .expanded-item-image img {
+                height: 180px;
+            }
+
+            .expanded-item-text {
+                padding: 10px 0;
+            }
+
+            .expanded-item-text h3 {
+                font-size: 18px;
+            }
+
+            .expanded-item-text p {
+                font-size: 0.9em;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+ <div class="placeholder-content">
+        <div class="content-block">
+            <div class="content-left">
+                <h2>Social Responsibility </h2>
+                <h2> & Fairness</h2>
+                <p>We actively undertake social responsibility and ensure fairness and equal opportunities in employment.</p>
+                <button class="expand-button">↓</button>
+                <div class="expanded-content">
+                    <div class="expanded-text">
+                        <h3>Employment and Fair Practices</h3>
+                        <p>We provide equal employment opportunities regardless of race, gender, religion, nationality, or age. Our company is composed of citizens from 5 countries, with women making up approximately 30% of our workforce.</p>
+                    </div>
+                    <div class="expanded-image">
+                        <img src="assets/images/S/s011.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <img src="assets/images/S/s01.jpg">
+            </div>
+        </div>
+
+        <div class="content-block">
+            <div class="content-left">
+                <h2>Occupational Health </h2>
+                <h2> & Safety</h2>
+                <p>By implementing the internationally recognized ISO 45001 standard, we prioritize the health, safety, and well-being of our employees.</p>
+                <button class="expand-button">↓</button>
+                <div class="expanded-content">
+                    <div class="expanded-text">
+                        <h3>ISO 45001 Certification</h3>
+                        <p>We strictly adhere to the ISO 45001 Occupational Health and Safety Management System standard, investing significant resources in safety training to enhance employees' safety awareness and emergency response capabilities; we also improve our accident reporting and investigation mechanisms to ensure a safe and healthy workplace for all employees.</p>
+                    </div>
+                    <div class="expanded-image">
+                        <img src="assets/images/S/s022.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <img src="assets/images/S/s02.jpg">
+            </div>
+        </div>
+
+<div class="content-block">
+            <div class="content-left">
+                <h2>Community Engagement</h2>
+                <h2> & Philanthropy</h2>
+                <p>We firmly believe in the importance of giving back to society and actively participate in and support various charitable activities, contributing to community development.</p>
+                <button class="expand-button">↓</button>
+                <div class="expanded-content">
+                    <div class="expanded-text">
+                        <h3>Community Contributions</h3>
+                        <p>As corporate citizens, we actively engage in philanthropy and community building. We support public welfare projects in areas such as education, environmental protection, poverty alleviation, and aid to the disadvantaged through various forms, including donations, material assistance, and employee volunteer services.</p>
+                    </div>
+                    <div class="expanded-image">
+                        <img src="assets/images/S/s033.jpg">
+                    </div>
+                </div>
+            </div>
+            <div class="content-right">
+                <img src="assets/images/S/s03.jpg">
+            </div>
+        </div>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+        function toggleExpand(expandId, arrowElement) {
+            const expandedContent = document.getElementById(expandId);
+            if (expandedContent) {
+                const isVisible = expandedContent.classList.contains('show');
+                
+                if (isVisible) {
+                    expandedContent.classList.remove('show');
+                    arrowElement.classList.remove('rotated');
+                } else {
+                    expandedContent.classList.add('show');
+                    arrowElement.classList.add('rotated');
+                }
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const expandButtons = document.querySelectorAll('.expand-button'); 
+
+            const adjustPlaceholderContentMargin = () => {
+                const mainHeader = document.getElementById('mainHeader');
+                const placeholderContent = document.querySelector('.placeholder-content');
+                if (mainHeader && placeholderContent && window.innerWidth > 768) {
+                    const headerHeight = mainHeader.offsetHeight;
+                    placeholderContent.style.marginTop = `${headerHeight}px`;
+                } else if (placeholderContent && window.innerWidth <= 768) {
+                    placeholderContent.style.marginTop = '0';
+                }
+            };
+            
+            setTimeout(adjustPlaceholderContentMargin, 50);
+            window.addEventListener('resize', adjustPlaceholderContentMargin);
+
+            expandButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const expandedContent = this.nextElementSibling;
+                    expandedContent.classList.toggle('show');
+
+                    if (expandedContent.classList.contains('show')) {
+                        this.textContent = '↑';
+                    } else {
+                        this.textContent = '↓';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>

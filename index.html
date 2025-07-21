@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <video id="video-bg" autoplay muted loop playsinline>
+        <source src="cn/assets/videos/background.mp4" type="video/mp4">
+    </video>
+
+    <div class="overlay"></div>
+
+    <div class="container">
+        <header id="mainHeader">
+            <div class="logo">
+                <!--img src="assets/images/LOGO.svg" -->
+
+                <img id="main-logo" src="cn/assets/images/LOGO.svg">
+
+            </div>
+            <nav>
+                <a href="#" class="nav-item" data-page="about-us">
+                    公司介绍
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn"  data-subpage="about-us-main" onclick="window.location.href='cn/html11.html';">
+                                <span class="btn-text">公司简介</span>
+                            </button>
+
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/about-btn3.jpg')" data-subpage="business-partners" onclick="window.location.href='cn/html13.html'">
+                                <span class="btn-text">合作伙伴</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/about-btn4.jpg')" data-subpage="dynamism" onclick="window.location.href='cn/html14.html';">
+                                <span class="btn-text">企业文化</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/about-btn5.jpg')" data-subpage="organization-chart" onclick="window.location.href='cn/html15.html';">
+                                <span class="btn-text">组织架构</span>
+                            </button>
+
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/about-btn2.jpg')" data-subpage="expansion" onclick="window.location.href='cn/html16.html';">
+                            <span class="btn-text">资质荣誉</span>
+                            </button>
+
+                            <button class="dropdown-btn"   >
+                                <span class="btn-text"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            </button>
+
+
+                            <button class="dropdown-btn"   >
+                                <span class="btn-text">关联公司:</span>
+                            </button>
+
+
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/about-btn8.jpg')"  onclick="window.location.href='http://www.juya-tech.com';">
+                            <span class="btn-text">  </span>
+                            </button>
+
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/about-btn7.jpg')" onclick="window.location.href='https://semi.xhxcg.com'; " >
+                            <span class="btn-text">  </span>
+                            </button>
+
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/about-btn6.jpg')"   onclick="window.location.href='http://www.ky-century.com/';" >
+                            <span class="btn-text">  </span>
+                            </button>
+
+
+                        </div>
+                    </div>
+                </a>
+                <!--a href="#" class="nav-item" data-page="business">
+                    工程建设
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn1.jpg')" data-subpage="business-detail1" onclick="window.location.href='cn/html2to2.html';">
+                                <span class="btn-text"> </span>
+                            </button>
+                <--semi.mp4 html2      href='wordpress-export/home/index.html';">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn4.jpg')" data-subpage="business-detail4" onclick="window.location.href='cn/html2to3.html';">
+                                <span class="btn-text"> </span>
+                            </button>
+                <--dis.mp4 html3" href='wordpress-export/offering-2/index.html';" ->
+
+                            <button class="dropdown-btn" style="background-image: url('assets/images/business-btn6.jpg')" data-subpage="business-detail6" onclick="window.location.href='cn/html2to4.html';">
+                                <span class="btn-text"> </span>
+                            </button>
+                <--/assets/videos/gas_speed.mp4.mp4   html4     href='wordpress-export/about/index.html';" ->
+                            <button class="dropdown-btn" style="background-image: url('')" data-subpage="business-detail7" onclick="window.location.href='http://www.ky-century.com/list2.php';">
+                                <span class="btn-text"> 洁净系统</span>
+                            </button>
+
+                            <button class="dropdown-btn" style="background-image: url('')" data-subpage="business-detail7" onclick="window.location.href='cn/wordpress-export/contact/index.html';">
+                                <span class="btn-text"> →</span>
+                            </button>
+                        </div>
+                    </div>
+                </a-->
+
+                <a class="nav-item" data-page="ir"> 工程业绩
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">                       
+
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/ir-btn1.jpg')" data-subpage="Gas Scrubber" onclick="window.location.href='cn/html2to2.html';">
+                                 <span class="btn-text">微电子</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/ir-btn2.jpg')" data-subpage="shareholder" onclick="window.location.href='cn/html2to3.html';">
+                                <span class="btn-text">光电产业</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/ir-btn3.jpg')" data-subpage="investor" onclick="window.location.href='cn/html2to4.html'">
+                                <span class="btn-text">石油化工</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/ir-btn4.jpg')" data-subpage="investor" onclick="window.location.href='cn/html31.html#category5'">
+                                <span class="btn-text">洁净系统</span>
+                            </button>
+                             <!--button class="dropdown-btn" style="background-image: url('assets/images/ir-btn3.jpg')" data-subpage="investor" onclick="window.location.href='cn/html31.html#category5'">
+                                <span class="btn-text">中央空调 </span>
+                            </button-->
+
+
+
+
+                        </div>
+                    </div>
+                </a>
+
+
+                 <!--a href="#" class="nav-item" data-page="electronic chemicals">
+                    化学品生产
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('assets/images/career-btn1.jpg')" data-subpage="job-vacancies">
+                                <span class="btn-text">H3PO4</span>
+                            </button>
+
+                                                       <button class="dropdown-btn" style="background-image: url('assets/images/career-btn1.jpg')" data-subpage="job-vacancies">
+                                <span class="btn-text">HSN</span>
+                            </button> 
+                                                        <button class="dropdown-btn" style="background-image: url('assets/images/career-btn1.jpg')" data-subpage="job-vacancies">
+                                <span class="btn-text">TEOS</span>
+                            </button>
+                                                        <button class="dropdown-btn" style="background-image: url('assets/images/career-btn1.jpg')" data-subpage="job-vacancies">
+                                <span class="btn-text">Colloidal Silica</span>
+                            </button>
+
+                        </div>
+                    </div>
+                </a-->
+
+                <a href="#" class="nav-item" data-page="esg">
+                    E · S · G
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/esg-btn1.jpg')" data-subpage="Environmental Policy;ISO14001:环境管理体系" onclick="window.location.href='cn/html41.html';">
+                                <span class="btn-text">环境保护<span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/esg-btn2.jpg')" data-subpage="Social Responsibility(cross-cultural management)" onclick="window.location.href='cn/html42.html';">
+                                <span class="btn-text">社会政策<span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/esg-btn3.jpg')" data-subpage="Governance;资质、荣誉、IR(Financial\Shareholder\Investor)、ISO9001、" onclick="window.location.href='cn/html43.html';">
+                                <span class="btn-text">内部治理</span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+
+                
+                <a href="#" class="nav-item" data-page="careers">
+                    人力资源
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/career-btn1.jpg')" data-subpage="job-vacancies" onclick="window.location.href='cn/html51.html';">
+                                <span class="btn-text">职位空缺</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/career-btn2.png')" data-subpage="employee-development" onclick="window.location.href='cn/html52.html';">
+                                <span class="btn-text">员工天地</span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/career-btn2.png')" data-subpage="employee-development" onclick="window.location.href='cn/html53.html';">
+                                <span class="btn-text">新闻动态</span>
+                            </button>
+                                                        <button class="dropdown-btn"   >
+                                <span class="btn-text"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            </button>
+                                                        <button class="dropdown-btn"   >
+                                <span class="btn-text"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                            </button>
+
+                        </div>
+                    </div>
+                </a>
+
+
+
+
+                <a href="#" class="nav-item" data-page="language">
+                    语言
+                    <div class="dropdown-container">
+                        <div class="dropdown-content">
+                                                        <button class="dropdown-btn" style="background-image: url('cn/assets/images/lang-cn.jpg')" data-subpage="english" onclick="window.location.href='index.html';">
+                                <span class="btn-text">  </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/lang-en.jpg')" data-subpage="english" onclick="window.location.href='en/index.html';">
+                                <span class="btn-text">  </span>
+                            </button>
+                            <button class="dropdown-btn" style="background-image: url('cn/assets/images/lang-kr.jpg')" data-subpage="korean" onclick="window.location.href='kr/index.html';">
+                                <span class="btn-text">  </span>
+                            </button>
+                        </div>
+                    </div>
+                </a>
+            </nav>
+        </header>
+
+        <main class="hero">
+            <a href="wordpress-export/contact/index.html" alt=合作 class="info-block block-1">
+                <h2></h2>
+                <p>  </p>
+            </a>
+            <a href="cn/html17.html" alt=集团 class="info-block block-2">
+                <h2>  </h2>
+                <p>  </p>
+            </a>
+            <a href="cn/html51.html" alt=招募 class="info-block block-3">
+                <h2> </h2>
+                <p>  </p>
+            </a>
+        </main>
+    </div>
+
+    <dialog id="videoDialog" style="background: none; border: none; padding: 0; max-width: 100vw; max-height: 100vh; overflow: hidden;">
+        <video id="popupVideo" style="max-width: 100%; max-height: 100%; display: block; margin: auto;" controls autoplay playsinline>
+            <source src="cn/assets/videos/photo_flow.mp4" type="video/mp4">
+        </video>
+        <button onclick="document.getElementById('videoDialog').close();" style="position: absolute; top: 15px; right: 15px; background: rgba(255, 0, 0, 0.8); color: white; border: none; border-radius: 50%; width: 30px; height: 30px; font-size: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: background 0.3s ease;">
+            X
+        </button>
+    </dialog>
+
+    <dialog id="imageDialog">
+        <img src="cn/assets/images/22.jpg" alt="Popup Image" style="max-width: 80vw; max-height: 80vh;">
+        <button onclick="document.getElementById('imageDialog').close()" style="position: absolute; top: 10px; right: 10px; background: red; color: white; border: none; padding: 5px 10px; border-radius: 50%; width: 30px; height: 30px; font-size: 18px; cursor: pointer; display: flex; justify-content: center; align-items: center; transition: background 0.3s ease;">
+            X
+        </button>
+    </dialog>
+
+    <script src="js/script.js"></script>
+</body>
+</html>

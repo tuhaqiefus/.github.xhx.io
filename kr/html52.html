@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XINOVA_dynamism</title>
+    <link rel="stylesheet" href="hf.css">
+    <style>
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+    }
+
+    .main-content {
+        display: flex;
+        flex-direction: column;
+        background-color: #f4f4f4;
+        flex-grow: 1;
+    }
+
+    .main-content-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        padding: 40px 50px;
+        background-color: #e0e0e0;
+        flex-grow: 1;
+    }
+
+    .main-content-top h1 {
+        font-size: 3em;
+        color: #333;
+        margin: 0;
+        flex-grow: 1;
+    }
+
+    .main-content-top .top-image {
+        width: 200px;
+        height: auto;
+        margin-left: 30px;
+    }
+
+    .main-content-bottom {
+        background-color: #ffffff;
+        flex-grow: 2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 20px;
+    }
+
+    .main-content-bottom .centered-image {
+        max-width: 100%;
+        max-height: 100vh;
+        height: auto;
+        display: block;
+    }
+
+    .level-1-block {
+        width: calc(100% - 20vw);
+        height: 120vh;
+        margin: 0 10vw;
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        background-color: #b8b4b4;
+    }
+
+    .level-1-block-bottom {
+        width: 79vw;
+        height: 5vh;
+        margin: 0 auto;
+        background: white;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        box-sizing: border-box;
+    }
+
+    .bottom-right-image {
+        max-width: 100%;
+        max-height: 100%;
+        height: 5vh;
+        width: auto;
+        object-fit: contain;
+    }
+
+    .level-2-block-top {
+        height: 40vh;
+        background-color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+        position: relative;
+    }
+
+    .level-2-block-bottom {
+        height: 80vh;
+        background-color: white;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        padding: 20px 0;
+        box-sizing: border-box;
+    }
+
+    .level-3-block {
+        width: 29vw;
+        min-width: 150px;
+        background-color: white;
+        height: auto;
+        padding: 10px 0px;
+        box-sizing: border-box;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        margin: 0 5px;
+        color: #fff;
+    }
+
+    .level-3-block h3 {
+        margin-top: 30px;
+        font-size: 1.8em;
+        color: #0a0909;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+
+    }
+
+    .level-3-block p {
+        font-size: 1.2em;
+        color: #7c7a7a;
+        flex-grow: 1;
+        flex-grow: 1;
+        
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        white-space: normal;
+        text-align: left;
+        text-indent: 2em;
+        font-family: "SimSun", "宋体", serif;
+        padding-left: 1em;
+        padding-right: 1em;
+
+    }
+
+    .level-3-block img {
+        max-width: 99%;
+        height: auto;
+        margin-top: 15px;
+        display: block;
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .carousel-container {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .carousel-slide {
+        display: flex;
+        width: 500%;
+        height: 100%;
+        transition: transform 0.5s ease-in-out;
+    }
+
+    .carousel-slide img {
+        width: 20%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .carousel-button {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.5);
+        color: white;
+        border: none;
+        padding: 10px 15px;
+        cursor: pointer;
+        z-index: 100;
+    }
+
+    .carousel-button.prev {
+        left: 10px;
+    }
+
+    .carousel-button.next {
+        right: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .main-content {
+            margin-top: 0;
+            min-height: auto;
+        }
+
+        .main-content-top {
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .main-content-top h1 {
+            font-size: 2em;
+            margin-bottom: 15px;
+        }
+
+        .main-content-top .top-image {
+            margin-left: 0;
+        }
+
+        .level-1-block {
+            width: 100%;
+            margin: 0;
+            height: auto;
+        }
+
+        .level-2-block-top {
+            height: 30vh;
+        }
+
+        .level-2-block-bottom {
+            flex-direction: column;
+            height: auto;
+        }
+
+        .level-3-block {
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 1px;
+            min-width: unset;
+        }
+
+        .level-1-block-bottom {
+            width: 95vw;
+            height: 4vh;
+        }
+    }
+</style>
+</head>
+<body>
+
+    <div id="headerPlaceholder"></div>
+
+    <div class="main-content">
+        <div class="level-1-block">
+            <div class="level-2-block-top">
+                <div class="carousel-container">
+                    <div class="carousel-slide">
+                        <img src="assets\images\career\b1.jpg" alt="Carousel Image 1">
+                        <img src="assets\images\career\b2.jpg" alt="Carousel Image 2">
+                        <img src="assets\images\career\b3.jpg" alt="Carousel Image 3">
+                        <img src="assets\images\career\b4.jpg" alt="Carousel Image 4">
+                        <img src="assets\images\career\b5.jpg" alt="Carousel Image 5">
+                    </div>
+                </div>
+            </div>
+
+            <div class="level-2-block-bottom">
+                <div class="level-3-block">
+                    <h3>급여복지</h3>
+                    <p> <br> </p>
+                    <p>회사의 급여 및 복지 시스템은 매우 경쟁력이 있으며, 직원들의 노고를 표창하는 것을 목표로 합니다. 우수한 월급 외에도 포괄적인 건강 보험, 풍부한 연말 보너스 및 완벽한 연금 프로그램을 제공하여 직원과 가족의 삶에 걱정이 없도록 덜어주고, 당신에게 든든한 지원을 제공합니다.</p>
+                    <img src="assets\images\career\Samsung_301.jpg" alt="Placeholder Image 1">
+                </div>
+
+                <div class="level-3-block">
+                    <h3>사무환경</h3>
+                    <p> <br> </p>
+                    <p> 회사는 개방적이고 편안하며 활력이 넘치는 현대적인 사무 공간을 조성하기 위해 노력하고 있습니다. 이곳에서 직원들은 인체공학 좌석, 고속 네트워크 및 충분한 자연광을 누릴 수 있습니다. 또한, 휴식 구역과 피트니스 시설이 마련되어 있어 효율적인 업무와 동시에 심신 건강을 유지하고 있습니다.</p>
+                    <img src="assets\images\career\workplace_302.jpg" alt="Placeholder Image 2">
+                </div>
+
+                <div class="level-3-block">
+                    <h3>단체활동</h3>
+                    <p> <br> </p>
+                    <p> 회사에 입사하여 다양한 팀워크 활동을 경험하세요! 신나는 야외 활동에서 가볍고 즐거운 명절 파티에 이르기 까지, 회사는 정기적으로 다양한 활동을 조직하고 있습니다. 이는 팀의 응집력을 증진시키고, 뜻이 맞는 동료들을 만나 함께 잊을 수 없는 추억을 만들기 위한 것 입니다.</p>
+                    <img src="assets\images\career\girls_303.jpg" alt="Placeholder Image 3">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="level-1-block-bottom">
+        <a href="html5to3.html" target="_blank">
+            <img src="assets/images/career/2foot.jpg" alt="photos.json" class="bottom-right-image">
+        </a>
+    </div>
+
+    <div id="footerPlaceholder"></div>
+
+    <script src="hf.js"></script>
+
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    const adjustContentMargin = () => {
+        const mainHeader = document.getElementById('mainHeader');
+        const mainContent = document.querySelector('.main-content');
+        if (mainHeader && mainContent && window.innerWidth > 768) {
+            const headerHeight = mainHeader.offsetHeight;
+            mainContent.style.marginTop = `${headerHeight}px`;
+        } else if (mainContent && window.innerWidth <= 768) {
+            mainContent.style.marginTop = '0';
+        }
+    };
+
+    setTimeout(adjustContentMargin, 50);
+    window.addEventListener('resize', adjustContentMargin);
+
+    let currentSlide = 0;
+    const slides = document.querySelector('.carousel-slide');
+    const totalSlides = slides.children.length;
+    let slideInterval;
+
+    function moveSlide(direction) {
+        currentSlide = (currentSlide + direction + totalSlides) % totalSlides;
+        slides.style.transform = `translateX(-${currentSlide * (100 / totalSlides)}%)`;
+    }
+
+    function startAutoPlay() {
+        slideInterval = setInterval(() => {
+            moveSlide(1);
+        }, 3000);
+    }
+
+    function stopAutoPlay() {
+        clearInterval(slideInterval);
+    }
+
+    startAutoPlay();
+
+    const carouselContainer = document.querySelector('.carousel-container');
+    carouselContainer.addEventListener('mouseenter', stopAutoPlay);
+    carouselContainer.addEventListener('mouseleave', startAutoPlay);
+});
+    </script>
+</body>
+</html>
