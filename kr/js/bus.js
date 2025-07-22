@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
             { img: 'assets/images/semi_equipment/category102.png', desc: '무석 하이닉스 C1,C2', modalText: '- CO2 공급 시스템 설비 설치; 2차 배관' },
             { img: 'assets/images/semi_equipment/category103.png', desc: '대련 인텔', modalText: '- RED SEA ,TANGO 특수 가스, 화학품 2차 배합' },
             { img: 'assets/images/semi_equipment/category104.png', desc: '서안 삼성 반도체 1기', modalText: '-PCW,GASS 배관' },
-            { img: 'assets/images/semi_equipment/category105.png', desc: '서안 삼성 반도체 2기', modalText: '-화학 MAIN LINE, 임시 건설 공사의 클린룸과 헛간' },
+            { img: 'assets/images/semi_equipment/category105.png', desc: '서안 삼성 반도체 2기', modalText: '-화학 MAIN LINE, 임시 건설 공사의 클린룸 시공.' },
         ],
         category2: [
             { img: 'assets/images/semi_equipment/category201.jpg', desc: '합비 징둥퐁', modalText: '-DCS. DRS 시스템' },
